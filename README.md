@@ -2,7 +2,7 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](laajaosk.users.cs.helsinki.fi/tyonjakaja)
+* [Linkki sovellukseeni](https://laajaosk.users.cs.helsinki.fi/tyonjakaja)
 * [Linkki dokumentaatiooni](https://www.github.com)
 
 ## Työn aihe
