@@ -1,0 +1,39 @@
+Työnjakaja
+
+Sovelluksen tarkoituksena on mahdollistaa esim. kotitalouden kotitöiden jakaminen. Admin-oikeudellinen käyttäjä voi luoda, selailla, muokaja ja poistaa sekä työn kohteita, että työvälineitä. Lisäksi sekä Admin-, että novice-käyttäjät voivat luoda, suorittaa ja selata heille määrättyjä töitä.1. 
+
+Työn suoritettuaan käyttäjä voi kuitata työn tehdyksi.
+
+Oletettuna, kotitaulouden kotityöt esimerkissä, aikuiset olisivat admin-käyttäjiä ja lapset novice-käyttäjiä. Työn kohteita olisivat esimerkiksi jääkaappi, olohuone yms. ja työvälineitä imuri, rätti yms.
+
+
+Sovellus toteutetaan ohjeiden suositusten mukaisesti php-kielellä tsoha-bootstrappia käyttäen. Tietokantana PostgreSQL. Ympäristönä toimii Tietojenkäsittelylaitoksen Users2017-palvelin.
+
+Sovelluksen tulisi toimia kaikilla selaimilla
+
+
+Käyttäjäryhmät:
+
+Admin/Aikuinen
+	Pystyy muuttamaan, lisäämään, poistamaan ja selaamaan kaikkea 		tietokannassa olevaa tietoa. Pääasiallisesti tarkoituksena, että 		Admin-käyttäjät rakentavat tietokannan tiedot nollasta.
+Novice/Lapsi
+	Pystyy selaamaan itselleen osoitettuja töitä, mahdollisesti 		luomaan uusia töitä ja kuittaamaan omat työt tehdyksi.
+
+Käyttötapaukset:
+
+Työn kohteen lisääminen
+	Admin käyttäjä voi luoda uuden työkohteen, jolle generoituu oma 	ID. Kohteelle voi antaa kuvauksen, jossa kerrotaan kohteen laatu, 		nimi tai/ja sijainti. Esimerkiksi "vessan lavuaari". 
+
+Työvälineen lisääminen
+	Admin käyttäjä voi luoda uuden työvälineen, jolle generoituu oma 		ID. Välineelle voi antaa kuvauksen, jossa kerrotaan kohteen laatu 		tai nimi. Esimerkiksi "lattiamoppi".
+
+Työn luominen
+	Admin- tai novice-käyttäjä voi luoda uuden työn, jolle antaa 		kuvauksen, kohteen, työvälineen ja tekijän. Esimerkiksi "Pekka 		imuroi olohuone imurilla".
+
+Työn kuittaaminen
+	Admin- tai novice-käyttäjä voi kuitata työn tehdyksi, jolloin työn 		"tehty"-boolean muuttuu true.
+
+Muita käyttötapauksia:  Kirjautuminen, rekisteröityminen, omien töiden 				selailu...
+
+ 
+
