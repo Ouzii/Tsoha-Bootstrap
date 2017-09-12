@@ -35,4 +35,12 @@
   $routes->get('/tyokalu', function() {
   HelloWorldController::tyokalu();
 });
+
+  $routes->get('/kayttaja', function() {
+  HelloWorldController::kayttaja();
+});
+
+  $routes->get('/kayttajat', function() {
+  HelloWorldController::kayttajat();
+});
     
