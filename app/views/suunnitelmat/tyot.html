@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Näkymä - aktiiviset työt</h1>
+
+<p>
+    <a href="#" class="btn btn-success">Lisää uusi työ</a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Kuvaus</th>
+            <th>Työn kohde</th>
+            <th>Työkalu</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- Listataan pelit tähän -->
+        <tr>
+            <td>000001</td>
+            <td><a href="#">Siivoa jääkaappi rätillä</a></td>
+            <td><a href="#">Jääkaappi</td>
+            <td><a href="#">Rätti</td>
+            <td><div class="checkbox">
+                    <label>
+                        <input type="checkbox">
+                        Tehty
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
