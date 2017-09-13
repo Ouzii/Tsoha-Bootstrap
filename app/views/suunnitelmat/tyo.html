@@ -1,21 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Siivoa jääkaappi rätillä</h1>
+<div style="color:green"><h1>Siivoa jääkaappi rätillä</h1></div>
 <!-- Painikkeet tähän -->
 <p>
     <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
 </p>
 <!-- Tiedot tulee listana tähän -->
 <ul>
-    <li><strong>ID:</strong> 000001</li>
     <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonkohde"> Jääkaappi</a></li>
     <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokalu"> Rätti</a></li>
+    <li><strong>Suorittaja:</strong><a href="{{base_path}}/kayttaja"> Matti</a></li>
     <li><strong>Tehty: </strong><input type="checkbox"></li>
-</ul>
-<p><strong>Tekijät:</strong></p>
-<ul>
-        <li><a href="{{base_path}}/kayttaja"> Matti</a></li>
-        <li><a href="#"> Maija</a></li>
 </ul>
 
 <p><strong>Tarkempi kuvaus:</strong> Siivoa jääkaappi, joka löytyy keittiöstä, punaisella rätillä, joka sekin löytyy keittiöstä!</p>
