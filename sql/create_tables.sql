@@ -21,11 +21,16 @@ CREATE TABLE Tyokalu(
 );
 
 CREATE TABLE Tyo(
+	id SERIAL PRIMARY KEY,
 	kohde varchar REFERENCES Tyon_kohde(kuvaus),
 	tyokalu varchar REFERENCES Tyokalu(kuvaus),
-	tekija varchar REFERENCES Kayttaja(tunnus),
 	kuvaus varchar(30) NOT NULL,
 	tarkempi_kuvaus varchar(240),
 	tehty boolean DEFAULT FALSE,
 	suoritusaika TIMESTAMP
+);
+
+CREATE TABLE KayttajanTyot(
+	tekija varchar REFERENCES Kayttaja(tunnus),
+	tyo SERIAL REFERENCES Tyo(id)
 );
