@@ -43,4 +43,10 @@
   $routes->get('/kayttajat', function() {
   HelloWorldController::kayttajat();
 });
+
+  $routes->get('/tyoMuokkaus', function() {
+  HelloWorldController::tyoMuokkaus();
+});
+
+
     

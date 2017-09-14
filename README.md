@@ -18,9 +18,10 @@ Yleisiä linkkejä:
 * [Kirjautuminen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/login)
 * [Käyttäjät](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/kayttajat)
 * [Käyttäjä](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/kayttaja)
+* [Työn muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/tyoMuokkaus)
 
 
 ## Työn kuvaus
 
-Työnjakaja on sovellus, jolla pystyy helposti luomaan, muokkaamaan ja poistamaan työn kohteita ja työkaluja. Työn kohteille voi tämän jälkeen luoda töitä, joilla on työn kohteen lisäksi käytettävä työkalu ja tekijät.
+Työnjakaja on sovellus, jolla pystyy helposti luomaan, muokkaamaan ja poistamaan työn kohteita ja työkaluja. Työn kohteille voi tämän jälkeen luoda töitä, joilla on työn kohteen lisäksi käytettävä työkalu ja tekijä.
 Sovellus on kätevä esimerkiksi kotitalouden kotitöiden jakamisessa.
