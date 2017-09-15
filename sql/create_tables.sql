@@ -1,5 +1,3 @@
--- Lisää CREATE TABLE lauseet tähän tiedostoon
-
 CREATE TABLE Kayttaja(
 	tunnus varchar(10) PRIMARY KEY,
 	salasana varchar(20) NOT NULL,

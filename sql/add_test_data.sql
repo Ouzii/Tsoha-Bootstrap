@@ -1,5 +1,3 @@
--- Lisää INSERT INTO lauseet tähän tiedostoon
-
 INSERT INTO Kayttaja (tunnus, salasana, ika, kuvaus, admin)
 VALUES ('Matti', 'salasana', 23, 'Matti Meikäläinen', TRUE);
 
