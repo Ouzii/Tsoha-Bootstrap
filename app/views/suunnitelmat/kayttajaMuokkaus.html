@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<form>
+    <div class="form-group">
+        <label for="tunnus">Matti</label>
+    </div>
+    <div class="form-group">
+        <label for="ika">Ikä</label>
+        <input type="text" class="form-control" id="ika" placeholder="23">
+    </div>    
+    <div class="form-group">
+        <label for="tarkempi_kuvaus">Tarkempi kuvaus</label>
+        <input type="text" class="form-control" id="tarkempi_kuvaus" placeholder="Matti Meikäläinen">
+    </div>    
+    
+        <div class="checkbox">
+        <label>
+            <input type="checkbox" checked> Admin
+        </label>
+    </div>
+    
+    <button type="submit" class="btn btn-default">Muuta</button>
+</form>
+{% endblock %}

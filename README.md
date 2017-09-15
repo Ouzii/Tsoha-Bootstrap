@@ -19,6 +19,9 @@ Yleisiä linkkejä:
 * [Käyttäjät](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/kayttajat)
 * [Käyttäjä](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/kayttaja)
 * [Työn muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/tyoMuokkaus)
+* [Työn kohteen muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/tyonkohdeMuokkaus)
+* [Työkalun muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/tyokaluMuokkaus)
+* [Käyttäjän muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/kayttajaMuokkaus)
 
 
 ## Työn kuvaus

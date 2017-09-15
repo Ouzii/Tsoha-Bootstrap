@@ -48,5 +48,17 @@
   HelloWorldController::tyoMuokkaus();
 });
 
+  $routes->get('/tyokaluMuokkaus', function() {
+  HelloWorldController::tyokaluMuokkaus();
+});
+
+  $routes->get('/tyonkohdeMuokkaus', function() {
+  HelloWorldController::tyonkohdeMuokkaus();
+});
+
+  $routes->get('/kayttajaMuokkaus', function() {
+  HelloWorldController::kayttajaMuokkaus();
+});
+
 
     

@@ -29,5 +29,8 @@ VALUES ('Olohuone', 'Imuri', 'Imuroi olohuone.',
 INSERT INTO KayttajanTyot (tekija, tyo)
 VALUES ('Matti', 1);
 
+INSERT INTO KayttajanTyot (tekija, tyo) 
+VALUES ('Maija', 1);
+
 INSERT INTO KayttajanTyot (tekija, tyo)
 VALUES ('Maija', 2);
