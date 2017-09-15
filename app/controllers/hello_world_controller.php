@@ -62,5 +62,21 @@ class HelloWorldController extends BaseController {
     public static function kayttajaMuokkaus() {
         View::make('suunnitelmat/kayttajaMuokkaus.html');
     }
+    
+    public static function uusiTyo() {
+        View::make('suunnitelmat/uusiTyo.html');
+    }
+    
+    public static function uusiTyonkohde() {
+        View::make('suunnitelmat/uusiTyonkohde.html');
+    }
+    
+    public static function uusiTyokalu() {
+        View::make('suunnitelmat/uusiTyokalu.html');
+    }
+    
+    public static function rekisteroityminen() {
+        View::make('suunnitelmat/rekisteroityminen.html');
+    }
 
 }

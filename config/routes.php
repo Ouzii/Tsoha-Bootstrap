@@ -60,5 +60,21 @@
   HelloWorldController::kayttajaMuokkaus();
 });
 
+  $routes->get('/uusiTyo', function() {
+  HelloWorldController::uusiTyo();
+});
+
+  $routes->get('/uusiTyonkohde', function() {
+  HelloWorldController::uusiTyonkohde();
+});
+
+  $routes->get('/uusiTyokalu', function() {
+  HelloWorldController::uusiTyokalu();
+});
+
+  $routes->get('/rekisteroityminen', function() {
+  HelloWorldController::rekisteroityminen();
+});
+
 
     

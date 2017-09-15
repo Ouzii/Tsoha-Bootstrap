@@ -22,6 +22,10 @@ Yleisiä linkkejä:
 * [Työn kohteen muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/tyonkohdeMuokkaus)
 * [Työkalun muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/tyokaluMuokkaus)
 * [Käyttäjän muokkaus](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/kayttajaMuokkaus)
+* [Rekisteröityminen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/rekisteroityminen)
+* [Työn luominen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/uusiTyo)
+* [Työn kohteen luominen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/uusiTyonkohde)
+* [Työkalun luominen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/uusiTyokalu)
 
 
 ## Työn kuvaus
