@@ -20,9 +20,9 @@
   HelloWorldController::tyonkohde();
 });
 
-  $routes->get('/tyot', function() {
-  HelloWorldController::tyot();
-});
+//  $routes->get('/tyot', function() {
+//  HelloWorldController::tyot();
+//});
 
   $routes->get('/tyo', function() {
   HelloWorldController::tyo();
@@ -74,6 +74,14 @@
 
   $routes->get('/rekisteroityminen', function() {
   HelloWorldController::rekisteroityminen();
+});
+
+  $routes->get('/tyot', function() {
+      WorkController::index();
+});
+
+  $routes->get('/tyo/:id', function($id) {
+      WorkController::show($id);
 });
 
 

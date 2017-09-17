@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="color:green"><h1>Jääkaappi</h1></div>
+<!-- Painikkeet tähän -->
+<p>
+    <button class="btn btn-danger">Poista</button> <a href="{{base_path}}/tyonkohdeMuokkaus" class="btn btn-default">Muokkaa</a>
+</p>
+<!-- Tiedot tulee listana tähän -->
+<ul>
+    <li><strong>Lisäyspäivä:</strong> 10.09.2017</li>
+</ul>
+
+<p><strong>Tarkempi kuvaus:</strong> Keittiöstä löytyvä kaappi, joka pysyy viileänä. Käyttötarkoituksena ruoan säilöminen!</p>
+{% endblock %}

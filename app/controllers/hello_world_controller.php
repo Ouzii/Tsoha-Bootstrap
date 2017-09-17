@@ -8,75 +8,95 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        View::make('helloworld.html');
+        $tyo = Work::find(1);
+        $tyot = Work::all();
+        $kohteet = WorkObject::all();
+        $kohde = WorkObject::find('Jääkaappi');
+        $tyokalut = WorkTool::all();
+        $tyokalu = WorkTool::find('Rätti');
+        $kayttajat = User::all();
+        $kayttaja = User::find('Matti');
+        $kayttajienTyot = UsersWorks::all();
+        $kayttajanTyot = UsersWorks::find('Maija');
+        // Kint-luokan dump-metodi tulostaa muuttujan arvon
+        Kint::dump($tyo);
+        Kint::dump($tyot);
+        Kint::dump($kohteet);
+        Kint::dump($kohde);
+        Kint::dump($tyokalut);
+        Kint::dump($tyokalu);
+        Kint::dump($kayttajat);
+        Kint::dump($kayttaja);
+        Kint::dump($kayttajienTyot);
+        Kint::dump($kayttajanTyot);
     }
 
     public static function login() {
-        View::make('suunnitelmat/login.html');
+        View::make('etusivu/login.html');
     }
-    
+
     public static function tyonkohteet() {
-        View::make('suunnitelmat/tyonkohteet.html');
+        View::make('tyonKohde/tyonkohteet.html');
     }
-    
+
     public static function tyonkohde() {
-        View::make('suunnitelmat/tyonkohde.html');
+        View::make('tyonKohde/tyonkohde.html');
     }
-    
+
     public static function tyot() {
-        View::make('suunnitelmat/tyot.html');
+        View::make('tyo/tyot.html');
     }
-    
+
     public static function tyo() {
-        View::make('suunnitelmat/tyo.html');
+        View::make('tyo/tyoKuvaus.html');
     }
-    
+
     public static function tyokalut() {
-        View::make('suunnitelmat/tyokalut.html');
+        View::make('tyokalu/tyokalut.html');
     }
-    
+
     public static function tyokalu() {
-        View::make('suunnitelmat/tyokalu.html');
+        View::make('tyokalu/tyokalu.html');
     }
-    
+
     public static function kayttaja() {
-        View::make('suunnitelmat/kayttaja.html');
+        View::make('kayttaja/kayttaja.html');
     }
-    
+
     public static function kayttajat() {
-        View::make('suunnitelmat/kayttajat.html');
+        View::make('kayttaja/kayttajat.html');
     }
-    
+
     public static function tyoMuokkaus() {
-        View::make('suunnitelmat/tyoMuokkaus.html');
+        View::make('tyo/tyoMuokkaus.html');
     }
-    
+
     public static function tyokaluMuokkaus() {
-        View::make('suunnitelmat/tyokaluMuokkaus.html');
+        View::make('tyokalu/tyokaluMuokkaus.html');
     }
-    
+
     public static function tyonkohdeMuokkaus() {
-        View::make('suunnitelmat/tyonkohdeMuokkaus.html');
+        View::make('tyonKohde/tyonkohdeMuokkaus.html');
     }
-    
+
     public static function kayttajaMuokkaus() {
-        View::make('suunnitelmat/kayttajaMuokkaus.html');
+        View::make('kayttaja/kayttajaMuokkaus.html');
     }
-    
+
     public static function uusiTyo() {
-        View::make('suunnitelmat/uusiTyo.html');
+        View::make('tyo/uusiTyo.html');
     }
-    
+
     public static function uusiTyonkohde() {
-        View::make('suunnitelmat/uusiTyonkohde.html');
+        View::make('tyonKohde/uusiTyonkohde.html');
     }
-    
+
     public static function uusiTyokalu() {
-        View::make('suunnitelmat/uusiTyokalu.html');
+        View::make('tyokalu/uusiTyokalu.html');
     }
-    
+
     public static function rekisteroityminen() {
-        View::make('suunnitelmat/rekisteroityminen.html');
+        View::make('etusivu/rekisteroityminen.html');
     }
 
 }

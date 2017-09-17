@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<form>
+    <div class="form-group">
+        <label for="kuvaus">Kuvaus</label>
+        <input type="Text" class="form-control" id="kuvaus" placeholder="Siivoa jääkaappi rätillä">
+    </div>
+    <div class="form-group">
+        <label for="kohde">Työn kohde</label>
+        <input type="text" class="form-control" id="kohde" placeholder="Jääkaappi">
+    </div>
+    <div class="form-group">
+        <label for="tyokalu">Työkalu</label>
+        <input type="text" class="form-control" id="tyokalu" placeholder="Rätti">
+    </div>
+    <div class="form-group">
+        <label for="tekija">Tekijä</label>
+        <input type="text" class="form-control" id="tekija" placeholder="Matti">
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox"> Tehty
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="tarkempi_kuvaus">Tarkempi kuvaus</label>
+        <input type="text" class="form-control" id="tarkempi_kuvaus" placeholder="Siivoa jääkaappi, joka löytyy keittiöstä, punaisella rätillä, joka sekin löytyy keittiöstä!">
+    </div>    
+    
+    <button type="submit" class="btn btn-default">Muuta</button>
+</form>
+{% endblock %}
