@@ -22,11 +22,11 @@
    
 </ul>
 <p><strong>Tekijät:</strong></p>
+    {% for tekija in tekijat %}
 <ul>
-    
-    <li><a href="{{base_path}}/kayttaja">Matti</a></li>
-    <li><a href="#">Maija</a></li>
+    <li><a href="{{base_path}}/kayttaja/{{tekija.tunnus}}">{{tekija.tunnus}}</a></li>
 </ul>
+    {% endfor %}
 <p><strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
 
 {% endfor %}

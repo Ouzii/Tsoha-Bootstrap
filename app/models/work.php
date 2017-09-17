@@ -55,5 +55,19 @@ class Work extends BaseModel {
 
         return null;
     }
+    
+    public static function getUsers($id) {
+        $query = DB::connection()->prepare('SELECT tekija FROM KayttajanTyot WHERE tyo = :id');
+        $query->execute(array('id' => $id));
+        $rows = $query->fetchAll();
+        $tekijat = array();
+        
+        foreach ($rows as $row) {
+            $tekijat[] = new User(array(
+                'tunnus' => $row['tekija'],
+            ));
+        }        
+        return $tekijat;
+    }
 
 }

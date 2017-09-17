@@ -18,6 +18,7 @@ class HelloWorldController extends BaseController {
         $kayttaja = User::find('Matti');
         $kayttajienTyot = UsersWorks::all();
         $kayttajanTyot = UsersWorks::find('Maija');
+        $tyonTekijat = Work::getUsers(1);
         // Kint-luokan dump-metodi tulostaa muuttujan arvon
         Kint::dump($tyo);
         Kint::dump($tyot);
@@ -29,6 +30,7 @@ class HelloWorldController extends BaseController {
         Kint::dump($kayttaja);
         Kint::dump($kayttajienTyot);
         Kint::dump($kayttajanTyot);
+        Kint::dump($tyonTekijat);
     }
 
     public static function login() {
