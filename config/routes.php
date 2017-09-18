@@ -13,35 +13,27 @@
 });
 
   $routes->get('/tyonkohteet', function() {
-  HelloWorldController::tyonkohteet();
+      WorkObjectController::index();
 });
 
-  $routes->get('/tyonkohde', function() {
-  HelloWorldController::tyonkohde();
-});
-
-//  $routes->get('/tyot', function() {
-//  HelloWorldController::tyot();
-//});
-
-  $routes->get('/tyo', function() {
-  HelloWorldController::tyo();
+  $routes->get('/tyonkohde/:kuvaus', function($kuvaus) {
+      WorkObjectController::show($kuvaus);
 });
 
   $routes->get('/tyokalut', function() {
-  HelloWorldController::tyokalut();
+      WorkToolController::index();
 });
 
-  $routes->get('/tyokalu', function() {
-  HelloWorldController::tyokalu();
+  $routes->get('/tyokalu/:kuvaus', function($kuvaus) {
+      WorkToolController::show($kuvaus);
 });
 
-  $routes->get('/kayttaja', function() {
-  HelloWorldController::kayttaja();
+  $routes->get('/kayttaja/:tunnus', function($tunnus) {
+      UserController::show($tunnus);
 });
 
   $routes->get('/kayttajat', function() {
-  HelloWorldController::kayttajat();
+      UserController::index();
 });
 
   $routes->get('/tyoMuokkaus', function() {

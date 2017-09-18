@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<div style="color:green"><h1>Matti</h1></div>
+{% for k in kayttaja%}
+<div style="color:green"><h1>{{k.tunnus}}</h1></div>
 <p>
     <button class="btn btn-danger">Poista</button> <a href="{{base_path}}/kayttajaMuokkaus" class="btn btn-default">Muokkaa</a>
 </p>
 
 <ul>
-    <li><strong>Ikä:</strong> 23</li>
+    <li><strong>Ikä:</strong> {{k.ika}}</li>
 </ul>
-<p><Strong>Tarkempi kuvaus:</strong> Matti Meikäläinen.</p>
+<p><Strong>Tarkempi kuvaus:</strong> {{k.kuvaus}}</p>
+{% endfor %}
 {% endblock %}

@@ -15,15 +15,13 @@
     </thead>
 
     <tbody>
-        <!-- Listataan pelit tähän -->
+        {% for t in tyonKohteet %}
         <tr>
-            <td><a href="{{base_path}}/tyonkohde">Jääkaappi</a></td>
-            <td>10.09.2017</td>
+            <td><a href="{{base_path}}/tyonkohde/{{t.kuvaus}}">{{t.kuvaus}}</a></td>
+            <td>{{t.luotu}}</td>
         </tr>
-        <tr>
-            <td><a href="#">Olohuone</a></td>
-            <td>15.09.2017</td>
-        </tr>
+        
+        {% endfor %}
     </tbody>
 </table>
 {% endblock %}

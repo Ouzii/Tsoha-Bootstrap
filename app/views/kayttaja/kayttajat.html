@@ -8,19 +8,23 @@
         <tr>
             <th>Tunnus</th>
             <th>Ikä</th>
+            <th>Admin</th>
         </tr>
     </thead>
 
     <tbody>
-        <!-- Listataan pelit tähän -->
+        {% for k in kayttajat %}
         <tr>
-            <td><a href="{{base_path}}/kayttaja">Matti</a></td>
-            <td>23</td>
+            <td><a href="{{base_path}}/kayttaja/{{k.tunnus}}">{{k.tunnus}}</a></td>
+            <td>{{k.ika}}</td>
+            {% if k.admin %}
+            <td> <input type="checkbox" name="admin" value="ON" checked="checked" disabled="disabled" /></td>
+            {% else %}
+            <td> <input type="checkbox" name="admin" value="OFF" disabled="disabled" /></td>
+            {% endif %}
         </tr>
-        <tr>
-            <td><a href="#">Maija</a></td>
-            <td>24</td>
-        </tr>
+        {% endfor %}
     </tbody>
 </table>
+
 {% endblock %}
