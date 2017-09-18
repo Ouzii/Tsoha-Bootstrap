@@ -55,19 +55,33 @@ class Work extends BaseModel {
 
         return null;
     }
-    
+
     public static function getUsers($id) {
         $query = DB::connection()->prepare('SELECT tekija FROM KayttajanTyot WHERE tyo = :id');
         $query->execute(array('id' => $id));
         $rows = $query->fetchAll();
         $tekijat = array();
-        
+
         foreach ($rows as $row) {
             $tekijat[] = new User(array(
                 'tunnus' => $row['tekija'],
             ));
-        }        
+        }
         return $tekijat;
+    }
+
+    public function save() {
+        // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
+        $query = DB::connection()->prepare('INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus) VALUES (:kohde, :tyokalu, :kuvaus, :tarkempi_kuvaus) RETURNING id');
+        // Muistathan, että olion attribuuttiin pääse syntaksilla $this->attribuutin_nimi
+        $query->execute(array('kohde' => $this->kohde, 'tyokalu' => $this->tyokalu, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
+        // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
+        $row = $query->fetch();
+//        Kint::trace();
+//        Kint::dump($row);
+
+//        // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
+        $this->id = $row['id'];
     }
 
 }

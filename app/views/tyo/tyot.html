@@ -24,7 +24,11 @@
             <td><a href="{{base_path}}/tyo/{{tyo.id}}">{{tyo.kuvaus}}</td>
             <td><a href="{{base_path}}/tyonkohde">{{tyo.kohde}}</td>
             <td><a href="{{base_path}}/tyokalu">{{tyo.tyokalu}}</td>
-            <td>{{tyo.tarkempi_kuvaus}}</td>
+            {% if tyo.tehty %}
+            <td> <input type="checkbox" checked="" disabled="disabled" /></td>
+            {% else %}
+            <td> <input type="checkbox" disabled="disabled" /></td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

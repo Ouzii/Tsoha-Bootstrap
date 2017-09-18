@@ -52,8 +52,12 @@
   HelloWorldController::kayttajaMuokkaus();
 });
 
+$routes->post('/tyo', function(){
+    WorkController::store();
+});
+
   $routes->get('/uusiTyo', function() {
-  HelloWorldController::uusiTyo();
+      WorkController::create();
 });
 
   $routes->get('/uusiTyonkohde', function() {
@@ -75,6 +79,8 @@
   $routes->get('/tyo/:id', function($id) {
       WorkController::show($id);
 });
+
+
 
 
     

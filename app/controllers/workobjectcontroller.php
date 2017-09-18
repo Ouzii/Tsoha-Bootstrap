@@ -7,7 +7,7 @@ class WorkObjectController extends BaseController{
   }
   
   public static function show($kuvaus) {
-      $tyonKohde = WorkTool::find($kuvaus);
+      $tyonKohde = WorkObject::find($kuvaus);
       View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
   }
     
