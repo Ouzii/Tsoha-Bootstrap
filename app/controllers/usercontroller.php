@@ -10,5 +10,25 @@ class UserController extends BaseController{
       $kayttaja = User::find($tunnus);
       View::make('kayttaja/kayttaja.html', array('kayttaja' => $kayttaja));
   }
+  
+      public static function create() {
+        View::make('etusivu/rekisteroityminen.html');
+    }
+
+    public static function store() {
+        $params = $_POST;
+        $kayttaja = new User(array(
+            'tunnus' => $params['tunnus'],
+            'salasana' => $params['salasana'],
+            'ika' => $params['ika'],
+            'kuvaus' => $params['kuvaus'],
+            'admin' => $params['admin']
+        ));
+
+//        Kint::dump($params);
+
+        $kayttaja->save();
+        Redirect::to('/kayttaja/' . $kayttaja->tunnus, array('message' => 'Tunnus luotu!'));
+    }
     
 }

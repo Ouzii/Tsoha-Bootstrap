@@ -76,8 +76,12 @@ $routes->get('/uusiTyokalu', function() {
     WorkToolController::create();
 });
 
+$routes->post('/rekisteroidu', function() {
+    UserController::store();
+});
+
 $routes->get('/rekisteroityminen', function() {
-    HelloWorldController::rekisteroityminen();
+    UserController::create();
 });
 
 $routes->get('/tyot', function() {

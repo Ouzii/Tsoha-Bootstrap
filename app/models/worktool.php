@@ -15,7 +15,7 @@ Class WorkTool extends BaseModel {
         $query->execute();
 // Haetaan kyselyn tuottamat rivit
         $rows = $query->fetchAll();
-        $tyotkalut = array();
+        $tyokalut = array();
 
 // Käydään kyselyn tuottamat rivit läpi
         foreach ($rows as $row) {
