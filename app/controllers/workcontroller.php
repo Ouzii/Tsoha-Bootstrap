@@ -25,7 +25,12 @@ class WorkController extends BaseController{
             'kuvaus' => $params['kuvaus'],
             'kohde' => $params['kohde'],
             'tyokalu' => $params['tyokalu'],
-            'tarkempi_kuvaus' => $params['tarkempi_kuvaus']
+            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'tekija1' => $params['tekija1'],
+            'tekija2' => $params['tekija2'],
+            'tekija3' => $params['tekija3'],
+            'tekija4' => $params['tekija4'],
+            'tekija5' => $params['tekija5']
         ));
 
 //        Kint::dump($params);

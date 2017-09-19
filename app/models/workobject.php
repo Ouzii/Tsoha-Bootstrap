@@ -48,4 +48,13 @@ class WorkObject extends BaseModel {
         return null;
     }
 
+    public function save() {
+        $query = DB::connection()->prepare('INSERT INTO Tyon_kohde (kuvaus, tarkempi_kuvaus) VALUES (:kuvaus, :tarkempi_kuvaus)');
+        $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
+        
+//        Kint::trace();
+//        Kint::dump($row);
+
+    }
+
 }

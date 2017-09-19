@@ -10,5 +10,22 @@ class WorkToolController extends BaseController{
       $tyokalu = WorkTool::find($kuvaus);
       View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $tyokalu));
   }
+  
+  public static function create() {
+      View::make('tyokalu/uusiTyokalu.html');
+  }
+  
+  public static function store() {
+        $params = $_POST;
+        $tyonkalu = new WorkTool(array(
+            'kuvaus' => $params['kuvaus'],
+            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+        ));
+
+//        Kint::dump($params);
+
+        $tyonkalu->save();
+        Redirect::to('/tyokalu/' . $tyonkalu->kuvaus, array('message' => 'Työkalu luotu!'));
+  }
     
 }

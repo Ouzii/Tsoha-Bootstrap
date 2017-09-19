@@ -2,7 +2,7 @@
 
 class Work extends BaseModel {
 
-    public $id, $kohde, $tyokalu, $kuvaus, $tarkempi_kuvaus, $tehty, $suoritusaika;
+    public $id, $kohde, $tyokalu, $kuvaus, $tarkempi_kuvaus, $tehty, $suoritusaika, $tekija1, $tekija2, $tekija3, $tekija4, $tekija5;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
@@ -79,9 +79,30 @@ class Work extends BaseModel {
         $row = $query->fetch();
 //        Kint::trace();
 //        Kint::dump($row);
-
 //        // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
         $this->id = $row['id'];
+        $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija1, :id)');
+
+        $query->execute(array('id' => $this->id, 'tekija1' => $this->tekija1));
+        if ($this->tekija2 != null) {
+            $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija2, :id)');
+            $query->execute(array('id' => $this->id, 'tekija2' => $this->tekija2));
+
+            if ($this->tekija3 != null) {
+                $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija3, tyo) VALUES (:tekija3, :id)');
+                $query->execute(array('id' => $this->id, 'tekija3' => $this->tekija3));
+
+                if ($this->tekija4 != null) {
+                    $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija4, tyo) VALUES (:tekija4, :id)');
+                    $query->execute(array('id' => $this->id, 'tekija4' => $this->tekija4));
+
+                    if ($this->tekija5 != null) {
+                        $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija5, tyo) VALUES (:tekija5, :id)');
+                        $query->execute(array('id' => $this->id, 'tekija4' => $this->tekija5));
+                    }
+                }
+            }
+        }
     }
 
 }

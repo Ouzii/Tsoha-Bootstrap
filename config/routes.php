@@ -1,86 +1,94 @@
 <?php
 
-  $routes->get('/', function() {
+$routes->get('/', function() {
     HelloWorldController::index();
-  });
+});
 
-  $routes->get('/hiekkalaatikko', function() {
+$routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
-  });
-  
-  $routes->get('/login', function() {
-  HelloWorldController::login();
 });
 
-  $routes->get('/tyonkohteet', function() {
-      WorkObjectController::index();
+$routes->get('/login', function() {
+    HelloWorldController::login();
 });
 
-  $routes->get('/tyonkohde/:kuvaus', function($kuvaus) {
-      WorkObjectController::show($kuvaus);
+$routes->get('/tyonKohteet', function() {
+    WorkObjectController::index();
 });
 
-  $routes->get('/tyokalut', function() {
-      WorkToolController::index();
+$routes->get('/tyonKohde/:kuvaus', function($kuvaus) {
+    WorkObjectController::show($kuvaus);
 });
 
-  $routes->get('/tyokalu/:kuvaus', function($kuvaus) {
-      WorkToolController::show($kuvaus);
+$routes->get('/tyokalut', function() {
+    WorkToolController::index();
 });
 
-  $routes->get('/kayttaja/:tunnus', function($tunnus) {
-      UserController::show($tunnus);
+$routes->get('/tyokalu/:kuvaus', function($kuvaus) {
+    WorkToolController::show($kuvaus);
 });
 
-  $routes->get('/kayttajat', function() {
-      UserController::index();
+$routes->get('/kayttaja/:tunnus', function($tunnus) {
+    UserController::show($tunnus);
 });
 
-  $routes->get('/tyoMuokkaus', function() {
-  HelloWorldController::tyoMuokkaus();
+$routes->get('/kayttajat', function() {
+    UserController::index();
 });
 
-  $routes->get('/tyokaluMuokkaus', function() {
-  HelloWorldController::tyokaluMuokkaus();
+$routes->get('/tyoMuokkaus', function() {
+    HelloWorldController::tyoMuokkaus();
 });
 
-  $routes->get('/tyonkohdeMuokkaus', function() {
-  HelloWorldController::tyonkohdeMuokkaus();
+$routes->get('/tyokaluMuokkaus', function() {
+    HelloWorldController::tyokaluMuokkaus();
 });
 
-  $routes->get('/kayttajaMuokkaus', function() {
-  HelloWorldController::kayttajaMuokkaus();
+$routes->get('/tyonKohdeMuokkaus', function() {
+    HelloWorldController::tyonkohdeMuokkaus();
 });
 
-$routes->post('/tyo', function(){
+$routes->get('/kayttajaMuokkaus', function() {
+    HelloWorldController::kayttajaMuokkaus();
+});
+
+$routes->post('/tyo', function() {
     WorkController::store();
 });
 
-  $routes->get('/uusiTyo', function() {
-      WorkController::create();
+$routes->get('/uusiTyo', function() {
+    WorkController::create();
 });
 
-  $routes->get('/uusiTyonkohde', function() {
-  HelloWorldController::uusiTyonkohde();
+$routes->post('/tyonKohde', function() {
+    WorkObjectController::store();
 });
 
-  $routes->get('/uusiTyokalu', function() {
-  HelloWorldController::uusiTyokalu();
+$routes->get('/uusiTyonKohde', function() {
+    WorkObjectController::create();
 });
 
-  $routes->get('/rekisteroityminen', function() {
-  HelloWorldController::rekisteroityminen();
+$routes->post('/tyokalu', function() {
+    WorkToolController::store();
 });
 
-  $routes->get('/tyot', function() {
-      WorkController::index();
+$routes->get('/uusiTyokalu', function() {
+    WorkToolController::create();
 });
 
-  $routes->get('/tyo/:id', function($id) {
-      WorkController::show($id);
+$routes->get('/rekisteroityminen', function() {
+    HelloWorldController::rekisteroityminen();
+});
+
+$routes->get('/tyot', function() {
+    WorkController::index();
+});
+
+$routes->get('/tyo/:id', function($id) {
+    WorkController::show($id);
 });
 
 
 
 
-    
+
