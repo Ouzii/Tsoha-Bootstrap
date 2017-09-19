@@ -10,11 +10,17 @@ VALUES ('Jääkaappi', 'Keittiöstä löytyvä kaappi, joka pitää ruoat kylmä
 INSERT INTO Tyon_kohde (kuvaus, tarkempi_kuvaus)
 VALUES ('Olohuone', 'Talon ensimmäisestä kerroksesta löytyvä olohuone.');
 
+INSERT INTO Tyon_kohde (kuvaus, tarkempi_kuvaus)
+VALUES ('Makuuhuone', 'Talon toisesta kerroksesta löytyvä huone, jossa on sänky. Käytetään pääasiallisesti nukkumiseen.');
+
 INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus)
 VALUES ('Rätti', 'Keittiön kaapista löytyvä punainen rätti. Käytetään pintojen pyyhkimiseen.');
 
 INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus)
 VALUES ('Imuri', 'Eteisen kaapista löytyvä Bosch-merkkinen imuri.');
+
+INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus)
+VALUES ('Moppi', 'Kodinhoitohuoneesta löytyvä moppi. Käytetään lattioiden pesuun.');
 
 INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus, tehty, suoritusaika)
 VALUES ('Jääkaappi', 'Rätti', 'Siivoa jääkaappi rätillä.',
@@ -24,6 +30,10 @@ INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus)
 VALUES ('Olohuone', 'Imuri', 'Imuroi olohuone.',
  'Imuroi olohuone imurilla. Imuri löytyy eteisen kaapista. Muista myös sohvan alta!');
 
+INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus)
+VALUES ('Makuuhuone', 'Moppi', 'Pese makuuhuoneen lattiat.',
+ 'Moppi löytyy kodinhoitohuoneen kaapista. Muista pestä myös sängyn alta!');
+
 INSERT INTO KayttajanTyot (tekija, tyo)
 VALUES ('Matti', 1);
 
@@ -32,3 +42,6 @@ VALUES ('Maija', 1);
 
 INSERT INTO KayttajanTyot (tekija, tyo)
 VALUES ('Maija', 2);
+
+INSERT INTO KayttajanTyot (tekija, tyo)
+VALUES ('Matti', 3);

@@ -8,6 +8,11 @@
 
 <ul>
     <li><strong>Ikä:</strong> {{k.ika}}</li>
+    {% if k.admin %}
+    <li><strong>Admin: </strong><input type="checkbox" checked="checked" disabled="disabled" /></li>
+    {% else %}
+    <li><strong>Admin: </strong><input type="checkbox" disabled="disabled" /></li>
+    {% endif %}
 </ul>
 <p><Strong>Tarkempi kuvaus:</strong> {{k.kuvaus}}</p>
 {% endfor %}
