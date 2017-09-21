@@ -92,6 +92,10 @@ $routes->get('/tyo/:id', function($id) {
     WorkController::show($id);
 });
 
+$routes->post('/etsiTyo', function() {
+    WorkController::showKuvaus();
+});
+
 
 
 

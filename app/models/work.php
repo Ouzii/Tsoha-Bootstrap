@@ -6,6 +6,7 @@ class Work extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->suoritusaika = substr($this->suoritusaika, 0, 19);
     }
 
     public static function all() {
@@ -36,6 +37,28 @@ class Work extends BaseModel {
 
         if ($row) {
             $tyo[] = new Work(array(
+                'id' => $row['id'],
+                'kohde' => $row['kohde'],
+                'tyokalu' => $row['tyokalu'],
+                'kuvaus' => $row['kuvaus'],
+                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
+                'tehty' => $row['tehty'],
+                'suoritusaika' => $row['suoritusaika'],
+            ));
+
+            return $tyo;
+        }
+
+        return null;
+    }
+    
+    public static function findKuvaus($kuvaus) {
+        $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE kuvaus = :kuvaus LIMIT 1');
+        $query->execute(array('kuvaus' => $kuvaus));
+        $row = $query->fetch();
+
+        if ($row) {
+            $tyo = new Work(array(
                 'id' => $row['id'],
                 'kohde' => $row['kohde'],
                 'tyokalu' => $row['tyokalu'],

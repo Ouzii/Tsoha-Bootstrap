@@ -1,25 +1,40 @@
 <?php
 
 Class WorkTool extends BaseModel {
-    
+
     public $kuvaus, $tarkempi_kuvaus, $luotu;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->luotu = substr($this->luotu, 0, 19);
+        $this->luotu = (String)$this->luotu;
+        
     }
 
     public static function all() {
-// Alustetaan kysely tietokantayhteydellämme
         $query = DB::connection()->prepare('SELECT * FROM Tyokalu');
-// Suoritetaan kysely
         $query->execute();
-// Haetaan kyselyn tuottamat rivit
         $rows = $query->fetchAll();
         $tyokalut = array();
 
-// Käydään kyselyn tuottamat rivit läpi
         foreach ($rows as $row) {
-// Tämä on PHP:n hassu syntaksi alkion lisäämiseksi taulukkoon :)
+            $tyokalut[] = new WorkTool(array(
+                'kuvaus' => $row['kuvaus'],
+                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
+                'luotu' => $row['luotu'],
+            ));
+        }
+
+        return $tyokalut;
+    }
+
+    public static function allAlphabetical() {
+        $query = DB::connection()->prepare('SELECT * FROM Tyokalu ORDER BY kuvaus');
+        $query->execute();
+        $rows = $query->fetchAll();
+        $tyokalut = array();
+
+        foreach ($rows as $row) {
             $tyokalut[] = new WorkTool(array(
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
@@ -47,15 +62,13 @@ Class WorkTool extends BaseModel {
 
         return null;
     }
-    
-        public function save() {
+
+    public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus) VALUES (:kuvaus, :tarkempi_kuvaus)');
         $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
-        
+
 //        Kint::trace();
 //        Kint::dump($row);
-
     }
 
 }
-

@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <div style="color:green"><h1>Näkymä - Työt</h1></div>
-
+<form action="{{base_path}}/etsiTyo" method="post">
+    <input list="etsiTyo" name="kuvaus">
+    <datalist id="etsiTyo">
+        {% for t in tyot %}
+        <option value="{{t.kuvaus}}">
+            {% endfor %}
+    </datalist>
+    <input type="submit" value="etsi">
+</form>
+<br>
 <p>
     <a href="{{base_path}}/uusiTyo" class="btn btn-success">Lisää työ</a>
 </p>
@@ -9,8 +18,8 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Kuvaus</th>
+<th>ID</th>
+    <th>Kuvaus</th>
             <th>Työn kohde</th>
             <th>Työkalu</th>
             <th>Tehty</th>
@@ -18,7 +27,7 @@
     </thead>
 
     <tbody>
-        {% for tyo in tyot %}
+       {% for tyo in tyot %}
         <tr>
             <td>{{tyo.id}}</td>
             <td><a href="{{base_path}}/tyo/{{tyo.id}}">{{tyo.kuvaus}}</td>

@@ -13,34 +13,38 @@ class WorkController extends BaseController {
         View::make('tyo/tyoKuvaus.html', array('tyo' => $tyo, 'tekijat' => $tekijat));
     }
 
+    public static function showKuvaus() {
+        $params = $_POST;
+        $kuvaus = $params['kuvaus'];
+        $tyo = Work::findKuvaus($kuvaus);
+        if ($tyo == null) {
+            WorkController::index();
+        } else {
+            $id = $tyo->id;
+            Redirect::to('/tyo/' . $id, array('message' => 'Löytyi!'));
+        }
+    }
+
     public static function create() {
-        $kohteet = WorkObject::all();
-        $tyokalut = WorkTool::all();
-        $kayttajat = User::all();
+        $kohteet = WorkObject::allAlphabetical();
+        $tyokalut = WorkTool::allAlphabetical();
+        $kayttajat = User::allAlphabetical();
         View::make('tyo/uusiTyo.html', array('kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat));
     }
 
     public static function store() {
-// POST-pyynnön muuttujat sijaitsevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
-// Alustetaan uusi Game-luokan olion käyttäjän syöttämillä arvoilla
         $tyo = new Work(array(
             'kohde' => $params['kohde'],
             'tyokalu' => $params['tyokalu'],
             'kuvaus' => $params['kuvaus'],
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
             'tekijat' => $params['tekijat']
-//            'tekija2' => $params['tekija2'],
-//            'tekija3' => $params['tekija3'],
-//            'tekija4' => $params['tekija4'],
-//            'tekija5' => $params['tekija5']
         ));
 
 //        Kint::dump($params);
-// Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
         $tyo->save();
 
-// Ohjataan käyttäjä lisäyksen jälkeen pelin esittelysivulle
         Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
     }
 

@@ -26,6 +26,25 @@ class User extends BaseModel {
 
         return $kayttajat;
     }
+    
+    public static function allAlphabetical() {
+        $query = DB::connection()->prepare('SELECT * FROM Kayttaja ORDER BY tunnus');
+        $query->execute();
+        $rows = $query->fetchAll();
+        $kayttajat = array();
+        
+        foreach ($rows as $row) {
+            $kayttajat[] = new User(array(
+                'tunnus' => $row['tunnus'],
+                'salasana' => $row['salasana'],
+                'ika' => $row['ika'],
+                'kuvaus' => $row['kuvaus'],
+                'admin' => $row['admin'],
+            ));
+        }
+
+        return $kayttajat;
+    }
 
     public static function find($tunnus) {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus LIMIT 1');
