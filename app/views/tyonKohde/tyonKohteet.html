@@ -11,6 +11,14 @@
     </datalist>
     <input type="submit" value="etsi">
 </form>
+
+{% if message != null %}
+<br>
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
 <br>
 <p>
     <a href="{{base_path}}/uusiTyonKohde" class="btn btn-success">Lisää työn kohde</a>
@@ -35,9 +43,4 @@
     </tbody>
 </table>
 
- {% if message != null %}
-<div class="alert alert-success">
-  {{message}}
-</div>
-  {% endif %}
 {% endblock %}
