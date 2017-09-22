@@ -9,23 +9,18 @@ class UsersWorks extends BaseModel {
     }
 
     public static function all() {
-// Alustetaan kysely tietokantayhteydellämme
         $query = DB::connection()->prepare('SELECT * FROM KayttajanTyot');
-// Suoritetaan kysely
         $query->execute();
-// Haetaan kyselyn tuottamat rivit
         $rows = $query->fetchAll();
         $kayttajienTyot = array();
-
-// Käydään kyselyn tuottamat rivit läpi
+        
         foreach ($rows as $row) {
-// Tämä on PHP:n hassu syntaksi alkion lisäämiseksi taulukkoon :)
             $kayttajienTyot[] = new UsersWorks(array(
                 'tekija' => $row['tekija'],
                 'tyo' => $row['tyo'],
             ));
         }
-
+        
         return $kayttajienTyot;
     }
 
@@ -41,6 +36,7 @@ class UsersWorks extends BaseModel {
                 'tyo' => $row['tyo'],
             ));
         }
+        
         return $kayttajanTyot;
     }
 

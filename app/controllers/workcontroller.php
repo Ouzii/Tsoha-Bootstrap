@@ -13,18 +13,6 @@ class WorkController extends BaseController {
         View::make('tyo/tyoKuvaus.html', array('tyo' => $tyo, 'tekijat' => $tekijat));
     }
 
-    public static function showKuvaus() {
-        $params = $_POST;
-        $kuvaus = $params['kuvaus'];
-        $tyo = Work::findKuvaus($kuvaus);
-        if ($tyo == null) {
-            WorkController::index();
-        } else {
-            $id = $tyo->id;
-            Redirect::to('/tyo/' . $id, array('message' => 'Löytyi!'));
-        }
-    }
-
     public static function create() {
         $kohteet = WorkObject::allAlphabetical();
         $tyokalut = WorkTool::allAlphabetical();
@@ -41,11 +29,21 @@ class WorkController extends BaseController {
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
             'tekijat' => $params['tekijat']
         ));
-
 //        Kint::dump($params);
         $tyo->save();
-
         Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
+    }
+
+    public static function findWithKuvaus() {
+        $params = $_POST;
+        $kuvaus = $params['kuvaus'];
+        $tyo = Work::findWithKuvaus($kuvaus);
+        if ($tyo == null) {
+            Redirect::to('/tyot', array('message' => 'Ei hakutuloksia!'));
+        } else {
+            $id = $tyo->id;
+            Redirect::to('/tyo/' . $id, array('message' => 'Löytyi!'));
+        }
     }
 
 }

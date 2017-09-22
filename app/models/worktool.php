@@ -7,12 +7,6 @@ Class WorkTool extends BaseModel {
     public function __construct($attributes) {
         parent::__construct($attributes);
         $this->luotu = substr($this->luotu, 0, 19);
-//        $this->luotu = (String)$this->luotu;
-        
-    }
-    
-    public static function getKuvaus() {
-        return $this->kuvaus;
     }
 
     public static function all() {
@@ -70,7 +64,6 @@ Class WorkTool extends BaseModel {
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus) VALUES (:kuvaus, :tarkempi_kuvaus)');
         $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
-
 //        Kint::trace();
 //        Kint::dump($row);
     }

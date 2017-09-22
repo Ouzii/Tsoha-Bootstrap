@@ -25,7 +25,7 @@ class Work extends BaseModel {
                 'suoritusaika' => $row['suoritusaika'],
             ));
         }
-
+        
         return $tyot;
     }
 
@@ -44,14 +44,14 @@ class Work extends BaseModel {
                 'tehty' => $row['tehty'],
                 'suoritusaika' => $row['suoritusaika'],
             ));
-
+            
             return $tyo;
         }
-
+        
         return null;
     }
-    
-    public static function findKuvaus($kuvaus) {
+
+    public static function findWithKuvaus($kuvaus) {
         $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE kuvaus = :kuvaus LIMIT 1');
         $query->execute(array('kuvaus' => $kuvaus));
         $row = $query->fetch();
@@ -66,10 +66,10 @@ class Work extends BaseModel {
                 'tehty' => $row['tehty'],
                 'suoritusaika' => $row['suoritusaika'],
             ));
-
+            
             return $tyo;
         }
-
+        
         return null;
     }
 
@@ -94,9 +94,10 @@ class Work extends BaseModel {
 //        Kint::trace();
 //        Kint::dump($row);
         $this->id = $row['id'];
-        foreach ($this->tekijat as $t) {
+        foreach ($this->tekijat as $tekija) {
             $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');
-            $query->execute(array('id' => $this->id, 'tekija' => $t));
+            $query->execute(array('id' => $this->id, 'tekija' => $tekija));
         }
     }
+
 }

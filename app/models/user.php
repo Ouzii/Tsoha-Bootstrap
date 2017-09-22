@@ -23,7 +23,7 @@ class User extends BaseModel {
                 'admin' => $row['admin'],
             ));
         }
-
+        
         return $kayttajat;
     }
     
@@ -42,7 +42,7 @@ class User extends BaseModel {
                 'admin' => $row['admin'],
             ));
         }
-
+        
         return $kayttajat;
     }
 
@@ -59,21 +59,18 @@ class User extends BaseModel {
                 'kuvaus' => $row['kuvaus'],
                 'admin' => $row['admin'],
             ));
-        
-
+            
             return $kayttaja;
         }
-
+        
         return null;
     }
     
-        public function save() {
+    public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (tunnus, salasana, ika, kuvaus, admin) VALUES (:tunnus, :salasana, :ika, :kuvaus, :admin)');
-        $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
-        
+        $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));       
 //        Kint::trace();
 //        Kint::dump($row);
-
     }
 
 }

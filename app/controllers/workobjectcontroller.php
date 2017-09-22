@@ -22,19 +22,17 @@ class WorkObjectController extends BaseController {
             'kuvaus' => $params['kuvaus'],
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
         ));
-
 //        Kint::dump($params);
-
         $tyonKohde->save();
         Redirect::to('/tyonKohde/' . $tyonKohde->kuvaus, array('message' => 'Työn kohde luotu!'));
     }
 
-    public static function showKuvaus() {
+    public static function findWithKuvaus() {
         $params = $_POST;
         $etsittyKuvaus = $params['kuvaus'];
         $tyonKohde = WorkObject::find($etsittyKuvaus);
         if ($tyonKohde == null) {
-            WorkObjectController::index();
+            Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
             $kuvaus = $tyonKohde[0]->kuvaus;
             Redirect::to('/tyonKohde/' . $kuvaus, array('message' => 'Löytyi!'));

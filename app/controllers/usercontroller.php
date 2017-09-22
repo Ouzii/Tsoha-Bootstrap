@@ -35,20 +35,17 @@ class UserController extends BaseController {
                 'admin' => null
             ));
         }
-
-
 //        Kint::dump($params);
-
         $kayttaja->save();
         Redirect::to('/kayttaja/' . $kayttaja->tunnus, array('message' => 'Tunnus luotu!'));
     }
     
-          public static function showKuvaus() {
+    public static function findWithKuvaus() {
         $params = $_POST;
         $etsittyTunnus = $params['tunnus'];
         $kayttaja = User::find($etsittyTunnus);
         if ($kayttaja == null) {
-            UserController::index();
+            Redirect::to('/kayttajat', array('message' => 'Ei hakutuloksia!'));
         } else {
             $tunnus = $kayttaja[0]->tunnus;
             Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Löytyi!'));

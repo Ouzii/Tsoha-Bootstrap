@@ -93,19 +93,19 @@ $routes->get('/tyo/:id', function($id) {
 });
 
 $routes->post('/etsiTyo', function() {
-    WorkController::showKuvaus();
+    WorkController::findWithKuvaus();
 });
 
 $routes->post('/etsiTyokalu', function() {
-    WorkToolController::showKuvaus();
+    WorkToolController::findWithKuvaus();
 });
 
 $routes->post('/etsiTyonKohde', function() {
-    WorkObjectController::showKuvaus();
+    WorkObjectController::findWithKuvaus();
 });
 
 $routes->post('/etsiKayttaja', function() {
-    UserController::showKuvaus();
+    UserController::findWithKuvaus();
 });
 
 
