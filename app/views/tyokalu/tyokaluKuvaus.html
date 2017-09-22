@@ -10,5 +10,11 @@
     </ul>
 
 <p><Strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+
+ {% if message != null %}
+<div class="alert alert-success">
+  {{message}}
+</div>
+  {% endif %}
 {% endfor%}
 {% endblock %}

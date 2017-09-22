@@ -15,5 +15,11 @@
     {% endif %}
 </ul>
 <p><Strong>Tarkempi kuvaus:</strong> {{k.kuvaus}}</p>
+
+ {% if message != null %}
+<div class="alert alert-success">
+  {{message}}
+</div>
+  {% endif %}
 {% endfor %}
 {% endblock %}

@@ -29,4 +29,16 @@ class WorkObjectController extends BaseController {
         Redirect::to('/tyonKohde/' . $tyonKohde->kuvaus, array('message' => 'Työn kohde luotu!'));
     }
 
+    public static function showKuvaus() {
+        $params = $_POST;
+        $etsittyKuvaus = $params['kuvaus'];
+        $tyonKohde = WorkObject::find($etsittyKuvaus);
+        if ($tyonKohde == null) {
+            WorkObjectController::index();
+        } else {
+            $kuvaus = $tyonKohde[0]->kuvaus;
+            Redirect::to('/tyonKohde/' . $kuvaus, array('message' => 'Löytyi!'));
+        }
+    }
+
 }

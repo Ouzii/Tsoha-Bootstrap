@@ -42,5 +42,17 @@ class UserController extends BaseController {
         $kayttaja->save();
         Redirect::to('/kayttaja/' . $kayttaja->tunnus, array('message' => 'Tunnus luotu!'));
     }
+    
+          public static function showKuvaus() {
+        $params = $_POST;
+        $etsittyTunnus = $params['tunnus'];
+        $kayttaja = User::find($etsittyTunnus);
+        if ($kayttaja == null) {
+            UserController::index();
+        } else {
+            $tunnus = $kayttaja[0]->tunnus;
+            Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Löytyi!'));
+        }
+    }
 
 }

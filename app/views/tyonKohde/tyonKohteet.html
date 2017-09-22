@@ -1,7 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 <div style="color:green"><h1>Näkymä - Työn kohteet</h1></div>
-
+<br>
+<form action="{{base_path}}/etsiTyonKohde" method="post">
+    <input list="etsiTyonKohde" name="kuvaus">
+    <datalist id="etsiTyonKohde">
+        {% for t in tyonKohteet %}
+        <option value="{{t.kuvaus}}">
+            {% endfor %}
+    </datalist>
+    <input type="submit" value="etsi">
+</form>
+<br>
 <p>
     <a href="{{base_path}}/uusiTyonKohde" class="btn btn-success">Lisää työn kohde</a>
 </p>

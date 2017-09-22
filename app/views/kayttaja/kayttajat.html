@@ -1,8 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 <div style="color:green"><h1>Näkymä - käyttäjät</h1></div>
-
-
+<br>
+<form action="{{base_path}}/etsiKayttaja" method="post">
+    <input list="etsiKayttaja" name="tunnus">
+    <datalist id="etsiKayttaja">
+        {% for k in kayttajat %}
+        <option value="{{k.tunnus}}">
+        {% endfor %}
+    </datalist>
+    <input type="submit" value="etsi">
+</form>
+<br>
 <table class="table table-striped table-bordered">
     <thead>
         <tr>

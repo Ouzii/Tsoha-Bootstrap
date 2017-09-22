@@ -96,6 +96,18 @@ $routes->post('/etsiTyo', function() {
     WorkController::showKuvaus();
 });
 
+$routes->post('/etsiTyokalu', function() {
+    WorkToolController::showKuvaus();
+});
+
+$routes->post('/etsiTyonKohde', function() {
+    WorkObjectController::showKuvaus();
+});
+
+$routes->post('/etsiKayttaja', function() {
+    UserController::showKuvaus();
+});
+
 
 
 

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div style="color:green"><h1>Näkymä - Työt</h1></div>
+<br>
 <form action="{{base_path}}/etsiTyo" method="post">
     <input list="etsiTyo" name="kuvaus">
     <datalist id="etsiTyo">

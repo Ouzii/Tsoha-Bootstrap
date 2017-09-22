@@ -27,5 +27,17 @@ class WorkToolController extends BaseController{
         $tyokalu->save();
         Redirect::to('/tyokalu/' . $tyokalu->kuvaus, array('message' => 'Työkalu luotu!'));
   }
+  
+      public static function showKuvaus() {
+        $params = $_POST;
+        $etsittyKuvaus = $params['kuvaus'];
+        $tyokalu = WorkTool::find($etsittyKuvaus);
+        if ($tyokalu == null) {
+            WorkToolController::index();
+        } else {
+            $kuvaus = $tyokalu[0]->kuvaus;
+            Redirect::to('/tyokalu/' . $kuvaus, array('message' => 'Löytyi!'));
+        }
+    }
     
 }

@@ -6,7 +6,6 @@ class Work extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->suoritusaika = substr($this->suoritusaika, 0, 19);
     }
 
     public static function all() {

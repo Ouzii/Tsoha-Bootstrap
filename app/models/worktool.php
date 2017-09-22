@@ -7,8 +7,12 @@ Class WorkTool extends BaseModel {
     public function __construct($attributes) {
         parent::__construct($attributes);
         $this->luotu = substr($this->luotu, 0, 19);
-        $this->luotu = (String)$this->luotu;
+//        $this->luotu = (String)$this->luotu;
         
+    }
+    
+    public static function getKuvaus() {
+        return $this->kuvaus;
     }
 
     public static function all() {
