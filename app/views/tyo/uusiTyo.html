@@ -46,7 +46,11 @@
     <p><strong>Tekijät:</strong></p>
     <div class="form-group">
         <select name="tekijat[]" size="5" multiple>
+            {% if attributes.tekijat %}
+            
+            {% else %}
             <option value="dummy" selected="selected" hidden></option>
+            {% endif %}
             {% for k in kayttajat %}
                 {% if k.tunnus in attributes.tekijat %}
                     <option value="{{k.tunnus}}" selected="selected">{{k.tunnus}}</option>
