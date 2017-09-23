@@ -6,6 +6,7 @@ class Work extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus', 'validate_tekijat');
     }
 
     public static function all() {
@@ -25,7 +26,7 @@ class Work extends BaseModel {
                 'suoritusaika' => $row['suoritusaika'],
             ));
         }
-        
+
         return $tyot;
     }
 
@@ -44,10 +45,10 @@ class Work extends BaseModel {
                 'tehty' => $row['tehty'],
                 'suoritusaika' => $row['suoritusaika'],
             ));
-            
+
             return $tyo;
         }
-        
+
         return null;
     }
 
@@ -66,10 +67,10 @@ class Work extends BaseModel {
                 'tehty' => $row['tehty'],
                 'suoritusaika' => $row['suoritusaika'],
             ));
-            
+
             return $tyo;
         }
-        
+
         return null;
     }
 
@@ -98,6 +99,34 @@ class Work extends BaseModel {
             $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');
             $query->execute(array('id' => $this->id, 'tekija' => $tekija));
         }
+    }
+
+    public function validate_kuvaus() {
+        $errors = array();
+        if ($this->kuvaus == '' || $this->kuvaus == null) {
+            $errors[] = 'Työ vaatii kuvauksen!';
+        }
+        if (strlen($this->kuvaus) > 30) {
+            $errors[] = 'Työn kuvaus saa olla enintään 30 merkkiä pitkä';
+        }
+
+        return $errors;
+    }
+
+    public function validate_tarkempi_kuvaus() {
+        $errors = array();
+        if (strlen($this->kuvaus) > 360) {
+            $errors[] = 'Työn tarkempi kuvaus saa olla enintään 360 merkkiä pitkä';
+        }
+        return $errors;
+    }
+    
+    public function validate_tekijat() {
+        $errors = array();
+        if(count($this->tekijat) == 0) {
+            $errors[] = 'Työllä täytyy olla tekijä!';
+        }
+        return $errors;
     }
 
 }

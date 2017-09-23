@@ -1,35 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 <form method="post" action="{{base_path}}/tyo">
     <div class="form-group">
         <label for="kuvaus">Kuvaus</label>
-        <input type="Text" class="form-control" name="kuvaus" placeholder="Anna kuvaus">
+        <input type="Text" class="form-control" name="kuvaus" placeholder="Anna kuvaus" value="{{attributes.kuvaus}}">
     </div>
     <div class="form-group">
         <label for="kohde">Työn kohde</label>
         <br>
-        <!--<input type="text" class="form-control" name="kohde" placeholder="Anna työn kohde">-->
         <select name="kohde">
             {% for k in kohteet %}
-            <option value="{{k.kuvaus}}">{{k.kuvaus}}</option>
+            {% if k.kuvaus == attributes.kohde %}
+                <option value="{{k.kuvaus}}" selected="selected">{{k.kuvaus}}</option>
+            {% else %}
+                <option value="{{k.kuvaus}}">{{k.kuvaus}}</option>            
+            {% endif %}
+            
             {% endfor %}
         </select>
     </div>
     <div class="form-group">
         <label for="tyokalu">Työkalu</label>
         <br>
-        <!--<input type="text" class="form-control" name="tyokalu" placeholder="Anna työkalu">-->
         <select name="tyokalu">
             {% for t in tyokalut %}
-            <option value="{{t.kuvaus}}">{{t.kuvaus}}</option>
+            {% if t.kuvaus == attributes.tyokalu %}
+                <option value="{{t.kuvaus}}" selected="selected">{{t.kuvaus}}</option>
+            {% else %}
+                <option value="{{t.kuvaus}}">{{t.kuvaus}}</option>            
+            {% endif %}
             {% endfor %}
         </select>
     </div>
     <p><strong>Tekijät:</strong></p>
     <div class="form-group">
-        <select name="tekijat[]" multiple>
+        <select name="tekijat[]" size="5" multiple>
+            <option value="dummy" selected="selected" hidden></option>
             {% for k in kayttajat %}
-            <option value="{{k.tunnus}}">{{k.tunnus}}</option>
+                {% if k.tunnus in attributes.tekijat %}
+                    <option value="{{k.tunnus}}" selected="selected">{{k.tunnus}}</option>
+                {% else %}
+                    <option value="{{k.tunnus}}">{{k.tunnus}}</option>            
+                {% endif %}
+                
             {% endfor %}
         </select>
         <br>
@@ -37,7 +61,7 @@
     </div>
     <div class="form-group">
         <label for="tarkempi_kuvaus">Tarkempi kuvaus</label>
-        <textarea rows="12" cols="20" class="form-control" name="tarkempi_kuvaus" placeholder="Anna tarkempi kuvaus"></textarea>
+        <textarea rows="12" cols="20" class="form-control" name="tarkempi_kuvaus" placeholder="Anna tarkempi kuvaus" value="{{attributes.tarkempi_kuvaus}}"></textarea>
     </div>    
     <div class="form-group">
         <button type="submit" class="btn btn-default">Luo</button>

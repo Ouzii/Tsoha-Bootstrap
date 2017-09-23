@@ -20,18 +20,52 @@ class WorkController extends BaseController {
         View::make('tyo/uusiTyo.html', array('kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat));
     }
 
+    public static function createErrors($errors, $attributes) {
+        $kohteet = WorkObject::allAlphabetical();
+        $tyokalut = WorkTool::allAlphabetical();
+        $kayttajat = User::allAlphabetical();
+        View::make('tyo/uusiTyo.html', array('kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat, 'errors' => $errors, 'attributes' => $attributes));
+    }
+
     public static function store() {
         $params = $_POST;
-        $tyo = new Work(array(
-            'kohde' => $params['kohde'],
-            'tyokalu' => $params['tyokalu'],
-            'kuvaus' => $params['kuvaus'],
-            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
-            'tekijat' => $params['tekijat']
-        ));
+
+        $tekijat = $params['tekijat'];
+        
+        $dummy = array_search("dummy", $tekijat);
+        
+        if ($dummy !== false) {
+            unset($tekijat[$dummy]);
+        }
+
+        If (count($tekijat) > 0) {
+            $attributes = array(
+                'kohde' => $params['kohde'],
+                'tyokalu' => $params['tyokalu'],
+                'kuvaus' => $params['kuvaus'],
+                'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+                'tekijat' => $params['tekijat']
+            );
+        } else {
+            $attributes = array(
+                'kohde' => $params['kohde'],
+                'tyokalu' => $params['tyokalu'],
+                'kuvaus' => $params['kuvaus'],
+                'tarkempi_kuvaus' => $params['tarkempi_kuvaus']
+            );
+        }
+
+
+        $tyo = new Work($attributes);
 //        Kint::dump($params);
-        $tyo->save();
-        Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
+        $errors = $tyo->errors();
+
+        if (count($errors) == 0) {
+            $tyo->save();
+            Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
+        } else {
+            WorkController::createErrors($errors, $attributes);
+        }
     }
 
     public static function findWithKuvaus() {

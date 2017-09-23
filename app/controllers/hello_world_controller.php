@@ -8,29 +8,20 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        $tyo = Work::find(1);
-        $tyot = Work::all();
-        $kohteet = WorkObject::all();
-        $kohde = WorkObject::find('Jääkaappi');
-        $tyokalut = WorkTool::all();
-        $tyokalu = WorkTool::find('Rätti');
-        $kayttajat = User::all();
-        $kayttaja = User::find('Matti');
-        $kayttajienTyot = UsersWorks::all();
-        $kayttajanTyot = UsersWorks::find('Maija');
-        $tyonTekijat = Work::getUsers(1);
-        // Kint-luokan dump-metodi tulostaa muuttujan arvon
-        Kint::dump($tyo);
-        Kint::dump($tyot);
-        Kint::dump($kohteet);
-        Kint::dump($kohde);
-        Kint::dump($tyokalut);
-        Kint::dump($tyokalu);
-        Kint::dump($kayttajat);
-        Kint::dump($kayttaja);
-        Kint::dump($kayttajienTyot);
-        Kint::dump($kayttajanTyot);
-        Kint::dump($tyonTekijat);
+            $virhetyo = new Work(array(
+                'kohde' => 'Olohuone',                
+                'tyokalu' => 'Moppi',
+                'kuvaus' => 'Tämä merkkijono on yli 30 merkkiä pitkä ja sen takia ei sovellu työn kuvaukseksi.',                
+                'tarkempi_kuvaus' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam feugiat,'
+                . ' turpis at pulvinar vulputate, erat libero tristique tellus,'
+                . ' nec bibendum odio risus sit amet ante. Aliquam erat volutpat.'
+                . ' Nunc auctor. Mauris pretium quam et urna. Fusce nibh. Duis risus.'
+                . ' Curabitur sagittis hendrerit ante. Aliquam erat volutpat.'
+                . ' Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy',
+            ));
+            $errors = $virhetyo->errors();
+
+            Kint::dump($errors);
     }
 
     public static function login() {
