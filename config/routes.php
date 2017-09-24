@@ -44,8 +44,12 @@ $routes->get('/kayttajat', function() {
     UserController::index();
 });
 
-$routes->get('/tyoMuokkaus', function() {
-    HelloWorldController::tyoMuokkaus();
+$routes->get('/tyoMuokkaus/:id', function($id) {
+    WorkController::edit($id);
+});
+
+$routes->post('/tyonMuokkaaminen/:id', function($id) {
+WorkController::update($id);
 });
 
 $routes->get('/tyokaluMuokkaus', function() {

@@ -51,8 +51,8 @@ class WorkController extends BaseController {
 
 
         $tyo = new Work($attributes);
-        
-        
+
+
 //        Kint::dump($params);
         $errors = $tyo->errors();
 
@@ -78,33 +78,80 @@ class WorkController extends BaseController {
 
     public static function edit($id) {
         $tyo = Work::find($id);
-        View::make('tyo/tyoMuokkaus.html', array('attributes' => $tyo));
+
+        $tekijat = Work::getUsers($id);
+        $tyonTekijat = array();
+        foreach ($tekijat as $tekija) {
+            $tyonTekijat[] = $tekija->tunnus;
+        }
+        
+        
+        $attributes = array(
+            'id' => $tyo[0]->id,
+            'kohde' => $tyo[0]->kohde,
+            'tyokalu' => $tyo[0]->tyokalu,
+            'kuvaus' => $tyo[0]->kuvaus,
+            'tarkempi_kuvaus' => $tyo[0]->tarkempi_kuvaus,
+            'tehty' => $tyo[0]->tehty,
+            'suoritusaika' => $tyo[0]->suoritusaika,
+            'tekijat' => $tyonTekijat
+        );
+
+
+        $kohteet = WorkObject::allAlphabetical();
+        $tyokalut = WorkTool::allAlphabetical();
+        $kayttajat = User::allAlphabetical();
+        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat));
+    }
+
+    public static function editErrors($errors, $attributes) {
+        $kohteet = WorkObject::allAlphabetical();
+        $tyokalut = WorkTool::allAlphabetical();
+        $kayttajat = User::allAlphabetical();
+        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat, 'errors' => $errors));
     }
 
     // Pelin muokkaaminen (lomakkeen käsittely)
     public static function update($id) {
         $params = $_POST;
 
-        $attributes = array(
-        'id' => $id,
-        'kuvaus' => $params['kuvaus'],
-        'kohde' => $params['kohde'],
-        'publisher' => $params['publisher'],
-        'published' => $params['published'],
-        'description' => $params['description']
-        );
 
-        // Alustetaan Game-olio käyttäjän syöttämillä tiedoilla
-        $game = new Game($attributes);
-        $errors = $game->errors();
 
-        if (count($errors) > 0) {
-            View::make('game/edit.html', array('errors' => $errors, 'attributes' => $attributes));
+        If (isset($params['tekijat'])) {
+            $attributes = array(
+                'id' => $id,
+                'kohde' => $params['kohde'],
+                'tyokalu' => $params['tyokalu'],
+                'kuvaus' => $params['kuvaus'],
+                'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+                'tekijat' => $params['tekijat']
+            );
         } else {
-            // Kutsutaan alustetun olion update-metodia, joka päivittää pelin tiedot tietokannassa
-            $game->update();
+            $attributes = array(
+                'id' => $id,
+                'kohde' => $params['kohde'],
+                'tyokalu' => $params['tyokalu'],
+                'kuvaus' => $params['kuvaus'],
+                'tarkempi_kuvaus' => $params['tarkempi_kuvaus']
+            );
+        }
 
-            Redirect::to('/game/' . $game->id, array('message' => 'Peliä on muokattu onnistuneesti!'));
+        $tyo = new Work($attributes);
+        if (isset($params['tehty'])) {
+            $attributes['tehty'] = 1;
+            $tyo->tehty = true;
+        } else {
+            $attributes['tehty'] = 0;
+            $tyo->tehty = false;
+        }
+        $errors = $tyo->errors();
+
+        $tyo->id = $id;
+        if (count($errors) == 0) {
+            $tyo->update();
+            Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ muokattu!'));
+        } else {
+            WorkController::editErrors($errors, $attributes);
         }
     }
 

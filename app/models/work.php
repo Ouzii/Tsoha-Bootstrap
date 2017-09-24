@@ -121,6 +121,32 @@ class Work extends BaseModel {
 //        Kint::trace();
 //        Kint::dump($row);
         $this->id = $row['id'];
+        $this->saveUsers();
+    }
+
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Tyo SET kohde = :kohde, tyokalu = :tyokalu, kuvaus = :kuvaus, tarkempi_kuvaus = :tarkempi_kuvaus WHERE id = :id');
+        $kohdeID = WorkObject::findKuvaus($this->kohde)[0]->id;
+//        $kohdeID = $kohdeID[0]->id;
+
+        $tyokaluID = WorkTool::findKuvaus($this->tyokalu)[0]->id;
+//        $tyokaluID = $tyokaluID[0]->id;
+        $query->execute(array('kohde' => $kohdeID, 'tyokalu' => $tyokaluID, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
+
+        if ($this->tehty == TRUE) {
+            $query = DB::connection()->prepare('UPDATE Tyo SET tehty = TRUE, suoritusaika = now() WHERE id = :id');
+            $query->execute(array('id' => $this->id));
+        } elseif ($this->tehty == FALSE) {
+            $query = DB::connection()->prepare('UPDATE Tyo SET tehty = FALSE, suoritusaika = null WHERE id = :id');
+            $query->execute(array('id' => $this->id));
+        }
+
+        $query = DB::connection()->prepare('DELETE FROM KayttajanTyot WHERE tyo = :id');
+        $query->execute(array('id' => $this->id));
+        $this->saveUsers();
+    }
+
+    public function saveUsers() {
         foreach ($this->tekijat as $tekija) {
             $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');
             $query->execute(array('id' => $this->id, 'tekija' => $tekija));
