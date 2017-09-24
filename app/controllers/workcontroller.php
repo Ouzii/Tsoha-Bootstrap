@@ -31,12 +31,6 @@ class WorkController extends BaseController {
         $params = $_POST;
 
 
-//        $dummy = array_search("dummy", $tekijat);
-//        
-//        if ($dummy !== false) {
-//            unset($tekijat[$dummy]);
-//        }
-
 
         If (isset($params['tekijat'])) {
             $attributes = array(
@@ -57,6 +51,8 @@ class WorkController extends BaseController {
 
 
         $tyo = new Work($attributes);
+        
+        
 //        Kint::dump($params);
         $errors = $tyo->errors();
 
@@ -78,6 +74,49 @@ class WorkController extends BaseController {
             $id = $tyo->id;
             Redirect::to('/tyo/' . $id, array('message' => 'Löytyi!'));
         }
+    }
+
+    public static function edit($id) {
+        $tyo = Work::find($id);
+        View::make('tyo/tyoMuokkaus.html', array('attributes' => $tyo));
+    }
+
+    // Pelin muokkaaminen (lomakkeen käsittely)
+    public static function update($id) {
+        $params = $_POST;
+
+        $attributes = array(
+        'id' => $id,
+        'kuvaus' => $params['kuvaus'],
+        'kohde' => $params['kohde'],
+        'publisher' => $params['publisher'],
+        'published' => $params['published'],
+        'description' => $params['description']
+        );
+
+        // Alustetaan Game-olio käyttäjän syöttämillä tiedoilla
+        $game = new Game($attributes);
+        $errors = $game->errors();
+
+        if (count($errors) > 0) {
+            View::make('game/edit.html', array('errors' => $errors, 'attributes' => $attributes));
+        } else {
+            // Kutsutaan alustetun olion update-metodia, joka päivittää pelin tiedot tietokannassa
+            $game->update();
+
+            Redirect::to('/game/' . $game->id, array('message' => 'Peliä on muokattu onnistuneesti!'));
+        }
+    }
+
+    // Pelin poistaminen
+    public static function destroy($id) {
+        // Alustetaan Game-olio annetulla id:llä
+        $game = new Game(array('id' => $id));
+        // Kutsutaan Game-malliluokan metodia destroy, joka poistaa pelin sen id:llä
+        $game->destroy();
+
+        // Ohjataan käyttäjä pelien listaussivulle ilmoituksen kera
+        Redirect::to('/game', array('message' => 'Peli on poistettu onnistuneesti!'));
     }
 
 }

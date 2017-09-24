@@ -10,6 +10,14 @@ Class WorkTool extends BaseModel {
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus');
     }
 
+    public function getId() {
+        $query = DB::connection()->prepare('SELECT id FROM Tyokalu WHERE kuvaus = :kuvaus');
+        $query->execute(array('kuvaus' => $this->kuvaus));
+
+        $row = $query->fetch();
+        $this->id = $row['id'];
+    }
+
     public static function all() {
         $query = DB::connection()->prepare('SELECT * FROM Tyokalu');
         $query->execute();
@@ -87,11 +95,12 @@ Class WorkTool extends BaseModel {
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus) VALUES (:kuvaus, :tarkempi_kuvaus)');
         $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
+        $this->getId();
 //        Kint::trace();
 //        Kint::dump($row);
     }
 
-        public function validate_kuvaus() {
+    public function validate_kuvaus() {
         $errors = array();
         if ($this->kuvaus == '' || $this->kuvaus == null) {
             $errors[] = 'Työkalu vaatii kuvauksen!';
@@ -102,12 +111,13 @@ Class WorkTool extends BaseModel {
 
         return $errors;
     }
-    
-        public function validate_tarkempi_kuvaus() {
+
+    public function validate_tarkempi_kuvaus() {
         $errors = array();
         if (strlen($this->tarkempi_kuvaus) > 360) {
             $errors[] = 'Työkalun tarkempi kuvaus saa olla enintään 360 merkkiä pitkä';
         }
         return $errors;
     }
+
 }

@@ -10,6 +10,15 @@ class WorkObject extends BaseModel {
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus');
     }
 
+    
+    public function getId() {
+        $query = DB::connection()->prepare('SELECT id FROM Tyon_kohde WHERE kuvaus = :kuvaus');
+        $query->execute(array('kuvaus' => $this->kuvaus));
+        
+        $row = $query->fetch();
+        $this->id = $row['id'];
+    }
+    
     public static function all() {
         $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde');
         $query->execute();
@@ -87,7 +96,7 @@ class WorkObject extends BaseModel {
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyon_kohde (kuvaus, tarkempi_kuvaus) VALUES (:kuvaus, :tarkempi_kuvaus)');
         $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
-
+        $this->getId();
 //        Kint::trace();
 //        Kint::dump($row);
     }

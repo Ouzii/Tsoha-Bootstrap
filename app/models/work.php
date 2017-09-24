@@ -6,8 +6,13 @@ class Work extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->getKuvauksetTyokalu();
-        $this->getKuvauksetTyonKohde();
+        if (is_numeric($this->tyokalu)) {
+            $this->getKuvauksetTyokalu();
+        }
+
+        if (is_numeric($this->kohde)) {
+            $this->getKuvauksetTyonKohde();
+        }
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus', 'validate_tekijat');
     }
 
@@ -58,7 +63,6 @@ class Work extends BaseModel {
         $row = $query->fetch();
 
         $this->tyokalu = $row['kuvaus'];
-
     }
 
     public function getKuvauksetTyonKohde() {
@@ -67,7 +71,6 @@ class Work extends BaseModel {
         $row = $query->fetch();
 
         $this->kohde = $row['kuvaus'];
-
     }
 
     public static function findWithKuvaus($kuvaus) {
@@ -108,7 +111,12 @@ class Work extends BaseModel {
 
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus) VALUES (:kohde, :tyokalu, :kuvaus, :tarkempi_kuvaus) RETURNING id');
-        $query->execute(array('kohde' => $this->kohde, 'tyokalu' => $this->tyokalu, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
+        $kohdeID = WorkObject::findKuvaus($this->kohde);
+        $kohdeID = $kohdeID[0]->id;
+
+        $tyokaluID = WorkTool::findKuvaus($this->tyokalu);
+        $tyokaluID = $tyokaluID[0]->id;
+        $query->execute(array('kohde' => $kohdeID, 'tyokalu' => $tyokaluID, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
         $row = $query->fetch();
 //        Kint::trace();
 //        Kint::dump($row);

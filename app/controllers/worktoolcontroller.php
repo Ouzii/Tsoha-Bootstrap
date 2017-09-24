@@ -44,7 +44,7 @@ class WorkToolController extends BaseController {
 
         if (count($errors) == 0) {
             $tyokalu->save();
-            Redirect::to('/tyokalu/' . $tyokalu->kuvaus, array('message' => 'Työkalu luotu!'));
+            Redirect::to('/tyokalu/' . $tyokalu->id, array('message' => 'Työkalu luotu!'));
         } else {
             WorkToolController::createErrors($errors, $attributes);
         }
