@@ -2,11 +2,10 @@
 {% block content %}
 {% for t in tyo %}
 <div style="color:green"><h1>{{t.kuvaus}}</h1></div>
-<!-- Painikkeet tähän -->
+
 <p>
-    <button class="btn btn-danger">Poista</button> <a href="{{base_path}}/tyoMuokkaus/{{t.id}}" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/tyoPoisto/{{t.id}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/tyoMuokkaus/{{t.id}}" class="btn btn-default">Muokkaa</a>
 </p>
-<!-- Tiedot tulee listana tähän -->
 
 <ul>
     <li><strong>ID:</strong><font color='red'> {{t.id}}</font></li>

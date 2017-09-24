@@ -81,6 +81,7 @@ class WorkController extends BaseController {
 
         $tekijat = Work::getUsers($id);
         $tyonTekijat = array();
+        
         foreach ($tekijat as $tekija) {
             $tyonTekijat[] = $tekija->tunnus;
         }
@@ -155,15 +156,11 @@ class WorkController extends BaseController {
         }
     }
 
-    // Pelin poistaminen
     public static function destroy($id) {
-        // Alustetaan Game-olio annetulla id:llä
-        $game = new Game(array('id' => $id));
-        // Kutsutaan Game-malliluokan metodia destroy, joka poistaa pelin sen id:llä
-        $game->destroy();
+        $tyo = new Work(array('id' => $id));
+        $tyo->destroy();
 
-        // Ohjataan käyttäjä pelien listaussivulle ilmoituksen kera
-        Redirect::to('/game', array('message' => 'Peli on poistettu onnistuneesti!'));
+        Redirect::to('/tyot', array('message' => 'Työ on poistettu!'));
     }
 
 }

@@ -50,6 +50,58 @@ class WorkToolController extends BaseController {
         }
     }
 
+    public static function update($id) {
+        $params = $_POST;
+
+        $attributes = array(
+            'kuvaus' => $params['kuvaus'],
+            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'id' => $id
+        );
+
+        $tyokalu = new WorkTool($attributes);
+
+        $errors = $tyokalu->errors();
+
+        if (count($errors) == 0) {
+            $tyokalu->update();
+            Redirect::to('/tyokalu/' . $id, array('message' => 'Työkalua muokattu!'));
+        } else {
+            WorkToolController::editErrors($errors, $attributes);
+        }
+    }
+
+    public static function edit($id) {
+
+        $tyokalu = WorkTool::find($id);
+
+        $attributes = array(
+            'kuvaus' => $tyokalu[0]->kuvaus,
+            'tarkempi_kuvaus' => $tyokalu[0]->tarkempi_kuvaus,
+            'id' => $id
+        );
+
+        View::make('/tyokalu/tyokaluMuokkaus.html', array('attributes' => $attributes));
+    }
+
+    public static function editErrors($errors, $attributes) {
+        View::make('tyokalu/tyokaluMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
+    }
+
+    public static function destroy($id) {
+        $tyokalu = WorkTool::find($id);
+
+
+        $errors = $tyokalu[0]->validate_connections();
+
+        if (count($errors) == 0) {
+            $tyokalu[0]->destroy();
+            Redirect::to('/tyokalut', array('message' => 'Työkalu poistettu!'));
+        } else {
+            Redirect::to('/tyokalu/' . $id, array('errors' => $errors));
+        }
+    }
+
     public static function findWithKuvaus() {
         $params = $_POST;
         $etsittyKuvaus = $params['kuvaus'];

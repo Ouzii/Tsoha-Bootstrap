@@ -17,7 +17,7 @@ class WorkObjectController extends BaseController {
 //        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
 
         if ($tyonKohde == null) {
-            Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));            
+            Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
             $id = $tyonKohde[0]->id;
             Redirect::to('/tyonKohde/' . $id);
@@ -30,6 +30,58 @@ class WorkObjectController extends BaseController {
 
     public static function createErrors($errors, $attributes) {
         View::make('tyonKohde/uusiTyonKohde.html', array('errors' => $errors, 'attributes' => $attributes));
+    }
+
+    public static function update($id) {
+        $params = $_POST;
+
+        $attributes = array(
+            'kuvaus' => $params['kuvaus'],
+            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'id' => $id
+        );
+
+        $tyonKohde = new WorkObject($attributes);
+
+        $errors = $tyonKohde->errors();
+
+        if (count($errors) == 0) {
+            $tyonKohde->update();
+            Redirect::to('/tyonKohde/' . $id, array('message' => 'Työn kohdetta muokattu!'));
+        } else {
+            WorkObjectController::editErrors($errors, $attributes);
+        }
+    }
+
+    public static function edit($id) {
+
+        $tyonKohde = WorkObject::find($id);
+
+        $attributes = array(
+            'kuvaus' => $tyonKohde[0]->kuvaus,
+            'tarkempi_kuvaus' => $tyonKohde[0]->tarkempi_kuvaus,
+            'id' => $id
+        );
+
+        View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes));
+    }
+
+    public static function editErrors($errors, $attributes) {
+        View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
+    }
+
+    public static function destroy($id) {
+        $tyonKohde = WorkObject::find($id);
+
+
+        $errors = $tyonKohde[0]->validate_connections();
+
+        if (count($errors) == 0) {
+            $tyonKohde[0]->destroy();
+            Redirect::to('/tyonKohteet', array('message' => 'Työn kohde poistettu!'));
+        } else {
+            Redirect::to('/tyonKohde/' . $id, array('errors' => $errors));
+        }
     }
 
     public static function store() {

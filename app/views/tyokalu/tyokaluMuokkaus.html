@@ -1,13 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<form>
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<form method="post" action="{{base_path}}/tyokaluMuokkaaminen/{{attributes.id}}">
     <div class="form-group">
         <label for="kuvaus">Kuvaus</label>
-        <input type="Text" class="form-control" id="kuvaus" placeholder="Rätti">
+        <input type="Text" class="form-control" name="kuvaus" value="{{attributes.kuvaus}}">
     </div>
     <div class="form-group">
         <label for="tarkempi_kuvaus">Tarkempi kuvaus</label>
-        <input type="text" class="form-control" id="tarkempi_kuvaus" placeholder="Keittiön kaapista löytyvä punainen rätti">
+        <input type="text" class="form-control" name="tarkempi_kuvaus" value="{{attributes.tarkempi_kuvaus}}">
     </div>    
     
     <button type="submit" class="btn btn-default">Muuta</button>

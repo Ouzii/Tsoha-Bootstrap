@@ -99,6 +99,16 @@ Class WorkTool extends BaseModel {
 //        Kint::trace();
 //        Kint::dump($row);
     }
+    
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Tyokalu SET kuvaus = :kuvaus, tarkempi_kuvaus = :tarkempi_kuvaus WHERE id = :id');
+        $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
+    }
+    
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Tyokalu WHERE id = :id');
+        $query->execute(array('id' => $this->id));
+    }
 
     public function validate_kuvaus() {
         $errors = array();
@@ -117,6 +127,21 @@ Class WorkTool extends BaseModel {
         if (strlen($this->tarkempi_kuvaus) > 360) {
             $errors[] = 'Työkalun tarkempi kuvaus saa olla enintään 360 merkkiä pitkä';
         }
+        return $errors;
+    }
+    
+    public function validate_connections() {
+        $errors = array();
+        
+        $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE tyokalu = :id');
+        $query->execute(array('id' => $this->id));
+        
+        $rows = $query->fetchAll();
+        
+        if (count($rows) > 0) {
+            $errors[] = $this->kuvaus . ' liittyy ' . count($rows) . ' työhön!';
+        }
+        
         return $errors;
     }
 

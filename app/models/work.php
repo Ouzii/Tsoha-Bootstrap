@@ -146,6 +146,14 @@ class Work extends BaseModel {
         $this->saveUsers();
     }
 
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM KayttajanTyot WHERE tyo = :id');
+        $query->execute(array('id' => $this->id));
+        
+        $query = DB::connection()->prepare('DELETE FROM Tyo WHERE id = :id');
+        $query->execute(array('id' => $this->id));
+    }
+
     public function saveUsers() {
         foreach ($this->tekijat as $tekija) {
             $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');

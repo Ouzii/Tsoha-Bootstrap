@@ -10,15 +10,14 @@ class WorkObject extends BaseModel {
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus');
     }
 
-    
     public function getId() {
         $query = DB::connection()->prepare('SELECT id FROM Tyon_kohde WHERE kuvaus = :kuvaus');
         $query->execute(array('kuvaus' => $this->kuvaus));
-        
+
         $row = $query->fetch();
         $this->id = $row['id'];
     }
-    
+
     public static function all() {
         $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde');
         $query->execute();
@@ -101,6 +100,16 @@ class WorkObject extends BaseModel {
 //        Kint::dump($row);
     }
 
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Tyon_kohde SET kuvaus = :kuvaus, tarkempi_kuvaus = :tarkempi_kuvaus WHERE id = :id');
+        $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
+    }
+
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Tyon_kohde WHERE id = :id');
+        $query->execute(array('id' => $this->id));
+    }
+
     public function validate_kuvaus() {
         $errors = array();
         if ($this->kuvaus == '' || $this->kuvaus == null) {
@@ -118,6 +127,21 @@ class WorkObject extends BaseModel {
         if (strlen($this->tarkempi_kuvaus) > 360) {
             $errors[] = 'Työkohteen tarkempi kuvaus saa olla enintään 360 merkkiä pitkä';
         }
+        return $errors;
+    }
+
+    public function validate_connections() {
+        $errors = array();
+
+        $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE kohde = :id');
+        $query->execute(array('id' => $this->id));
+
+        $rows = $query->fetchAll();
+
+        if (count($rows) > 0) {
+            $errors[] = $this->kuvaus . ' liittyy ' . count($rows) . ' työhön!';
+        }
+
         return $errors;
     }
 

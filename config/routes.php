@@ -49,15 +49,23 @@ $routes->get('/tyoMuokkaus/:id', function($id) {
 });
 
 $routes->post('/tyonMuokkaaminen/:id', function($id) {
-WorkController::update($id);
+    WorkController::update($id);
 });
 
-$routes->get('/tyokaluMuokkaus', function() {
-    HelloWorldController::tyokaluMuokkaus();
+$routes->get('/tyokaluMuokkaus/:id', function($id) {
+    WorkToolController::edit($id);
 });
 
-$routes->get('/tyonKohdeMuokkaus', function() {
-    HelloWorldController::tyonkohdeMuokkaus();
+$routes->post('/tyokaluMuokkaaminen/:id', function($id) {
+    WorkToolController::update($id);
+});
+
+$routes->get('/tyonKohdeMuokkaus/:id', function($id) {
+    WorkObjectController::edit($id);
+});
+
+$routes->post('/tyonKohdeMuokkaaminen/:id', function($id) {
+    WorkObjectController::update($id);
 });
 
 $routes->get('/kayttajaMuokkaus', function() {
@@ -118,6 +126,18 @@ $routes->post('/etsiTyonKohde', function() {
 
 $routes->post('/etsiKayttaja', function() {
     UserController::findWithKuvaus();
+});
+
+$routes->get('/tyoPoisto/:id', function($id) {
+    WorkController::destroy($id);
+});
+
+$routes->get('/tyokaluPoisto/:id', function($id) {
+    WorkToolController::destroy($id);
+});
+
+$routes->get('/tyonKohdePoisto/:id', function($id) {
+    WorkObjectController::destroy($id);
 });
 
 
