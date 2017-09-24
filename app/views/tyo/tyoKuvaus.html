@@ -10,8 +10,8 @@
 
 <ul>
     <li><strong>ID:</strong><font color='red'> {{t.id}}</font></li>
-    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonkohde"> {{t.kohde}}</a></li>
-    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokalu"> {{t.tyokalu}}</a></li>
+    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonKohdeKuvaus/{{t.kohde}}"> {{t.kohde}}</a></li>
+    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokaluKuvaus/{{t.tyokalu}}"> {{t.tyokalu}}</a></li>
     
               {% if t.tehty %}
               <li><strong>Tehty: </strong><input type="checkbox" checked="" disabled="disabled"></li>

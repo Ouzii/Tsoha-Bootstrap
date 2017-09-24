@@ -2,7 +2,7 @@
 
 Class WorkTool extends BaseModel {
 
-    public $kuvaus, $tarkempi_kuvaus, $luotu;
+    public $id, $kuvaus, $tarkempi_kuvaus, $luotu;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
@@ -18,6 +18,7 @@ Class WorkTool extends BaseModel {
 
         foreach ($rows as $row) {
             $tyokalut[] = new WorkTool(array(
+                'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'luotu' => $row['luotu'],
@@ -35,6 +36,7 @@ Class WorkTool extends BaseModel {
 
         foreach ($rows as $row) {
             $tyokalut[] = new WorkTool(array(
+                'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'luotu' => $row['luotu'],
@@ -44,13 +46,33 @@ Class WorkTool extends BaseModel {
         return $tyokalut;
     }
 
-    public static function find($kuvaus) {
+    public static function find($id) {
+        $query = DB::connection()->prepare('SELECT * FROM Tyokalu WHERE id = :id LIMIT 1');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+
+        if ($row) {
+            $tyokalu[] = new WorkTool(array(
+                'id' => $row['id'],
+                'kuvaus' => $row['kuvaus'],
+                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
+                'luotu' => $row['luotu'],
+            ));
+
+            return $tyokalu;
+        }
+
+        return null;
+    }
+
+    public static function findKuvaus($kuvaus) {
         $query = DB::connection()->prepare('SELECT * FROM Tyokalu WHERE kuvaus = :kuvaus LIMIT 1');
         $query->execute(array('kuvaus' => $kuvaus));
         $row = $query->fetch();
 
         if ($row) {
             $tyokalu[] = new WorkTool(array(
+                'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'luotu' => $row['luotu'],

@@ -2,7 +2,7 @@
 
 class WorkObject extends BaseModel {
 
-    public $kuvaus, $tarkempi_kuvaus, $luotu;
+    public $id, $kuvaus, $tarkempi_kuvaus, $luotu;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
@@ -18,6 +18,7 @@ class WorkObject extends BaseModel {
 
         foreach ($rows as $row) {
             $kohteet[] = new WorkObject(array(
+                'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'luotu' => $row['luotu'],
@@ -35,6 +36,7 @@ class WorkObject extends BaseModel {
 
         foreach ($rows as $row) {
             $kohteet[] = new WorkObject(array(
+                'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'luotu' => $row['luotu'],
@@ -44,13 +46,33 @@ class WorkObject extends BaseModel {
         return $kohteet;
     }
 
-    public static function find($kuvaus) {
+    public static function find($id) {
+        $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde WHERE id = :id LIMIT 1');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+
+        if ($row) {
+            $kohde[] = new WorkObject(array(
+                'id' => $row['id'],
+                'kuvaus' => $row['kuvaus'],
+                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
+                'luotu' => $row['luotu'],
+            ));
+
+            return $kohde;
+        }
+
+        return null;
+    }
+
+    public static function findKuvaus($kuvaus) {
         $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde WHERE kuvaus = :kuvaus LIMIT 1');
         $query->execute(array('kuvaus' => $kuvaus));
         $row = $query->fetch();
 
         if ($row) {
             $kohde[] = new WorkObject(array(
+                'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'luotu' => $row['luotu'],

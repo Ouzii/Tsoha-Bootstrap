@@ -7,9 +7,20 @@ class WorkToolController extends BaseController {
         View::make('tyokalu/tyokalut.html', array('tyokalut' => $tyokalut));
     }
 
-    public static function show($kuvaus) {
-        $tyokalu = WorkTool::find($kuvaus);
+    public static function show($id) {
+        $tyokalu = WorkTool::find($id);
         View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $tyokalu));
+    }
+
+    public static function showKuvaus($kuvaus) {
+        $tyokalu = WorkTool::findKuvaus($kuvaus);
+
+        if ($tyokalu == null) {
+            
+        } else {
+            $id = $tyokalu[0]->id;
+            Redirect::to('/tyokalu/' . $id);
+        }
     }
 
     public static function create() {
@@ -42,12 +53,12 @@ class WorkToolController extends BaseController {
     public static function findWithKuvaus() {
         $params = $_POST;
         $etsittyKuvaus = $params['kuvaus'];
-        $tyokalu = WorkTool::find($etsittyKuvaus);
+        $tyokalu = WorkTool::findKuvaus($etsittyKuvaus);
         if ($tyokalu == null) {
             Redirect::to('/tyokalut', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $kuvaus = $tyokalu[0]->kuvaus;
-            Redirect::to('/tyokalu/' . $kuvaus, array('message' => 'Löytyi!'));
+            $id = $tyokalu[0]->id;
+            Redirect::to('/tyokalu/' . $id, array('message' => 'Löytyi!'));
         }
     }
 

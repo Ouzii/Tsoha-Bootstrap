@@ -40,8 +40,8 @@
         <tr>
             <td>{{tyo.id}}</td>
             <td><a href="{{base_path}}/tyo/{{tyo.id}}">{{tyo.kuvaus}}</td>
-            <td><a href="{{base_path}}/tyonkohde">{{tyo.kohde}}</td>
-            <td><a href="{{base_path}}/tyokalu">{{tyo.tyokalu}}</td>
+            <td><a href="{{base_path}}/tyonKohdeKuvaus/{{tyo.kohde}}">{{tyo.kohde}}</td>
+            <td><a href="{{base_path}}/tyokaluKuvaus/{{tyo.tyokalu}}">{{tyo.tyokalu}}</td>
             {% if tyo.tehty %}
             <td> <input type="checkbox" checked="" disabled="disabled" /></td>
             {% else %}

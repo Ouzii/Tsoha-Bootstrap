@@ -16,16 +16,24 @@ $routes->get('/tyonKohteet', function() {
     WorkObjectController::index();
 });
 
-$routes->get('/tyonKohde/:kuvaus', function($kuvaus) {
-    WorkObjectController::show($kuvaus);
+$routes->get('/tyonKohde/:id', function($id) {
+    WorkObjectController::show($id);
+});
+
+$routes->get('/tyonKohdeKuvaus/:kuvaus', function($kuvaus) {
+    WorkObjectController::showKuvaus($kuvaus);
 });
 
 $routes->get('/tyokalut', function() {
     WorkToolController::index();
 });
 
-$routes->get('/tyokalu/:kuvaus', function($kuvaus) {
-    WorkToolController::show($kuvaus);
+$routes->get('/tyokalu/:id', function($id) {
+    WorkToolController::show($id);
+});
+
+$routes->get('/tyokaluKuvaus/:kuvaus', function($kuvaus) {
+    WorkToolController::showKuvaus($kuvaus);
 });
 
 $routes->get('/kayttaja/:tunnus', function($tunnus) {

@@ -7,21 +7,23 @@ CREATE TABLE Kayttaja(
 );
 
 CREATE TABLE Tyon_kohde(
-	kuvaus varchar(30) PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
+	kuvaus varchar(30),
 	tarkempi_kuvaus varchar(360),
 	luotu TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Tyokalu(
-	kuvaus varchar(30) PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
+	kuvaus varchar(30),
 	tarkempi_kuvaus varchar(360),
 	luotu TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Tyo(
 	id SERIAL PRIMARY KEY,
-	kohde varchar REFERENCES Tyon_kohde(kuvaus),
-	tyokalu varchar REFERENCES Tyokalu(kuvaus),
+	kohde SERIAL REFERENCES Tyon_kohde(id),
+	tyokalu SERIAL REFERENCES Tyokalu(id),
 	kuvaus varchar(30) NOT NULL,
 	tarkempi_kuvaus varchar(360),
 	tehty boolean DEFAULT FALSE,

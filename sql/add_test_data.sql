@@ -23,15 +23,15 @@ INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus)
 VALUES ('Moppi', 'Kodinhoitohuoneesta löytyvä moppi. Käytetään lattioiden pesuun.');
 
 INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus, tehty, suoritusaika)
-VALUES ('Jääkaappi', 'Rätti', 'Siivoa jääkaappi rätillä.',
+VALUES (1, 1, 'Siivoa jääkaappi rätillä.',
  'Keittiöstä löytyy sekä punainen rätti, että jääkaappi. Pyyhi jääkaapin pinnat rätillä.', TRUE, NOW());
 
 INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus)
-VALUES ('Olohuone', 'Imuri', 'Imuroi olohuone.',
+VALUES (2, 2, 'Imuroi olohuone.',
  'Imuroi olohuone imurilla. Imuri löytyy eteisen kaapista. Muista myös sohvan alta!');
 
 INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus)
-VALUES ('Makuuhuone', 'Moppi', 'Pese makuuhuoneen lattiat.',
+VALUES (3, 3, 'Pese makuuhuoneen lattiat.',
  'Moppi löytyy kodinhoitohuoneen kaapista. Muista pestä myös sängyn alta!');
 
 INSERT INTO KayttajanTyot (tekija, tyo)

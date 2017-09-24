@@ -7,15 +7,27 @@ class WorkObjectController extends BaseController {
         View::make('tyonKohde/tyonKohteet.html', array('tyonKohteet' => $tyonKohteet));
     }
 
-    public static function show($kuvaus) {
-        $tyonKohde = WorkObject::find($kuvaus);
+    public static function show($id) {
+        $tyonKohde = WorkObject::find($id);
         View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
+    }
+
+    public static function showKuvaus($kuvaus) {
+        $tyonKohde = WorkObject::findKuvaus($kuvaus);
+//        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
+
+        if ($tyonKohde == null) {
+            Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));            
+        } else {
+            $id = $tyonKohde[0]->id;
+            Redirect::to('/tyonKohde/' . $id);
+        }
     }
 
     public static function create() {
         View::make('tyonKohde/uusiTyonKohde.html');
     }
-    
+
     public static function createErrors($errors, $attributes) {
         View::make('tyonKohde/uusiTyonKohde.html', array('errors' => $errors, 'attributes' => $attributes));
     }
@@ -33,7 +45,7 @@ class WorkObjectController extends BaseController {
 
         if (count($errors) == 0) {
             $tyonKohde->save();
-            Redirect::to('/tyonKohde/' . $tyonKohde->kuvaus, array('message' => 'Työn kohde luotu!'));
+            Redirect::to('/tyonKohde/' . $tyonKohde->id, array('message' => 'Työn kohde luotu!'));
         } else {
             WorkObjectController::createErrors($errors, $attributes);
         }
@@ -42,12 +54,12 @@ class WorkObjectController extends BaseController {
     public static function findWithKuvaus() {
         $params = $_POST;
         $etsittyKuvaus = $params['kuvaus'];
-        $tyonKohde = WorkObject::find($etsittyKuvaus);
+        $tyonKohde = WorkObject::findKuvaus($etsittyKuvaus);
         if ($tyonKohde == null) {
             Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $kuvaus = $tyonKohde[0]->kuvaus;
-            Redirect::to('/tyonKohde/' . $kuvaus, array('message' => 'Löytyi!'));
+            $id = $tyonKohde[0]->id;
+            Redirect::to('/tyonKohde/' . $id, array('message' => 'Löytyi!'));
         }
     }
 

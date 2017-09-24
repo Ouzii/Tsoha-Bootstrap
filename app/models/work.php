@@ -6,6 +6,8 @@ class Work extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->getKuvauksetTyokalu();
+        $this->getKuvauksetTyonKohde();
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus', 'validate_tekijat');
     }
 
@@ -26,7 +28,6 @@ class Work extends BaseModel {
                 'suoritusaika' => $row['suoritusaika'],
             ));
         }
-
         return $tyot;
     }
 
@@ -45,11 +46,28 @@ class Work extends BaseModel {
                 'tehty' => $row['tehty'],
                 'suoritusaika' => $row['suoritusaika'],
             ));
-
             return $tyo;
         }
 
         return null;
+    }
+
+    public function getKuvauksetTyokalu() {
+        $query = DB::connection()->prepare('SELECT kuvaus FROM Tyokalu WHERE id = :id');
+        $query->execute(array('id' => $this->tyokalu));
+        $row = $query->fetch();
+
+        $this->tyokalu = $row['kuvaus'];
+
+    }
+
+    public function getKuvauksetTyonKohde() {
+        $query = DB::connection()->prepare('SELECT kuvaus FROM Tyon_kohde WHERE id = :id');
+        $query->execute(array('id' => $this->kohde));
+        $row = $query->fetch();
+
+        $this->kohde = $row['kuvaus'];
+
     }
 
     public static function findWithKuvaus($kuvaus) {
@@ -120,10 +138,10 @@ class Work extends BaseModel {
         }
         return $errors;
     }
-    
+
     public function validate_tekijat() {
         $errors = array();
-        if(count($this->tekijat) == 0) {
+        if (count($this->tekijat) == 0) {
             $errors[] = 'Työllä täytyy olla tekijä!';
         }
         return $errors;
