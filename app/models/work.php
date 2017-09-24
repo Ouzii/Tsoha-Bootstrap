@@ -17,7 +17,7 @@ class Work extends BaseModel {
     }
 
     public static function all() {
-        $query = DB::connection()->prepare('SELECT * FROM Tyo');
+        $query = DB::connection()->prepare('SELECT * FROM Tyo ORDER BY id ASC');
         $query->execute();
         $rows = $query->fetchAll();
         $tyot = array();
@@ -30,7 +30,7 @@ class Work extends BaseModel {
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'tehty' => $row['tehty'],
-                'suoritusaika' => $row['suoritusaika'],
+                'suoritusaika' => (String) substr($row['suoritusaika'], 0, 19)
             ));
         }
         return $tyot;
@@ -49,7 +49,7 @@ class Work extends BaseModel {
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
                 'tehty' => $row['tehty'],
-                'suoritusaika' => $row['suoritusaika'],
+                'suoritusaika' => (String) substr($row['suoritusaika'], 0, 19)
             ));
             return $tyo;
         }
