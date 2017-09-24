@@ -16,15 +16,27 @@ class WorkToolController extends BaseController {
         View::make('tyokalu/uusiTyokalu.html');
     }
 
+    public static function createErrors($errors, $attributes) {
+        View::make('tyokalu/uusiTyokalu.html', array('errors' => $errors, 'attributes' => $attributes));
+    }
+
     public static function store() {
         $params = $_POST;
-        $tyokalu = new WorkTool(array(
+
+        $attributes = array(
             'kuvaus' => $params['kuvaus'],
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
-        ));
+        );
+        $tyokalu = new WorkTool($attributes);
 //        Kint::dump($params);
-        $tyokalu->save();
-        Redirect::to('/tyokalu/' . $tyokalu->kuvaus, array('message' => 'Työkalu luotu!'));
+        $errors = $tyokalu->errors();
+
+        if (count($errors) == 0) {
+            $tyokalu->save();
+            Redirect::to('/tyokalu/' . $tyokalu->kuvaus, array('message' => 'Työkalu luotu!'));
+        } else {
+            WorkToolController::createErrors($errors, $attributes);
+        }
     }
 
     public static function findWithKuvaus() {

@@ -30,15 +30,15 @@ class WorkController extends BaseController {
     public static function store() {
         $params = $_POST;
 
-        $tekijat = $params['tekijat'];
-        
-        $dummy = array_search("dummy", $tekijat);
-        
-        if ($dummy !== false) {
-            unset($tekijat[$dummy]);
-        }
 
-        If (count($tekijat) > 0) {
+//        $dummy = array_search("dummy", $tekijat);
+//        
+//        if ($dummy !== false) {
+//            unset($tekijat[$dummy]);
+//        }
+
+
+        If (isset($params['tekijat'])) {
             $attributes = array(
                 'kohde' => $params['kohde'],
                 'tyokalu' => $params['tyokalu'],

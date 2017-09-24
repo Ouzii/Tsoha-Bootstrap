@@ -1,29 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 <form method="POST" action="{{base_path}}/rekisteroidu">
     <div class="form-group">
         <label for="tunnus">Tunnus</label>
-        <input type="Text" class="form-control" name="tunnus" placeholder="Anna tunnus">
+        <input type="Text" class="form-control" name="tunnus" placeholder="Anna tunnus" value="{{attributes.tunnus}}">
     </div>
     <div class="form-group">
         <label for="salasana">Salasana</label>
-        <input type="password" class="form-control" name="salasana" placeholder="Anna salasana">
+        <input type="password" class="form-control" name="salasana" placeholder="Anna salasana" value="{{attributes.salasana}}">
     </div>
     <div class="form-group">
         <label for="ika">Ikä</label>
-        <input type="text" class="form-control" name="ika" placeholder="Anna ikäsi">
+        <input type="text" class="form-control" name="ika" placeholder="Anna ikäsi" value="{{attributes.ika}}">
     </div>    
         
     <div class="form-group">
         <label>Tarkempi kuvaus</label>
-        <input type="text" class="form-control" name="kuvaus" placeholder="Anna tarkempi kuvaus itsestäsi">
+        <input type="text" class="form-control" name="kuvaus" placeholder="Anna tarkempi kuvaus itsestäsi" value="{{attributes.kuvaus}}">
     </div>
     
     <div class="form-group">
         <label for="admin">Tehdäänkö admin tili?</label>
         <select name="admin">
+            {% if attributes.admin %}
             <option value="0">Ei</option>
-            <option value="1">Kyllä</option>
+            <option value="1" selected="selected">Kyllä</option>
+            {% else %}
+            <option value="0" selected="selected">Ei</option>
+            <option value="1">Kyllä</option>      
+            {% endif %}
         </select>
     </div>    
     

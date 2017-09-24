@@ -7,6 +7,7 @@ class WorkObject extends BaseModel {
     public function __construct($attributes) {
         parent::__construct($attributes);
         $this->luotu = substr($this->luotu, 0, 19);
+        $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus');
     }
 
     public static function all() {
@@ -67,6 +68,26 @@ class WorkObject extends BaseModel {
 
 //        Kint::trace();
 //        Kint::dump($row);
+    }
+
+    public function validate_kuvaus() {
+        $errors = array();
+        if ($this->kuvaus == '' || $this->kuvaus == null) {
+            $errors[] = 'Työn kohde vaatii kuvauksen!';
+        }
+        if (strlen($this->kuvaus) > 30) {
+            $errors[] = 'Työkohteen kuvaus saa olla enintään 30 merkkiä pitkä';
+        }
+
+        return $errors;
+    }
+
+    public function validate_tarkempi_kuvaus() {
+        $errors = array();
+        if (strlen($this->tarkempi_kuvaus) > 360) {
+            $errors[] = 'Työkohteen tarkempi kuvaus saa olla enintään 360 merkkiä pitkä';
+        }
+        return $errors;
     }
 
 }

@@ -15,16 +15,28 @@ class WorkObjectController extends BaseController {
     public static function create() {
         View::make('tyonKohde/uusiTyonKohde.html');
     }
+    
+    public static function createErrors($errors, $attributes) {
+        View::make('tyonKohde/uusiTyonKohde.html', array('errors' => $errors, 'attributes' => $attributes));
+    }
 
     public static function store() {
         $params = $_POST;
-        $tyonKohde = new WorkObject(array(
+
+        $attributes = array(
             'kuvaus' => $params['kuvaus'],
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
-        ));
+        );
+        $tyonKohde = new WorkObject($attributes);
 //        Kint::dump($params);
-        $tyonKohde->save();
-        Redirect::to('/tyonKohde/' . $tyonKohde->kuvaus, array('message' => 'Työn kohde luotu!'));
+        $errors = $tyonKohde->errors();
+
+        if (count($errors) == 0) {
+            $tyonKohde->save();
+            Redirect::to('/tyonKohde/' . $tyonKohde->kuvaus, array('message' => 'Työn kohde luotu!'));
+        } else {
+            WorkObjectController::createErrors($errors, $attributes);
+        }
     }
 
     public static function findWithKuvaus() {

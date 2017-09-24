@@ -115,7 +115,7 @@ class Work extends BaseModel {
 
     public function validate_tarkempi_kuvaus() {
         $errors = array();
-        if (strlen($this->kuvaus) > 360) {
+        if (strlen($this->tarkempi_kuvaus) > 360) {
             $errors[] = 'Työn tarkempi kuvaus saa olla enintään 360 merkkiä pitkä';
         }
         return $errors;

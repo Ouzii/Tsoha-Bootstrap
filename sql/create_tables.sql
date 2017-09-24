@@ -1,7 +1,7 @@
 CREATE TABLE Kayttaja(
 	tunnus varchar(20) PRIMARY KEY,
 	salasana varchar(20) NOT NULL,
-	ika INTEGER,
+	ika INTEGER DEFAULT NULL,
 	kuvaus varchar(360),
 	admin boolean
 );
