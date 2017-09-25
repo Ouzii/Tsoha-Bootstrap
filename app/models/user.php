@@ -79,7 +79,7 @@ class User extends BaseModel {
     public function update() {
         $query = DB::connection()->prepare('UPDATE Kayttaja SET kuvaus = :kuvaus, ika = :ika, salasana =:salasana WHERE tunnus = :tunnus');
         $query->execute(array('kuvaus' => $this->kuvaus, 'ika' => $this->ika, 'salasana' => $this->salasana, 'tunnus' => $this->tunnus));
-        
+
         if ($this->admin == true) {
             $query = DB::connection()->prepare('UPDATE Kayttaja SET admin = TRUE WHERE tunnus = :tunnus');
             $query->execute(array('tunnus' => $this->tunnus));
@@ -151,19 +151,39 @@ class User extends BaseModel {
 
         return $errors;
     }
-    
+
     public function validate_connections() {
         $query = DB::connection()->prepare('SELECT * FROM KayttajanTyot WHERE tekija = :tunnus');
         $query->execute(array('tunnus' => $this->tunnus));
         $rows = $query->fetchAll();
-        
+
         $errors = array();
-        
-        if(count($rows) > 0) {
+
+        if (count($rows) > 0) {
             $errors[] = $this->tunnus . ' liittyy ' . count($rows) . ' työhön!';
         }
-        
+
         return $errors;
+    }
+
+    public static function authenticate($tunnus, $salasana) {
+        $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus AND salasana = :salasana LIMIT 1');
+        $query->execute(array('tunnus' => $tunnus, 'salasana' => $salasana));
+        $row = $query->fetch();
+        if ($row) {
+            $kayttaja[] = new User(array(
+                'tunnus' => $row['tunnus'],
+                'ika' => $row['ika'],
+                'salasana' => $row['salasana'],
+                'kuvaus' => $row['kuvaus'],
+                'admin' => $row['admin']
+                    ));
+            return $kayttaja;
+            // Käyttäjä löytyi, palautetaan löytynyt käyttäjä oliona
+        } else {
+            return null;
+            // Käyttäjää ei löytynyt, palautetaan null
+        }
     }
 
 }

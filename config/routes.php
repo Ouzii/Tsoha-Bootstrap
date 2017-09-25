@@ -1,7 +1,7 @@
 <?php
 
 $routes->get('/', function() {
-    HelloWorldController::index();
+    IndexController::index();
 });
 
 $routes->get('/hiekkalaatikko', function() {
@@ -9,7 +9,11 @@ $routes->get('/hiekkalaatikko', function() {
 });
 
 $routes->get('/login', function() {
-    HelloWorldController::login();
+    UserController::login();
+});
+
+$routes->post('/logging', function() {
+    UserController::handle_login();
 });
 
 $routes->get('/tyonKohteet', function() {

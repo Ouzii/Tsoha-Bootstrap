@@ -27,7 +27,7 @@ class UserController extends BaseController {
         if ($params['admin'] == 1) {
 
             $attributes = array(
-                'tunnus' => (String)$params['tunnus'],
+                'tunnus' => (String) $params['tunnus'],
                 'salasana' => $params['salasana'],
                 'ika' => $params['ika'],
                 'kuvaus' => $params['kuvaus'],
@@ -36,18 +36,18 @@ class UserController extends BaseController {
         } else {
 
             $attributes = array(
-                'tunnus' => (String)$params['tunnus'],
+                'tunnus' => (String) $params['tunnus'],
                 'salasana' => $params['salasana'],
                 'ika' => $params['ika'],
                 'kuvaus' => $params['kuvaus'],
                 'admin' => null
             );
         }
-        
+
         $kayttaja = new User($attributes);
         $errors = $kayttaja->errors();
         $uniikki = $kayttaja->validate_unique_tunnus();
-        
+
         $errors = array_merge($errors, $uniikki);
 
         if (count($errors) == 0) {
@@ -69,8 +69,8 @@ class UserController extends BaseController {
             Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Löytyi!'));
         }
     }
-    
-        public static function update($tunnus) {
+
+    public static function update($tunnus) {
         $params = $_POST;
 
         $attributes = array(
@@ -81,7 +81,7 @@ class UserController extends BaseController {
         );
 
         $kayttaja = new User($attributes);
-        
+
         if (isset($params['admin'])) {
             $attributes['admin'] = 1;
             $kayttaja->admin = true;
@@ -89,7 +89,7 @@ class UserController extends BaseController {
             $attributes['admin'] = 0;
             $kayttaja->admin = false;
         }
-        
+
         $errors = $kayttaja->errors();
 
         if (count($errors) == 0) {
@@ -130,6 +130,24 @@ class UserController extends BaseController {
             Redirect::to('/kayttajat', array('message' => 'Käyttäjä poistettu!'));
         } else {
             Redirect::to('/kayttaja/' . $tunnus, array('errors' => $errors));
+        }
+    }
+
+    public static function login() {
+        View::make('etusivu/login.html');
+    }
+
+    public static function handle_login() {
+        $params = $_POST;
+
+        $kayttaja = User::authenticate($params['tunnus'], $params['salasana']);
+
+        if (!$kayttaja) {
+            View::make('etusivu/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'tunnus' => $params['tunnus']));
+        } else {
+            $_SESSION['tunnus'] = $kayttaja[0]->tunnus;
+
+            Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $kayttaja[0]->tunnus . '!'));
         }
     }
 

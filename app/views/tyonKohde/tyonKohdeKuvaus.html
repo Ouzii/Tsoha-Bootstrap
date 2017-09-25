@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if user_logged_in.admin %}
+
 {% if errors %}
 <div class="alert alert-danger">
     <ul>
@@ -28,4 +30,34 @@
 </div>
   {% endif %}
 {% endfor %}
+
+{% else %}
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% for t in tyonKohde %}
+<div style="color:green"><h1>{{t.kuvaus}}</h1></div>
+
+<ul>
+    <li><strong>Lisäyspäivä:</strong> {{t.luotu}}</li>
+</ul>
+
+<p><strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+
+ {% if message != null %}
+<div class="alert alert-success">
+  {{message}}
+</div>
+  {% endif %}
+{% endfor %}
+
+{% endif %}
 {% endblock %}

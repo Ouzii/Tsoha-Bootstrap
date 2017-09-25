@@ -22,6 +22,7 @@
 
     <body>
 
+        {% if user_logged_in %}
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
 
@@ -45,6 +46,27 @@
                         <li><a href="{{base_path}}/kayttajat">Käyttäjät</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{base_path}}/logout">Kirjaudu ulos</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {% else %}
+        
+                <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+                        <span class="sr-only">Toggle navigation</span>
+                    </button>
+                    <!-- Sovelluksen nimi -->
+                    <a class="navbar-brand" href="{{base_path}}">Työnjakaja</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{base_path}}/login">Kirjaudu sisään</a></li>
                         <li><a href="{{base_path}}/rekisteroityminen">Rekisteröidy</a></li>
                     </ul>
@@ -52,6 +74,8 @@
             </div>
         </nav>
 
+        
+        {% endif %}
         <div id="main-container">
             <!-- Dynaaminen sisältö tulee tähän -->
             {% block content %}{% endblock %}

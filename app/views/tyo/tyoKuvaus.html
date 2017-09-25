@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if user_logged_in.admin %}
 {% for t in tyo %}
 <div style="color:green"><h1>{{t.kuvaus}}</h1></div>
 
@@ -29,11 +31,49 @@
     {% endfor %}
 <p><strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
 
- {% if message != null %}
+ {% if message %}
 <div class="alert alert-success">
   {{message}}
 </div>
   {% endif %}
 
 {% endfor %}
+
+{% else %}
+
+{% for t in tyo %}
+<div style="color:green"><h1>{{t.kuvaus}}</h1></div>
+
+<ul>
+    <li><strong>ID:</strong><font color='red'> {{t.id}}</font></li>
+    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonKohdeKuvaus/{{t.kohde}}"> {{t.kohde}}</a></li>
+    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokaluKuvaus/{{t.tyokalu}}"> {{t.tyokalu}}</a></li>
+    
+              {% if t.tehty %}
+              <li><strong>Tehty: </strong><input type="checkbox" checked="" disabled="disabled"></li>
+              <li><strong>Suoritusaika: </strong>{{t.suoritusaika}}</li>
+              {% else %}
+              <li><strong>Tehty: </strong><input type="checkbox" disabled="disabled"></li>
+              {% endif %}
+          
+   
+</ul>
+<p><strong>Tekijät:</strong></p>
+    {% for tekija in tekijat %}
+<ul>
+    <li><a href="{{base_path}}/kayttaja/{{tekija.tunnus}}">{{tekija.tunnus}}</a></li>
+</ul>
+    {% endfor %}
+<p><strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+
+ {% if message %}
+<div class="alert alert-success">
+  {{message}}
+</div>
+  {% endif %}
+
+{% endfor %}
+
+{% endif %}
+
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if user_logged_in.admin %}
+
 {% if errors %}
 <div class="alert alert-danger">
     <ul>
@@ -33,4 +35,38 @@
 </div>
   {% endif %}
 {% endfor %}
+
+{% else %}
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% for k in kayttaja%}
+<div style="color:green"><h1>{{k.tunnus}}</h1></div>
+
+<ul>
+    <li><strong>Ikä:</strong> {{k.ika}}</li>
+    {% if k.admin %}
+    <li><strong>Admin: </strong><input type="checkbox" checked="checked" disabled="disabled" /></li>
+    {% else %}
+    <li><strong>Admin: </strong><input type="checkbox" disabled="disabled" /></li>
+    {% endif %}
+</ul>
+<p><Strong>Tarkempi kuvaus:</strong> {{k.kuvaus}}</p>
+
+ {% if message != null %}
+<div class="alert alert-success">
+  {{message}}
+</div>
+  {% endif %}
+{% endfor %}
+
+{% endif %}
 {% endblock %}
