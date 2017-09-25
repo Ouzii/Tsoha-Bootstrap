@@ -96,8 +96,6 @@ Class WorkTool extends BaseModel {
         $query = DB::connection()->prepare('INSERT INTO Tyokalu (kuvaus, tarkempi_kuvaus) VALUES (:kuvaus, :tarkempi_kuvaus)');
         $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
         $this->getId();
-//        Kint::trace();
-//        Kint::dump($row);
     }
     
     public function update() {

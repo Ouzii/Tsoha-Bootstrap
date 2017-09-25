@@ -92,7 +92,6 @@ class WorkObjectController extends BaseController {
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
         );
         $tyonKohde = new WorkObject($attributes);
-//        Kint::dump($params);
         $errors = $tyonKohde->errors();
 
         if (count($errors) == 0) {

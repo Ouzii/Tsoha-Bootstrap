@@ -52,8 +52,6 @@ class WorkController extends BaseController {
 
         $tyo = new Work($attributes);
 
-
-//        Kint::dump($params);
         $errors = $tyo->errors();
 
         if (count($errors) == 0) {
@@ -112,7 +110,6 @@ class WorkController extends BaseController {
         View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat, 'errors' => $errors));
     }
 
-    // Pelin muokkaaminen (lomakkeen käsittely)
     public static function update($id) {
         $params = $_POST;
 

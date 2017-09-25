@@ -46,8 +46,9 @@ class UserController extends BaseController {
         
         $kayttaja = new User($attributes);
         $errors = $kayttaja->errors();
-
-//        Kint::dump($params);
+        $uniikki = $kayttaja->validate_unique_tunnus();
+        
+        $errors = array_merge($errors, $uniikki);
 
         if (count($errors) == 0) {
             $kayttaja->save();
@@ -66,6 +67,69 @@ class UserController extends BaseController {
         } else {
             $tunnus = $kayttaja[0]->tunnus;
             Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Löytyi!'));
+        }
+    }
+    
+        public static function update($tunnus) {
+        $params = $_POST;
+
+        $attributes = array(
+            'kuvaus' => $params['kuvaus'],
+            'ika' => $params['ika'],
+            'tunnus' => $tunnus,
+            'salasana' => $params['salasana']
+        );
+
+        $kayttaja = new User($attributes);
+        
+        if (isset($params['admin'])) {
+            $attributes['admin'] = 1;
+            $kayttaja->admin = true;
+        } else {
+            $attributes['admin'] = 0;
+            $kayttaja->admin = false;
+        }
+        
+        $errors = $kayttaja->errors();
+
+        if (count($errors) == 0) {
+            $kayttaja->update();
+            Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Käyttäjää muokattu!'));
+        } else {
+            UserController::editErrors($errors, $attributes);
+        }
+    }
+
+    public static function edit($tunnus) {
+
+        $kayttaja = User::find($tunnus);
+
+        $attributes = array(
+            'kuvaus' => $kayttaja[0]->kuvaus,
+            'ika' => $kayttaja[0]->ika,
+            'admin' => $kayttaja[0]->admin,
+            'salasana' => $kayttaja[0]->salasana,
+            'tunnus' => $tunnus
+        );
+
+        View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes));
+    }
+
+    public static function editErrors($errors, $attributes) {
+        View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
+    }
+
+    public static function destroy($tunnus) {
+        $kayttaja = User::find($tunnus);
+
+
+        $errors = $kayttaja[0]->validate_connections();
+
+        if (count($errors) == 0) {
+            $kayttaja[0]->destroy();
+            Redirect::to('/kayttajat', array('message' => 'Käyttäjä poistettu!'));
+        } else {
+            Redirect::to('/kayttaja/' . $tunnus, array('errors' => $errors));
         }
     }
 

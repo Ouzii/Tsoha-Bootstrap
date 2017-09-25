@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 {% for k in kayttaja%}
 <div style="color:green"><h1>{{k.tunnus}}</h1></div>
 <p>
-    <button class="btn btn-danger">Poista</button> <a href="{{base_path}}/kayttajaMuokkaus" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/kayttajaPoisto/{{k.tunnus}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/kayttajaMuokkaus/{{k.tunnus}}" class="btn btn-default">Muokkaa</a>
 </p>
 
 <ul>

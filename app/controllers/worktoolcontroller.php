@@ -39,7 +39,6 @@ class WorkToolController extends BaseController {
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
         );
         $tyokalu = new WorkTool($attributes);
-//        Kint::dump($params);
         $errors = $tyokalu->errors();
 
         if (count($errors) == 0) {

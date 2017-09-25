@@ -74,8 +74,24 @@ class User extends BaseModel {
         } else {
             $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => null, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
         }
-//        Kint::trace();
-//        Kint::dump($row);
+    }
+
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Kayttaja SET kuvaus = :kuvaus, ika = :ika, salasana =:salasana WHERE tunnus = :tunnus');
+        $query->execute(array('kuvaus' => $this->kuvaus, 'ika' => $this->ika, 'salasana' => $this->salasana, 'tunnus' => $this->tunnus));
+        
+        if ($this->admin == true) {
+            $query = DB::connection()->prepare('UPDATE Kayttaja SET admin = TRUE WHERE tunnus = :tunnus');
+            $query->execute(array('tunnus' => $this->tunnus));
+        } else {
+            $query = DB::connection()->prepare('UPDATE Kayttaja SET admin = FALSE WHERE tunnus = :tunnus');
+            $query->execute(array('tunnus' => $this->tunnus));
+        }
+    }
+
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Kayttaja WHERE tunnus = :tunnus');
+        $query->execute(array('tunnus' => $this->tunnus));
     }
 
     public function validate_tunnus() {
@@ -89,6 +105,11 @@ class User extends BaseModel {
             $errors[] = 'Käyttäjätunnus voi olla enintään 20 merkkiä pitkä!';
         }
 
+        return $errors;
+    }
+
+    public function validate_unique_tunnus() {
+        $errors = array();
         $olemassaOlevat = User::all();
         if (in_array($this->tunnus, $olemassaOlevat)) {
             $errors[] = 'Käyttäjätunnus on jo olemassa!';
@@ -128,6 +149,20 @@ class User extends BaseModel {
             $errors[] = 'Ikäsi täytyy olla numeroina!';
         }
 
+        return $errors;
+    }
+    
+    public function validate_connections() {
+        $query = DB::connection()->prepare('SELECT * FROM KayttajanTyot WHERE tekija = :tunnus');
+        $query->execute(array('tunnus' => $this->tunnus));
+        $rows = $query->fetchAll();
+        
+        $errors = array();
+        
+        if(count($rows) > 0) {
+            $errors[] = $this->tunnus . ' liittyy ' . count($rows) . ' työhön!';
+        }
+        
         return $errors;
     }
 

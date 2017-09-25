@@ -68,8 +68,12 @@ $routes->post('/tyonKohdeMuokkaaminen/:id', function($id) {
     WorkObjectController::update($id);
 });
 
-$routes->get('/kayttajaMuokkaus', function() {
-    HelloWorldController::kayttajaMuokkaus();
+$routes->get('/kayttajaMuokkaus/:tunnus', function($tunnus) {
+    UserController::edit($tunnus);
+});
+
+$routes->post('/kayttajaMuokkaaminen/:tunnus', function($tunnus) {
+    UserController::update($tunnus);
 });
 
 $routes->post('/tyo', function() {
@@ -138,6 +142,10 @@ $routes->get('/tyokaluPoisto/:id', function($id) {
 
 $routes->get('/tyonKohdePoisto/:id', function($id) {
     WorkObjectController::destroy($id);
+});
+
+$routes->get('/kayttajaPoisto/:tunnus', function($tunnus) {
+    UserController::destroy($tunnus);
 });
 
 

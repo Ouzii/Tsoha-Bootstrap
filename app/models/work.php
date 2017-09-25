@@ -111,15 +111,10 @@ class Work extends BaseModel {
 
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus) VALUES (:kohde, :tyokalu, :kuvaus, :tarkempi_kuvaus) RETURNING id');
-        $kohdeID = WorkObject::findKuvaus($this->kohde);
-        $kohdeID = $kohdeID[0]->id;
-
-        $tyokaluID = WorkTool::findKuvaus($this->tyokalu);
-        $tyokaluID = $tyokaluID[0]->id;
+        $kohdeID = WorkObject::findKuvaus($this->kohde)[0]->id;
+        $tyokaluID = WorkTool::findKuvaus($this->tyokalu)[0]->id;
         $query->execute(array('kohde' => $kohdeID, 'tyokalu' => $tyokaluID, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
         $row = $query->fetch();
-//        Kint::trace();
-//        Kint::dump($row);
         $this->id = $row['id'];
         $this->saveUsers();
     }
@@ -127,10 +122,8 @@ class Work extends BaseModel {
     public function update() {
         $query = DB::connection()->prepare('UPDATE Tyo SET kohde = :kohde, tyokalu = :tyokalu, kuvaus = :kuvaus, tarkempi_kuvaus = :tarkempi_kuvaus WHERE id = :id');
         $kohdeID = WorkObject::findKuvaus($this->kohde)[0]->id;
-//        $kohdeID = $kohdeID[0]->id;
 
         $tyokaluID = WorkTool::findKuvaus($this->tyokalu)[0]->id;
-//        $tyokaluID = $tyokaluID[0]->id;
         $query->execute(array('kohde' => $kohdeID, 'tyokalu' => $tyokaluID, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
 
         if ($this->tehty == TRUE) {
