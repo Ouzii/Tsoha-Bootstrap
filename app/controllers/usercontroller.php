@@ -52,7 +52,7 @@ class UserController extends BaseController {
 
         if (count($errors) == 0) {
             $kayttaja->save();
-            Redirect::to('/kayttaja/' . $kayttaja->tunnus, array('message' => 'Tunnus luotu!'));
+            Redirect::to('/login', array('message' => 'Tunnus luotu! Voit nyt kirjautua sisään.'));
         } else {
             UserController::createErrors($errors, $attributes);
         }
