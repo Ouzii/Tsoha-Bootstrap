@@ -67,6 +67,33 @@ class User extends BaseModel {
         return null;
     }
 
+    public static function getUsersWorks($tunnus) {
+        $query = DB::connection()->prepare('SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus ORDER BY tyo');
+        $query->execute(array('tunnus' => $tunnus));
+
+        $rows = $query->fetchAll();
+        $tyot = array();
+
+        foreach ($rows as $row) {
+            $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id = :id');
+            $query->execute(array('id' => $row['tyo']));
+
+            $tulos = $query->fetch();
+
+            $tyo = new Work(array(
+                'id' => $tulos['id'],
+                'kuvaus' => $tulos['kuvaus'],
+                'kohde' => $tulos['kohde'],
+                'tyokalu' => $tulos['tyokalu'],
+                'tehty' => $tulos['tehty']
+            ));
+            
+            $tyot[] = $tyo;
+        }
+        
+        return $tyot;
+    }
+
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (tunnus, salasana, ika, kuvaus, admin) VALUES (:tunnus, :salasana, :ika, :kuvaus, :admin)');
         if (is_numeric($this->ika)) {
@@ -177,7 +204,7 @@ class User extends BaseModel {
                 'salasana' => $row['salasana'],
                 'kuvaus' => $row['kuvaus'],
                 'admin' => $row['admin']
-                    ));
+            ));
             return $kayttaja;
             // Käyttäjä löytyi, palautetaan löytynyt käyttäjä oliona
         } else {

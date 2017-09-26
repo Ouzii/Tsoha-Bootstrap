@@ -12,6 +12,10 @@ $routes->get('/login', function() {
     UserController::login();
 });
 
+$routes->get('/logout', function() {
+    UserController::logout();
+});
+
 $routes->post('/logging', function() {
     UserController::handle_login();
 });

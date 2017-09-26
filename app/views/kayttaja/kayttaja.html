@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if user_logged_in.admin %}
+{% if user_logged_in %}
+
+{% if (user_logged_in.admin) or (user_logged_in.tunnus == kayttaja.tunnus) %}
 
 {% if errors %}
 <div class="alert alert-danger">
@@ -13,28 +15,26 @@
 </div>
 {% endif %}
 
-{% for k in kayttaja%}
-<div style="color:green"><h1>{{k.tunnus}}</h1></div>
+<div style="color:green"><h1>{{kayttaja.tunnus}}</h1></div>
 <p>
-    <a href="{{base_path}}/kayttajaPoisto/{{k.tunnus}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/kayttajaMuokkaus/{{k.tunnus}}" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/kayttajaPoisto/{{kayttaja.tunnus}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/kayttajaMuokkaus/{{kayttaja.tunnus}}" class="btn btn-default">Muokkaa</a>
 </p>
 
 <ul>
-    <li><strong>Ikä:</strong> {{k.ika}}</li>
-    {% if k.admin %}
+    <li><strong>Ikä:</strong> {{kayttaja.ika}}</li>
+    {% if kayttaja.admin %}
     <li><strong>Admin: </strong><input type="checkbox" checked="checked" disabled="disabled" /></li>
     {% else %}
     <li><strong>Admin: </strong><input type="checkbox" disabled="disabled" /></li>
     {% endif %}
 </ul>
-<p><Strong>Tarkempi kuvaus:</strong> {{k.kuvaus}}</p>
+<p><Strong>Tarkempi kuvaus:</strong> {{kayttaja.kuvaus}}</p>
 
  {% if message != null %}
 <div class="alert alert-success">
   {{message}}
 </div>
   {% endif %}
-{% endfor %}
 
 {% else %}
 
@@ -48,25 +48,35 @@
 </div>
 {% endif %}
 
-{% for k in kayttaja%}
-<div style="color:green"><h1>{{k.tunnus}}</h1></div>
+
+<div style="color:green"><h1>{{kayttaja.tunnus}}</h1></div>
+
 
 <ul>
-    <li><strong>Ikä:</strong> {{k.ika}}</li>
-    {% if k.admin %}
+    <li><strong>Ikä:</strong> {{kayttaja.ika}}</li>
+    {% if kayttaja.admin %}
     <li><strong>Admin: </strong><input type="checkbox" checked="checked" disabled="disabled" /></li>
     {% else %}
     <li><strong>Admin: </strong><input type="checkbox" disabled="disabled" /></li>
     {% endif %}
 </ul>
-<p><Strong>Tarkempi kuvaus:</strong> {{k.kuvaus}}</p>
+
+
+
+<p><Strong>Tarkempi kuvaus:</strong> {{kayttaja.kuvaus}}</p>
 
  {% if message != null %}
 <div class="alert alert-success">
   {{message}}
 </div>
   {% endif %}
-{% endfor %}
 
 {% endif %}
+
+{% else %}
+
+<div style="color:green"><h1>Kirjaudu sisään tarkastellaksesi käyttäjiä!</h1></div>
+
+{% endif %}
+
 {% endblock %}

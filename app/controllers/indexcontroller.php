@@ -3,7 +3,12 @@
 class IndexController extends BaseController {
 
     public static function index() {
-        View::make('etusivu/etusivu.html');
+        if (isset($_SESSION['tunnus'])) {
+        $kayttajanTyot = User::getUsersWorks(self::get_user_logged_in()->tunnus);
+        View::make('etusivu/etusivu.html', array('omatTyot' => $kayttajanTyot));
+        } else {
+            View::make('etusivu/etusivu.html');
+        }
     }
 }
 /* 

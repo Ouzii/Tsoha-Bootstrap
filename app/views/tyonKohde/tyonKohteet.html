@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if user_logged_in %}
+
+{% if user_logged_in.admin %}
+
 <div style="color:green"><h1>Näkymä - Työn kohteet</h1></div>
 <br>
 <form action="{{base_path}}/etsiTyonKohde" method="post">
@@ -42,5 +47,55 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+
+<div style="color:green"><h1>Näkymä - Työn kohteet</h1></div>
+<br>
+<form action="{{base_path}}/etsiTyonKohde" method="post">
+    <input list="etsiTyonKohde" name="kuvaus">
+    <datalist id="etsiTyonKohde">
+        {% for t in tyonKohteet %}
+        <option value="{{t.kuvaus}}">
+            {% endfor %}
+    </datalist>
+    <input type="submit" value="etsi">
+</form>
+
+{% if message != null %}
+<br>
+<div class="alert alert-danger">
+    {{message}}
+</div>
+{% endif %}
+
+<br>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Kuvaus</th>
+            <th>Lisäyspäivä</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for t in tyonKohteet %}
+        <tr>
+            <td><a href="{{base_path}}/tyonKohde/{{t.id}}">{{t.kuvaus}}</a></td>
+            <td>{{t.luotu}}</td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+{% else %}
+
+<div style="color:green"><h1>Kirjaudu sisään tarkastellaksesi työn kohteita!</h1></div>
+
+{% endif %}
 
 {% endblock %}

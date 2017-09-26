@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if user_logged_in %}
+
 {% if user_logged_in.admin %}
+
 {% for t in tyo %}
 <div style="color:green"><h1>{{t.kuvaus}}</h1></div>
 
@@ -73,6 +76,12 @@
   {% endif %}
 
 {% endfor %}
+
+{% endif %}
+
+{% else %}
+
+<div style="color:green"><h1>Kirjaudu sisään tarkastellaksesi töitä!</h1></div>
 
 {% endif %}
 

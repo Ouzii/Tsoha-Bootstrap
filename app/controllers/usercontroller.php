@@ -9,7 +9,7 @@ class UserController extends BaseController {
 
     public static function show($tunnus) {
         $kayttaja = User::find($tunnus);
-        View::make('kayttaja/kayttaja.html', array('kayttaja' => $kayttaja));
+        View::make('kayttaja/kayttaja.html', array('kayttaja' => $kayttaja[0]));
     }
 
     public static function create() {
@@ -147,8 +147,14 @@ class UserController extends BaseController {
         } else {
             $_SESSION['tunnus'] = $kayttaja[0]->tunnus;
 
-            Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $kayttaja[0]->tunnus . '!'));
+            Redirect::to('/', array('message' => 'Kirjautuminen onnistui!'));
         }
+    }
+    
+    public static function logout() {
+        
+        $_SESSION['tunnus'] = null;
+        Redirect::to('/', array('message' => 'Kirjauduit ulos!'));
     }
 
 }

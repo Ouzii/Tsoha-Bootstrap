@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if (user_logged_in.tunnus == attributes.tunnus) or (user_logged_in.admin) %}
+
 {% if errors %}
 <div class="alert alert-danger">
     <ul>
@@ -27,14 +29,32 @@
         <label for="salasana">Salasana</label>
         <input type="text" class="form-control" name="salasana" value="{{attributes.salasana}}">
     </div>    
+    {% if user_logged_in.admin %}
     
     {% if attributes.admin %}
     <strong>Admin: </strong><input type="checkbox" name="admin" checked>
     {% else %}
     <strong>Admin: </strong><input type="checkbox" name="admin">
     {% endif %}
+    
+    {% else %}
+    
+    {% if attributes.admin %}
+    <strong>Admin: </strong><input type="checkbox" name="admin" checked disabled>
+    {% else %}
+    <strong>Admin: </strong><input type="checkbox" name="admin" disabled>
+    {% endif %}
+    
+    {% endif %}
     <br>
     <br>
     <button type="submit" class="btn btn-default">Muuta</button>
 </form>
+
+{% else %}
+
+<div style="color:green"><h1>Kirjaudu sisään muokataksesi tietojasi tai kirjaudu sisään admin-tunnuksella muokataksesi muiden tietoja!</h1></div>
+
+{% endif %}
+
 {% endblock %}
