@@ -10,7 +10,7 @@ class WorkController extends BaseController {
     public static function show($id) {
         $tyo = Work::find($id);
         $tekijat = Work::getUsers($id);
-        View::make('tyo/tyoKuvaus.html', array('tyo' => $tyo, 'tekijat' => $tekijat));
+        View::make('tyo/tyoKuvaus.html', array('tyo' => $tyo[0], 'tekijat' => $tekijat));
     }
 
     public static function create() {

@@ -9,7 +9,7 @@ class WorkObjectController extends BaseController {
 
     public static function show($id) {
         $tyonKohde = WorkObject::find($id);
-        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
+        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde[0]));
     }
 
     public static function showKuvaus($kuvaus) {

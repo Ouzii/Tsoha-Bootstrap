@@ -15,23 +15,21 @@
 {% endif %}
 
 
-{% for t in tyokalu %}
-<div style="color:green"><h1>{{t.kuvaus}}</h1></div>
+<div style="color:green"><h1>{{tyokalu.kuvaus}}</h1></div>
 <p>
-    <a href="{{base_path}}/tyokaluPoisto/{{t.id}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/tyokaluMuokkaus/{{t.id}}" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/tyokaluPoisto/{{tyokalu.id}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/tyokaluMuokkaus/{{tyokalu.id}}" class="btn btn-default">Muokkaa</a>
 </p>
     <ul>
-        <li><strong>Luomispäivä:</strong> {{t.luotu}}</li>
+        <li><strong>Luomispäivä:</strong> {{tyokalu.luotu}}</li>
     </ul>
 
-<p><Strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+<p><Strong>Tarkempi kuvaus:</strong> {{tyokalu.tarkempi_kuvaus}}</p>
 
  {% if message != null %}
 <div class="alert alert-success">
   {{message}}
 </div>
   {% endif %}
-{% endfor%}
 
 {% else %}
 
@@ -46,21 +44,19 @@
 {% endif %}
 
 
-{% for t in tyokalu %}
-<div style="color:green"><h1>{{t.kuvaus}}</h1></div>
+<div style="color:green"><h1>{{tyokalu.kuvaus}}</h1></div>
 
     <ul>
-        <li><strong>Luomispäivä:</strong> {{t.luotu}}</li>
+        <li><strong>Luomispäivä:</strong> {{tyokalu.luotu}}</li>
     </ul>
 
-<p><Strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+<p><Strong>Tarkempi kuvaus:</strong> {{tyokalu.tarkempi_kuvaus}}</p>
 
  {% if message != null %}
 <div class="alert alert-success">
   {{message}}
 </div>
   {% endif %}
-{% endfor%}
 
 {% endif %}
 

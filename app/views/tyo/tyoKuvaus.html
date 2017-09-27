@@ -5,21 +5,20 @@
 
 {% if user_logged_in.admin %}
 
-{% for t in tyo %}
-<div style="color:green"><h1>{{t.kuvaus}}</h1></div>
+<div style="color:green"><h1>{{tyo.kuvaus}}</h1></div>
 
 <p>
-    <a href="{{base_path}}/tyoPoisto/{{t.id}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/tyoMuokkaus/{{t.id}}" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/tyoPoisto/{{tyo.id}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/tyoMuokkaus/{{tyo.id}}" class="btn btn-default">Muokkaa</a>
 </p>
 
 <ul>
-    <li><strong>ID:</strong><font color='red'> {{t.id}}</font></li>
-    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonKohdeKuvaus/{{t.kohde}}"> {{t.kohde}}</a></li>
-    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokaluKuvaus/{{t.tyokalu}}"> {{t.tyokalu}}</a></li>
+    <li><strong>ID:</strong><font color='red'> {{tyo.id}}</font></li>
+    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonKohdeKuvaus/{{tyo.kohde}}"> {{tyo.kohde}}</a></li>
+    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokaluKuvaus/{{tyo.tyokalu}}"> {{tyo.tyokalu}}</a></li>
     
-              {% if t.tehty %}
+              {% if tyo.tehty %}
               <li><strong>Tehty: </strong><input type="checkbox" checked="" disabled="disabled"></li>
-              <li><strong>Suoritusaika: </strong>{{t.suoritusaika}}</li>
+              <li><strong>Suoritusaika: </strong>{{tyo.suoritusaika}}</li>
               {% else %}
               <li><strong>Tehty: </strong><input type="checkbox" disabled="disabled"></li>
               {% endif %}
@@ -32,7 +31,7 @@
     <li><a href="{{base_path}}/kayttaja/{{tekija.tunnus}}">{{tekija.tunnus}}</a></li>
 </ul>
     {% endfor %}
-<p><strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+<p><strong>Tarkempi kuvaus:</strong> {{tyo.tarkempi_kuvaus}}</p>
 
  {% if message %}
 <div class="alert alert-success">
@@ -40,21 +39,19 @@
 </div>
   {% endif %}
 
-{% endfor %}
 
 {% else %}
 
-{% for t in tyo %}
-<div style="color:green"><h1>{{t.kuvaus}}</h1></div>
+<div style="color:green"><h1>{{tyo.kuvaus}}</h1></div>
 
 <ul>
-    <li><strong>ID:</strong><font color='red'> {{t.id}}</font></li>
-    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonKohdeKuvaus/{{t.kohde}}"> {{t.kohde}}</a></li>
-    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokaluKuvaus/{{t.tyokalu}}"> {{t.tyokalu}}</a></li>
+    <li><strong>ID:</strong><font color='red'> {{tyo.id}}</font></li>
+    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/tyonKohdeKuvaus/{{tyo.kohde}}"> {{tyo.kohde}}</a></li>
+    <li><strong>Työkalu:</strong> <a href="{{base_path}}/tyokaluKuvaus/{{tyo.tyokalu}}"> {{tyo.tyokalu}}</a></li>
     
-              {% if t.tehty %}
+              {% if tyo.tehty %}
               <li><strong>Tehty: </strong><input type="checkbox" checked="" disabled="disabled"></li>
-              <li><strong>Suoritusaika: </strong>{{t.suoritusaika}}</li>
+              <li><strong>Suoritusaika: </strong>{{tyo.suoritusaika}}</li>
               {% else %}
               <li><strong>Tehty: </strong><input type="checkbox" disabled="disabled"></li>
               {% endif %}
@@ -67,7 +64,7 @@
     <li><a href="{{base_path}}/kayttaja/{{tekija.tunnus}}">{{tekija.tunnus}}</a></li>
 </ul>
     {% endfor %}
-<p><strong>Tarkempi kuvaus:</strong> {{t.tarkempi_kuvaus}}</p>
+<p><strong>Tarkempi kuvaus:</strong> {{tyo.tarkempi_kuvaus}}</p>
 
  {% if message %}
 <div class="alert alert-success">
@@ -75,7 +72,6 @@
 </div>
   {% endif %}
 
-{% endfor %}
 
 {% endif %}
 

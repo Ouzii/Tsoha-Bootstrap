@@ -9,7 +9,7 @@ class WorkToolController extends BaseController {
 
     public static function show($id) {
         $tyokalu = WorkTool::find($id);
-        View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $tyokalu));
+        View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $tyokalu[0]));
     }
 
     public static function showKuvaus($kuvaus) {
