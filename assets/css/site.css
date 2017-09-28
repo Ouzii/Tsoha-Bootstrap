@@ -2,6 +2,11 @@
   max-width: 1200px;
   padding: 10px 25px;
   margin: 0px auto;
+  text-align: center;
+}
+
+ul {
+    list-style-type: none;
 }
 
 .navbar .container-fluid{
