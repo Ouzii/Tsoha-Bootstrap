@@ -30,8 +30,8 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-<th>ID</th>
-    <th>Kuvaus</th>
+            <th>ID</th>
+            <th>Kuvaus</th>
             <th>Työn kohde</th>
             <th>Työkalu</th>
             <th>Tehty</th>
@@ -39,7 +39,7 @@
     </thead>
 
     <tbody>
-       {% for tyo in tyot %}
+        {% for tyo in tyot %}
         <tr>
             <td>{{tyo.id}}</td>
             <td><a href="{{base_path}}/tyo/{{tyo.id}}">{{tyo.kuvaus}}</td>

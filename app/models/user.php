@@ -206,10 +206,8 @@ class User extends BaseModel {
                 'admin' => $row['admin']
             ));
             return $kayttaja;
-            // Käyttäjä löytyi, palautetaan löytynyt käyttäjä oliona
         } else {
             return null;
-            // Käyttäjää ei löytynyt, palautetaan null
         }
     }
 

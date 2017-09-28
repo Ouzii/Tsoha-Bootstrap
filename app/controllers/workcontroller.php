@@ -53,7 +53,7 @@ class WorkController extends BaseController {
         $tyo = new Work($attributes);
 
         $errors = $tyo->errors();
-
+        
         if (count($errors) == 0) {
             $tyo->save();
             Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
