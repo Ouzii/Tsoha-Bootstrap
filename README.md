@@ -32,3 +32,13 @@ Yleisiä linkkejä:
 
 Työnjakaja on sovellus, jolla pystyy helposti luomaan, muokkaamaan ja poistamaan työn kohteita ja työkaluja. Työn kohteille voi tämän jälkeen luoda töitä, joilla on työn kohteen lisäksi käytettävä työkalu ja tekijät.
 Sovellus on kätevä esimerkiksi kotitalouden kotitöiden jakamisessa.
+
+
+## Testitunnukset
+
+Admin tunnus: TestAdmin
+salasana: Testadmin2017
+
+Novice tunnus: TestNovice
+salasana: Testnovice2017    display:table;
+    margin:0px auto 0px auto;
