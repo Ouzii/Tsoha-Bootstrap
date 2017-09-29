@@ -40,5 +40,4 @@ Admin tunnus: TestAdmin
 salasana: Testadmin2017
 
 Novice tunnus: TestNovice
-salasana: Testnovice2017    display:table;
-    margin:0px auto 0px auto;
+salasana: Testnovice2017
