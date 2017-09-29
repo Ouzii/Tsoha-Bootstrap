@@ -138,7 +138,11 @@ class User extends BaseModel {
     public function validate_unique_tunnus() {
         $errors = array();
         $olemassaOlevat = User::all();
-        if (in_array($this->tunnus, $olemassaOlevat)) {
+        $vanhatTunnukset = array();
+        foreach ($olemassaOlevat as $olemassaOleva) {
+            $vanhatTunnukset[] = $olemassaOleva->tunnus;
+        }
+        if (in_array($this->tunnus, $vanhatTunnukset)) {
             $errors[] = 'Käyttäjätunnus on jo olemassa!';
         }
 
