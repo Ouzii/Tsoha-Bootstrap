@@ -1,29 +1,38 @@
 <?php
-
+/*
+ * Malli, joka mallintaa työtä.
+ */
 class Work extends BaseModel {
 
     public $id, $kohde, $tyokalu, $kuvaus, $tarkempi_kuvaus, $tehty, $suoritusaika, $tekijat;
 
+     /*
+      * Heti konstruktorissa tarkistetaan, että onko työkalu ja -kohde tallennettuna id:n arvoina 
+      * ja haetaan niiden kuvaukset.
+      */
     public function __construct($attributes) {
         parent::__construct($attributes);
         if (is_numeric($this->tyokalu)) {
-            $this->getKuvauksetTyokalu();
+            $this->getToolDescription();
         }
 
         if (is_numeric($this->kohde)) {
-            $this->getKuvauksetTyonKohde();
+            $this->getObjectDescription();
         }
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus', 'validate_tekijat');
     }
 
+     /*
+      * Haetaan kaikki työt id:n mukaan järjestettynä ja palautetaan ne listana.
+      */
     public static function all() {
         $query = DB::connection()->prepare('SELECT * FROM Tyo ORDER BY id ASC');
         $query->execute();
         $rows = $query->fetchAll();
-        $tyot = array();
+        $works = array();
 
         foreach ($rows as $row) {
-            $tyot[] = new Work(array(
+            $works[] = new Work(array(
                 'id' => $row['id'],
                 'kohde' => $row['kohde'],
                 'tyokalu' => $row['tyokalu'],
@@ -33,16 +42,19 @@ class Work extends BaseModel {
                 'suoritusaika' => (String) substr($row['suoritusaika'], 0, 19)
             ));
         }
-        return $tyot;
+        return $works;
     }
 
+     /*
+      * Etsitään haluttu työ tietokannasta ja palautetaan se oliona.
+      */
     public static function find($id) {
         $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
 
         if ($row) {
-            $tyo[] = new Work(array(
+            $work = new Work(array(
                 'id' => $row['id'],
                 'kohde' => $row['kohde'],
                 'tyokalu' => $row['tyokalu'],
@@ -51,13 +63,16 @@ class Work extends BaseModel {
                 'tehty' => $row['tehty'],
                 'suoritusaika' => (String) substr($row['suoritusaika'], 0, 19)
             ));
-            return $tyo;
+            return $work;
         }
 
         return null;
     }
 
-    public function getKuvauksetTyokalu() {
+     /*
+      * Etsitään työhön liittyvälle työkalulle kuvaus, joka tallennetaan työkalu-muuttujaan.
+      */
+    public function getToolDescription() {
         $query = DB::connection()->prepare('SELECT kuvaus FROM Tyokalu WHERE id = :id');
         $query->execute(array('id' => $this->tyokalu));
         $row = $query->fetch();
@@ -65,7 +80,10 @@ class Work extends BaseModel {
         $this->tyokalu = $row['kuvaus'];
     }
 
-    public function getKuvauksetTyonKohde() {
+     /*
+      * Etsitään työhön liittyvälle työkohteelle kuvaus, joka tallennetaan työn kohde -muuttujaan.
+      */
+    public function getObjectDescription() {
         $query = DB::connection()->prepare('SELECT kuvaus FROM Tyon_kohde WHERE id = :id');
         $query->execute(array('id' => $this->kohde));
         $row = $query->fetch();
@@ -73,13 +91,16 @@ class Work extends BaseModel {
         $this->kohde = $row['kuvaus'];
     }
 
-    public static function findWithKuvaus($kuvaus) {
+     /*
+      * Etsitään haluttu työ kuvauksella ja palautetaan se oliona.
+      */
+    public static function findWithDescription($kuvaus) {
         $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE kuvaus = :kuvaus LIMIT 1');
         $query->execute(array('kuvaus' => $kuvaus));
         $row = $query->fetch();
 
         if ($row) {
-            $tyo = new Work(array(
+            $work = new Work(array(
                 'id' => $row['id'],
                 'kohde' => $row['kohde'],
                 'tyokalu' => $row['tyokalu'],
@@ -89,42 +110,37 @@ class Work extends BaseModel {
                 'suoritusaika' => $row['suoritusaika'],
             ));
 
-            return $tyo;
+            return $work;
         }
 
         return null;
     }
 
-    public static function getUsers($id) {
-        $query = DB::connection()->prepare('SELECT tekija FROM KayttajanTyot WHERE tyo = :id');
-        $query->execute(array('id' => $id));
-        $rows = $query->fetchAll();
-        $tekijat = array();
-
-        foreach ($rows as $row) {
-            $tekijat[] = new User(array(
-                'tunnus' => $row['tekija'],
-            ));
-        }
-        return $tekijat;
-    }
-
+     /*
+      * Tallennetaan olion tiedot tietokantaan. 
+      * Ennen SQL-lauseen suoritusta, haetaan työllä olevien työkalun ja -kohteen id:t.
+      */
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Tyo (kohde, tyokalu, kuvaus, tarkempi_kuvaus) VALUES (:kohde, :tyokalu, :kuvaus, :tarkempi_kuvaus) RETURNING id');
-        $kohdeID = WorkObject::findKuvaus($this->kohde)[0]->id;
-        $tyokaluID = WorkTool::findKuvaus($this->tyokalu)[0]->id;
-        $query->execute(array('kohde' => $kohdeID, 'tyokalu' => $tyokaluID, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
+        $objectId = WorkObject::findWithDescription($this->kohde)->id;
+        $toolId = WorkTool::findWithDescription($this->tyokalu)->id;
+        $query->execute(array('kohde' => $objectId, 'tyokalu' => $toolId, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
         $row = $query->fetch();
         $this->id = $row['id'];
         $this->saveUsers();
     }
 
+     /*
+      * Päivitetään olion tiedot tietokantaan. 
+      * Ennen SQL-lauseen suoritusta, haetaan työllä olevien työkalun ja -kohteen id:t. 
+      * Työn tehty-attribuuttia muokataan erikseen, jotta tyhjä syöte ei tuottaisi virheitä. 
+      * Lopuksi poistetaan vanhat merkinnät KäyttäjänTyöt -tietokohteesta ja lisätään päivitetyt tiedot tietokantaan.
+      */
     public function update() {
         $query = DB::connection()->prepare('UPDATE Tyo SET kohde = :kohde, tyokalu = :tyokalu, kuvaus = :kuvaus, tarkempi_kuvaus = :tarkempi_kuvaus WHERE id = :id');
-        $kohdeID = WorkObject::findKuvaus($this->kohde)[0]->id;
-
-        $tyokaluID = WorkTool::findKuvaus($this->tyokalu)[0]->id;
-        $query->execute(array('kohde' => $kohdeID, 'tyokalu' => $tyokaluID, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
+        $objectId = WorkObject::findWithDescription($this->kohde)->id;
+        $toolId = WorkTool::findWithDescription($this->tyokalu)->id;
+        $query->execute(array('kohde' => $objectId, 'tyokalu' => $toolId, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
 
         if ($this->tehty == TRUE) {
             $query = DB::connection()->prepare('UPDATE Tyo SET tehty = TRUE, suoritusaika = now() WHERE id = :id');
@@ -136,9 +152,13 @@ class Work extends BaseModel {
 
         $query = DB::connection()->prepare('DELETE FROM KayttajanTyot WHERE tyo = :id');
         $query->execute(array('id' => $this->id));
-        $this->saveUsers();
+        UsersWorks::saveUsers($this->id, $this->tekijat);
     }
 
+     /*
+      * Poistetaan ensin työ KäyttäjänTyöt -tietokohteesta liitosvirheiden välttämiseksi. 
+      * Sitten poistetaan olion tiedot tietokannasta.
+      */
     public function destroy() {
         $query = DB::connection()->prepare('DELETE FROM KayttajanTyot WHERE tyo = :id');
         $query->execute(array('id' => $this->id));
@@ -147,13 +167,9 @@ class Work extends BaseModel {
         $query->execute(array('id' => $this->id));
     }
 
-    public function saveUsers() {
-        foreach ($this->tekijat as $tekija) {
-            $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');
-            $query->execute(array('id' => $this->id, 'tekija' => $tekija));
-        }
-    }
-
+     /*
+      * Tarkastetaan, että työn kuvaus on sallittu.
+      */
     public function validate_kuvaus() {
         $errors = array();
         if ($this->kuvaus == '' || $this->kuvaus == null) {
@@ -166,6 +182,9 @@ class Work extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että työn tarkempi kuvaus on sallittu.
+      */
     public function validate_tarkempi_kuvaus() {
         $errors = array();
         if (strlen($this->tarkempi_kuvaus) > 360) {
@@ -174,6 +193,9 @@ class Work extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että työllä varmasti on vähintään yksi tekijä.
+      */
     public function validate_tekijat() {
         $errors = array();
         if (count($this->tekijat) == 0) {

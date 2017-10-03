@@ -12,11 +12,11 @@ $routes->get('/hiekkalaatikko', function() {
 });
 
 $routes->get('/login', function() {
-    UserController::login();
+    IndexController::login();
 });
 
 $routes->get('/logout', function() {
-    UserController::logout();
+    IndexController::logout();
 });
 
 $routes->post('/logging', function() {
@@ -43,9 +43,9 @@ $routes->get('/tyokalu/:id', 'check_logged_in', function($id) {
     WorkToolController::show($id);
 });
 
-$routes->get('/tyokaluKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
-    WorkToolController::showKuvaus($kuvaus);
-});
+//$routes->get('/tyokaluKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
+//    WorkToolController::showKuvaus($kuvaus);
+//});
 
 $routes->get('/kayttaja/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::show($tunnus);
@@ -116,7 +116,7 @@ $routes->post('/rekisteroidu', function() {
 });
 
 $routes->get('/rekisteroityminen', function() {
-    UserController::create();
+    IndexController::create();
 });
 
 $routes->get('/tyot', 'check_logged_in', function() {
@@ -140,7 +140,7 @@ $routes->post('/etsiTyonKohde', 'check_logged_in', function() {
 });
 
 $routes->post('/etsiKayttaja', 'check_logged_in', function() {
-    UserController::findWithKuvaus();
+    UserController::findWithTunnus();
 });
 
 $routes->get('/tyoPoisto/:id', 'check_logged_in', function($id) {

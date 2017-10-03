@@ -1,37 +1,57 @@
 <?php
-
+/*
+ * Kontrolleri, joka hoitaa työn kohteisiin liittyvät toiminnallisuudet.
+ */
 class WorkObjectController extends BaseController {
 
+     /*
+      * Haetaan tietokannasta kaikki työn kohteet ja luodaan niistä näkymä.
+      */
     public static function index() {
-        $tyonKohteet = WorkObject::all();
-        View::make('tyonKohde/tyonKohteet.html', array('tyonKohteet' => $tyonKohteet));
+        $workObjects = WorkObject::all();
+        View::make('tyonKohde/tyonKohteet.html', array('tyonKohteet' => $workObjects));
     }
 
+     /*
+      * Etsitään haluttu työn kohde ja luodaan siitä näkymä.
+      */
     public static function show($id) {
-        $tyonKohde = WorkObject::find($id);
-        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
+        $workObject = WorkObject::find($id);
+        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $workObject));
     }
 
-    public static function showKuvaus($kuvaus) {
-        $tyonKohde = WorkObject::findKuvaus($kuvaus);
-//        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
+     /*
+      * Etsitään haluttu työn kohde kuvauksen perusteella ja luodaan siitä näkymä.
+      */
+    public static function showKuvaus($description) {
+        $workObject = WorkObject::findWithDescription($description);
 
-        if ($tyonKohde == null) {
+        if ($workObject == null) {
             Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $id = $tyonKohde->id;
+            $id = $workObject->id;
             Redirect::to('/tyonKohde/' . $id);
         }
     }
 
+    /*
+     * Luodaan näkymä työn kohteen luomiselle.
+     */
     public static function create() {
         View::make('tyonKohde/uusiTyonKohde.html');
     }
 
+     /*
+      * Luodaan uusi työkohteen luomisen näkymä vanhoilla arvoilla ja virhetiedotteella.
+      */
     public static function createErrors($errors, $attributes) {
         View::make('tyonKohde/uusiTyonKohde.html', array('errors' => $errors, 'attributes' => $attributes));
     }
 
+     /*
+      * Tarkistetaan käyttäjän antamat tiedot sallituiksi
+      * ja kutsutaan workobject-mallia päivittämään tietokantaan uudet arvot.
+      */
     public static function update($id) {
         $params = $_POST;
 
@@ -41,47 +61,55 @@ class WorkObjectController extends BaseController {
             'id' => $id
         );
 
-        $tyonKohde = new WorkObject($attributes);
-
-        $errors = $tyonKohde->errors();
+        $workObject = new WorkObject($attributes);
+        $errors = $workObject->errors();
 
         if (count($errors) == 0) {
-            $tyonKohde->update();
+            $workObject->update();
             Redirect::to('/tyonKohde/' . $id, array('message' => 'Työn kohdetta muokattu!'));
         } else {
             WorkObjectController::editErrors($errors, $attributes);
         }
     }
 
+     /*
+      * Haetaan haluttu työn kohde ja luodaan sille muokkausnäkymä.
+      */
     public static function edit($id) {
 
-        $tyonKohde = WorkObject::find($id);
+        $workObject = WorkObject::find($id);
 
         $attributes = array(
-            'kuvaus' => $tyonKohde->kuvaus,
-            'tarkempi_kuvaus' => $tyonKohde->tarkempi_kuvaus,
+            'kuvaus' => $workObject->kuvaus,
+            'tarkempi_kuvaus' => $workObject->tarkempi_kuvaus,
             'id' => $id
         );
 
         View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes));
     }
 
+     /*
+      * Luodaan uusi työkohteen muokkausnäkymä vanhoilla arvoilla ja virhetiedotteella.
+      */
     public static function editErrors($errors, $attributes) {
         View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
+     /*
+      * Tarkistetaan onko käyttäjällä oikeutta poistaa työn kohteita ja jos on,
+      * niin tarkastetaan työn kohteen yhteydet olemassaoleviin töihin. Jos yhteyksiä ei ole,
+      * niin pyydetään mallia poistamaan työn kohde tietokannasta.
+      */
     public static function destroy($id) {
 
         $isAdmin = User::find($_SESSION['tunnus']);
 
         if ($isAdmin->admin) {
-            $tyonKohde = WorkObject::find($id);
-
-
-            $errors = $tyonKohde->validate_connections();
+            $workObject = WorkObject::find($id);
+            $errors = $workObject->validate_connections();
 
             if (count($errors) == 0) {
-                $tyonKohde->destroy();
+                $workObject->destroy();
                 Redirect::to('/tyonKohteet', array('message' => 'Työn kohde poistettu!'));
             } else {
                 Redirect::to('/tyonKohde/' . $id, array('errors' => $errors));
@@ -92,6 +120,10 @@ class WorkObjectController extends BaseController {
         }
     }
 
+     /*
+      * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
+      * ja kutsutaan workobject-mallia tallentamaan tiedot tietokantaan.
+      */
     public static function store() {
         $params = $_POST;
 
@@ -99,25 +131,28 @@ class WorkObjectController extends BaseController {
             'kuvaus' => $params['kuvaus'],
             'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
         );
-        $tyonKohde = new WorkObject($attributes);
-        $errors = $tyonKohde->errors();
+        $workObject = new WorkObject($attributes);
+        $errors = $workObject->errors();
 
         if (count($errors) == 0) {
-            $tyonKohde->save();
-            Redirect::to('/tyonKohde/' . $tyonKohde->id, array('message' => 'Työn kohde luotu!'));
+            $workObject->save();
+            Redirect::to('/tyonKohde/' . $workObject->id, array('message' => 'Työn kohde luotu!'));
         } else {
             WorkObjectController::createErrors($errors, $attributes);
         }
     }
 
+     /*
+      * Etsitään haluttu työn kohde kuvauksen perusteella.
+      */
     public static function findWithKuvaus() {
         $params = $_POST;
-        $etsittyKuvaus = $params['kuvaus'];
-        $tyonKohde = WorkObject::findKuvaus($etsittyKuvaus);
-        if ($tyonKohde == null) {
+        $searchedDescription = $params['kuvaus'];
+        $workObject = WorkObject::findWithDescription($searchedDescription);
+        if ($workObject == null) {
             Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $id = $tyonKohde->id;
+            $id = $workObject->id;
             Redirect::to('/tyonKohde/' . $id, array('message' => 'Löytyi!'));
         }
     }

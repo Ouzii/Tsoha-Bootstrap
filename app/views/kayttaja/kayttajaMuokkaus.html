@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if (user_logged_in.tunnus == attributes.tunnus) or (user_logged_in.admin) %}
+{% if (user_logged_in.username == attributes.tunnus) or (user_logged_in.admin) %}
 
 {% if errors %}
 <div class="alert alert-danger">

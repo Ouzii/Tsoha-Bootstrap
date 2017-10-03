@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Malli, joka mallintaa käyttäjää.
+ */
+
 class User extends BaseModel {
 
     public $tunnus, $salasana, $ika, $kuvaus, $admin;
@@ -9,14 +13,17 @@ class User extends BaseModel {
         $this->validators = array('validate_tunnus', 'validate_salasana', 'validate_kuvaus', 'validate_ika');
     }
 
+     /*
+      * Haetaan kaikki käyttäjät tietokannasta ja palautetaan ne listana.
+      */
     public static function all() {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja');
         $query->execute();
         $rows = $query->fetchAll();
-        $kayttajat = array();
+        $users = array();
 
         foreach ($rows as $row) {
-            $kayttajat[] = new User(array(
+            $users[] = new User(array(
                 'tunnus' => $row['tunnus'],
                 'salasana' => $row['salasana'],
                 'ika' => $row['ika'],
@@ -25,17 +32,20 @@ class User extends BaseModel {
             ));
         }
 
-        return $kayttajat;
+        return $users;
     }
 
+     /*
+      * Haetaan kaikki käyttäjät tietokannasta aakkosjärjestyksessä ja palautetaan ne listana.
+      */
     public static function allAlphabetical() {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja ORDER BY tunnus');
         $query->execute();
         $rows = $query->fetchAll();
-        $kayttajat = array();
+        $users = array();
 
         foreach ($rows as $row) {
-            $kayttajat[] = new User(array(
+            $users[] = new User(array(
                 'tunnus' => $row['tunnus'],
                 'salasana' => $row['salasana'],
                 'ika' => $row['ika'],
@@ -44,16 +54,19 @@ class User extends BaseModel {
             ));
         }
 
-        return $kayttajat;
+        return $users;
     }
 
-    public static function find($tunnus) {
+     /*
+      * Etsitään haluttu käyttäjä tunnuksen perusteella ja palautetaan se oliona.
+      */
+    public static function find($username) {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus LIMIT 1');
-        $query->execute(array('tunnus' => $tunnus));
+        $query->execute(array('tunnus' => $username));
         $row = $query->fetch();
 
         if ($row) {
-            $kayttaja = new User(array(
+            $user = new User(array(
                 'tunnus' => $row['tunnus'],
                 'salasana' => $row['salasana'],
                 'ika' => $row['ika'],
@@ -61,50 +74,26 @@ class User extends BaseModel {
                 'admin' => $row['admin'],
             ));
 
-            return $kayttaja;
+            return $user;
         }
 
         return null;
     }
 
-    public static function getUsersWorks($tunnus) {
-//        $query = DB::connection()->prepare('SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus ORDER BY tyo');
-//        $query->execute(array('tunnus' => $tunnus));
-//
-//        $rows = $query->fetchAll();
-//        $tyot = array();
-//
-//        foreach ($rows as $row) {
-            $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id IN (SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus) ORDER BY id');
-            $query->execute(array('tunnus' => $tunnus));
 
-            $tulos = $query->fetchAll();
 
-            $tyot = array();
-            foreach($tulos as $rivi) {
-            $tyo = new Work(array(
-                'id' => $rivi['id'],
-                'kuvaus' => $rivi['kuvaus'],
-                'kohde' => $rivi['kohde'],
-                'tyokalu' => $rivi['tyokalu'],
-                'tehty' => $rivi['tehty']
-            ));
-            
-            $tyot[] = $tyo;
-        }
-        
-        return $tyot;
-    }
-
+     /*
+      * Tallennetaan olion tiedot tietokantaan.
+      */
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (tunnus, salasana, ika, kuvaus, admin) VALUES (:tunnus, :salasana, :ika, :kuvaus, :admin)');
-        if (is_numeric($this->ika)) {
-            $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
-        } else {
-            $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => null, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
-        }
+        $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
     }
 
+     /*
+      * Päivitetään olion tiedot tietokantaan. Tarkistetaan erikseen admin-ominaisuus, 
+      * sillä muuten syntaksi ei toimi ominaisuuden ollessa false.
+      */
     public function update() {
         $query = DB::connection()->prepare('UPDATE Kayttaja SET kuvaus = :kuvaus, ika = :ika, salasana =:salasana WHERE tunnus = :tunnus');
         $query->execute(array('kuvaus' => $this->kuvaus, 'ika' => $this->ika, 'salasana' => $this->salasana, 'tunnus' => $this->tunnus));
@@ -118,11 +107,17 @@ class User extends BaseModel {
         }
     }
 
+     /*
+      * Poistetaan olion tiedot tietokanasta.
+      */
     public function destroy() {
         $query = DB::connection()->prepare('DELETE FROM Kayttaja WHERE tunnus = :tunnus');
         $query->execute(array('tunnus' => $this->tunnus));
     }
 
+     /*
+      * Tarkastetaan, että annettu tunnus on sallittu.
+      */
     public function validate_tunnus() {
         $errors = array();
 
@@ -137,20 +132,26 @@ class User extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että annettua tunnusta ei ole ennestään olemassa.
+      */
     public function validate_unique_tunnus() {
         $errors = array();
-        $olemassaOlevat = User::all();
-        $vanhatTunnukset = array();
-        foreach ($olemassaOlevat as $olemassaOleva) {
-            $vanhatTunnukset[] = $olemassaOleva->tunnus;
+        $existingUsers = User::all();
+        $existingUsernames = array();
+        foreach ($existingUsers as $existingUser) {
+            $existingUsernames[] = $existingUser->tunnus;
         }
-        if (in_array($this->tunnus, $vanhatTunnukset)) {
+        if (in_array($this->tunnus, $existingUsernames)) {
             $errors[] = 'Käyttäjätunnus on jo olemassa!';
         }
 
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että salasana on sallittu.
+      */
     public function validate_salasana() {
         $errors = array();
 
@@ -165,6 +166,9 @@ class User extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että kuvaus on sallittu.
+      */
     public function validate_kuvaus() {
         $errors = array();
 
@@ -175,6 +179,9 @@ class User extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että ikä on sallittu.
+      */
     public function validate_ika() {
         $errors = array();
 
@@ -185,6 +192,10 @@ class User extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan onko käyttäjällä liitoksia olemassaoleviin töihin. 
+      * Jos on, palautetaan virheilmoituksena liitosten määrä.
+      */
     public function validate_connections() {
         $query = DB::connection()->prepare('SELECT * FROM KayttajanTyot WHERE tekija = :tunnus');
         $query->execute(array('tunnus' => $this->tunnus));
@@ -199,19 +210,22 @@ class User extends BaseModel {
         return $errors;
     }
 
+     /*
+      * Tarkastetaan, että tietokannasta löytyy käyttäjä, jonka tunnus ja salasana täsmäävät annettuihin.
+      */
     public static function authenticate($tunnus, $salasana) {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus AND salasana = :salasana LIMIT 1');
         $query->execute(array('tunnus' => $tunnus, 'salasana' => $salasana));
         $row = $query->fetch();
         if ($row) {
-            $kayttaja = new User(array(
+            $user = new User(array(
                 'tunnus' => $row['tunnus'],
                 'ika' => $row['ika'],
                 'salasana' => $row['salasana'],
                 'kuvaus' => $row['kuvaus'],
                 'admin' => $row['admin']
             ));
-            return $kayttaja;
+            return $user;
         } else {
             return null;
         }

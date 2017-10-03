@@ -1,29 +1,34 @@
 <?php
 
+/*
+ * Kontrolleri, joka huolehtii käyttäjiin liittyvistä toiminnoista.
+ */
+
 class UserController extends BaseController {
 
+     /*
+      * Hae kaikki käyttäjät ja luo näkymä niistä.
+      */
     public static function index() {
-        $kayttajat = User::all();
-        View::make('kayttaja/kayttajat.html', array('kayttajat' => $kayttajat));
+        $users = User::all();
+        View::make('kayttaja/kayttajat.html', array('kayttajat' => $users));
     }
 
-    public static function show($tunnus) {
-        $kayttaja = User::find($tunnus);
-        View::make('kayttaja/kayttaja.html', array('kayttaja' => $kayttaja));
+     /*
+      * Etsi käyttäjä annetulla tunnuksella ja luo käyttäjän kuvaussivu.
+      */
+    public static function show($username) {
+        $user = User::find($username);
+        View::make('kayttaja/kayttaja.html', array('kayttaja' => $user));
     }
 
-    public static function create() {
-        View::make('etusivu/rekisteroityminen.html');
-    }
-
-    public static function createErrors($errors, $attributes) {
-        View::make('etusivu/rekisteroityminen.html', array('errors' => $errors, 'attributes' => $attributes));
-    }
-
+     /*
+      * Metodi, jossa tarkastetaan käyttäjän antamien tietojen oikeellisuus
+      * ja kutsutaan user-mallia tallentamaan tietokantaan, jos virheitä ei ole.
+      */
     public static function store() {
         $params = $_POST;
-
-
+        
         if ($params['admin'] == 1) {
 
             $attributes = array(
@@ -44,33 +49,40 @@ class UserController extends BaseController {
             );
         }
 
-        $kayttaja = new User($attributes);
-        $errors = $kayttaja->errors();
-        $uniikki = $kayttaja->validate_unique_tunnus();
+        $user = new User($attributes);
+        $errors = $user->errors();
+        $unique = $user->validate_unique_tunnus();
 
-        $errors = array_merge($errors, $uniikki);
+        $errors = array_merge($errors, $unique);
 
         if (count($errors) == 0) {
-            $kayttaja->save();
-            $_SESSION['tunnus'] = $kayttaja->tunnus;
+            $user->save();
+            $_SESSION['username'] = $user->tunnus;
             Redirect::to('/', array('message' => 'Tunnus luotu!'));
         } else {
-            UserController::createErrors($errors, $attributes);
+            IndexController::createErrors($errors, $attributes);
         }
     }
 
-    public static function findWithKuvaus() {
+     /*
+      * Metodi, jolla etsitään haluttu käyttäjä tunnuksen perusteella.
+      */
+    public static function findWithTunnus() {
         $params = $_POST;
-        $etsittyTunnus = $params['tunnus'];
-        $kayttaja = User::find($etsittyTunnus);
-        if ($kayttaja == null) {
+        $searchedUsername = $params['tunnus'];
+        $user = User::find($searchedUsername);
+        if ($user == null) {
             Redirect::to('/kayttajat', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $tunnus = $kayttaja[0]->tunnus;
-            Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Löytyi!'));
+            $username = $user->tunnus;
+            Redirect::to('/kayttaja/' . $username, array('message' => 'Löytyi!'));
         }
     }
 
+     /*
+      * Metodi, jolla tarkastetaan käyttäjän antamat tiedot oikeiksi
+      * ja kutsutaan user-mallia päivittämään tietokantaan uudet tiedot.
+      */
     public static function update($tunnus) {
         $params = $_POST;
 
@@ -81,81 +93,90 @@ class UserController extends BaseController {
             'salasana' => $params['salasana']
         );
 
-        $kayttaja = new User($attributes);
+        $user = new User($attributes);
 
         if (isset($params['admin'])) {
             $attributes['admin'] = 1;
-            $kayttaja->admin = true;
+            $user->admin = true;
         } else {
             $attributes['admin'] = 0;
-            $kayttaja->admin = false;
+            $user->admin = false;
         }
 
-        $errors = $kayttaja->errors();
+        $errors = $user->errors();
 
         if (count($errors) == 0) {
-            $kayttaja->update();
+            $user->update();
             Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Käyttäjää muokattu!'));
         } else {
             UserController::editErrors($errors, $attributes);
         }
     }
 
-    public static function edit($tunnus) {
+     /*
+      * Metodi, jossa haetaan haluttu käyttäjä ja luodaan sivu kyseisen käyttäjän tietojen muokkaamiseen.
+      */
+    public static function edit($username) {
 
-        $kayttaja = User::find($tunnus);
+        $user = User::find($username);
 
         $attributes = array(
-            'kuvaus' => $kayttaja->kuvaus,
-            'ika' => $kayttaja->ika,
-            'admin' => $kayttaja->admin,
-            'salasana' => $kayttaja->salasana,
-            'tunnus' => $tunnus
+            'kuvaus' => $user->kuvaus,
+            'ika' => $user->ika,
+            'admin' => $user->admin,
+            'salasana' => $user->salasana,
+            'tunnus' => $username
         );
 
         View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes));
     }
 
+     /*
+      * Metodi, jota kutsutaan jos käyttäjän muokkaamisessa on havaittu virheitä. 
+      * Tällöin palautetaan jo annetut arvot ja virheilmoitukset.
+      */
     public static function editErrors($errors, $attributes) {
         View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
-    public static function destroy($tunnus) {
-        $kayttaja = User::find($tunnus);
+     /*
+      * Metodi, jossa etsitään ensin haluttu käyttäjä ja tarkistetaan käyttäjän liitokset olemassaoleviin töihin. 
+      * Jos käyttäjä ei liity töihin, niin kutsutaan user-mallia poistamaan käyttäjä tietokannasta. 
+      * Muuten palataan käyttäjän tarkasteluun virheilmoituksen kera.
+      */
+    public static function destroy($username) {
+        $user = User::find($username);
 
 
-        $errors = $kayttaja->validate_connections();
+        $errors = $user->validate_connections();
 
         if (count($errors) == 0) {
-            $kayttaja->destroy();
+            $user->destroy();
             Redirect::to('/kayttajat', array('message' => 'Käyttäjä poistettu!'));
         } else {
-            Redirect::to('/kayttaja/' . $tunnus, array('errors' => $errors));
+            Redirect::to('/kayttaja/' . $username, array('errors' => $errors));
         }
     }
 
-    public static function login() {
-        View::make('etusivu/login.html');
-    }
-
+     /*
+      * Metodi, joka kutsuu user-mallia tarkastamaan käyttäjän antaman käyttäjätunnuksen ja salasanan pitävyyden. 
+      * Jos tunnus ja salasana ovat oikein, kirjataan käyttäjä sisään. Muuten palautetaan kirjautumissivulle virhe-
+      * ilmoituksen kera.
+      */
     public static function handle_login() {
         $params = $_POST;
 
-        $kayttaja = User::authenticate($params['tunnus'], $params['salasana']);
+        $user = User::authenticate($params['tunnus'], $params['salasana']);
 
-        if (!$kayttaja) {
+        if (!$user) {
             View::make('etusivu/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'tunnus' => $params['tunnus']));
         } else {
-            $_SESSION['tunnus'] = $kayttaja->tunnus;
+            $_SESSION['username'] = $user->tunnus;
 
             Redirect::to('/', array('message' => 'Kirjautuminen onnistui!'));
         }
     }
     
-    public static function logout() {
-        
-        $_SESSION['tunnus'] = null;
-        Redirect::to('/', array('message' => 'Kirjauduit ulos!'));
-    }
+
 
 }

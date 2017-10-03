@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-
 {% if user_logged_in %}
 
 <div style="color:#3366ff">
-    <h1>Tervetuloa {{user_logged_in.tunnus}}!</h1>
+    <h1>Tervetuloa {{user_logged_in.username}}!</h1>
 </div>
 
 {% if message %}
@@ -54,8 +52,6 @@
         {% endif %}
     </tbody>
 </table>
-
-
 
 
 {% else %}

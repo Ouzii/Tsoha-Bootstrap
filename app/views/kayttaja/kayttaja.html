@@ -2,7 +2,7 @@
 {% block content %}
 
 
-{% if (user_logged_in.admin) or (user_logged_in.tunnus == kayttaja.tunnus) %}
+{% if (user_logged_in.admin) or (user_logged_in.username == kayttaja.tunnus) %}
 
 {% if errors %}
 <div class="alert alert-danger">

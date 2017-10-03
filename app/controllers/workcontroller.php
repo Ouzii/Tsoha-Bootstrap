@@ -1,36 +1,53 @@
 <?php
-
+/*
+ * Kontrolleri, joka hoitaa töihin liittyvät toiminnallisuudet.
+ */
 class WorkController extends BaseController {
 
+     /*
+      * Hae kaikki työt tietokannasta ja luo niistä näkymä.
+      */
     public static function index() {
-        $tyot = Work::all();
-        View::make('tyo/tyot.html', array('tyot' => $tyot));
+        $works = Work::all();
+        View::make('tyo/tyot.html', array('tyot' => $works));
     }
 
+     /*
+      * Etsi haluttu työ ja siihen liittyvät tekijät tietokannasta ja luo näistä näkymä.
+      */
     public static function show($id) {
-        $tyo = Work::find($id);
-        $tekijat = Work::getUsers($id);
-        View::make('tyo/tyoKuvaus.html', array('tyo' => $tyo[0], 'tekijat' => $tekijat));
+        $work = Work::find($id);
+        $worksUsers = UsersWorks::getUsersForWork($id);
+        View::make('tyo/tyoKuvaus.html', array('tyo' => $work, 'tekijat' => $worksUsers));
     }
 
+     /*
+      * Hae kaikki vaihtoehdot (aakkosjärjestyksessä) työn luomiselle ja tee näistä näkymä.
+      */
     public static function create() {
-        $kohteet = WorkObject::allAlphabetical();
-        $tyokalut = WorkTool::allAlphabetical();
-        $kayttajat = User::allAlphabetical();
-        View::make('tyo/uusiTyo.html', array('kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat));
+        $objects = WorkObject::allAlphabetical();
+        $tools = WorkTool::allAlphabetical();
+        $users = User::allAlphabetical();
+        View::make('tyo/uusiTyo.html', array('kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users));
     }
 
+     /*
+      * Metodi, jota kutsutaan kun käyttäjän antamissa tiedoissa on virheitä työn luomisessa.
+      * Luodaan uusi työn luomisnäkymä vanhoilla arvoilla ja virhetiedotteella.
+      */
     public static function createErrors($errors, $attributes) {
-        $kohteet = WorkObject::allAlphabetical();
-        $tyokalut = WorkTool::allAlphabetical();
-        $kayttajat = User::allAlphabetical();
-        View::make('tyo/uusiTyo.html', array('kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat, 'errors' => $errors, 'attributes' => $attributes));
+        $objects = WorkObject::allAlphabetical();
+        $tools = WorkTool::allAlphabetical();
+        $users = User::allAlphabetical();
+        View::make('tyo/uusiTyo.html', array('kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users, 'errors' => $errors, 'attributes' => $attributes));
     }
 
+     /*
+      * Tarkistetaan käyttäjän antamat tiedot uudelle työlle oikeiksi 
+      * ja kutsutaan work-mallia tallentamaan tiedot tietokantaan.
+      */
     public static function store() {
         $params = $_POST;
-
-
 
         If (isset($params['tekijat'])) {
             $attributes = array(
@@ -49,71 +66,82 @@ class WorkController extends BaseController {
             );
         }
 
-
-        $tyo = new Work($attributes);
-
-        $errors = $tyo->errors();
+        $work = new Work($attributes);
+        $errors = $work->errors();
 
         if (count($errors) == 0) {
-            $tyo->save();
-            Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
+            $work->save();
+            Redirect::to('/tyo/' . $work->id, array('message' => 'Työ luotu!'));
         } else {
             WorkController::createErrors($errors, $attributes);
         }
     }
 
+     /*
+      * Etsitään työtä annetulla kuvauksella.
+      */
     public static function findWithKuvaus() {
         $params = $_POST;
-        $kuvaus = $params['kuvaus'];
-        $tyo = Work::findWithKuvaus($kuvaus);
-        if ($tyo == null) {
+        $description = $params['kuvaus'];
+        $work = Work::findWithDescription($description);
+        if ($work == null) {
             Redirect::to('/tyot', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $id = $tyo->id;
+            $id = $work->id;
             Redirect::to('/tyo/' . $id, array('message' => 'Löytyi!'));
         }
     }
 
+     /*
+      * Haetaan haluttu työ ja sen tekijät, jonka jälkeen luodaan lista työn tiedoista.
+      * Lopulta haetaan kaikki vaihtoehdot työn muokkaamiseksi ja luodaan työn muokkaus -näkymä.
+      */
     public static function edit($id) {
-        $tyo = Work::find($id);
+        $work = Work::find($id);
+        $worksUsers = UsersWorks::getUsersForWork($id);
+        $worksUsersUsernames = array();
 
-        $tekijat = Work::getUsers($id);
-        $tyonTekijat = array();
-
-        foreach ($tekijat as $tekija) {
-            $tyonTekijat[] = $tekija->tunnus;
+        foreach ($worksUsers as $user) {
+            $worksUsersUsernames[] = $user->tunnus;
         }
-
-
+        
         $attributes = array(
-            'id' => $tyo[0]->id,
-            'kohde' => $tyo[0]->kohde,
-            'tyokalu' => $tyo[0]->tyokalu,
-            'kuvaus' => $tyo[0]->kuvaus,
-            'tarkempi_kuvaus' => $tyo[0]->tarkempi_kuvaus,
-            'tehty' => $tyo[0]->tehty,
-            'suoritusaika' => $tyo[0]->suoritusaika,
-            'tekijat' => $tyonTekijat
+            'id' => $work->id,
+            'kohde' => $work->kohde,
+            'tyokalu' => $work->tyokalu,
+            'kuvaus' => $work->kuvaus,
+            'tarkempi_kuvaus' => $work->tarkempi_kuvaus,
+            'tehty' => $work->tehty,
+            'suoritusaika' => $work->suoritusaika,
+            'tekijat' => $worksUsersUsernames
         );
 
-
-        $kohteet = WorkObject::allAlphabetical();
-        $tyokalut = WorkTool::allAlphabetical();
-        $kayttajat = User::allAlphabetical();
-        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat));
+        $objects = WorkObject::allAlphabetical();
+        $tools = WorkTool::allAlphabetical();
+        $worksUsers = User::allAlphabetical();
+        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $worksUsers));
     }
 
+     /*
+      * Haetaan kaikki vaihtoehdot työn muokkaamiselle 
+      * ja luodaan uusi näkymä vanhoilla tiedoilla ja virhetiedotteella.
+      */
     public static function editErrors($errors, $attributes) {
-        $kohteet = WorkObject::allAlphabetical();
-        $tyokalut = WorkTool::allAlphabetical();
-        $kayttajat = User::allAlphabetical();
-        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $kohteet, 'tyokalut' => $tyokalut, 'kayttajat' => $kayttajat, 'errors' => $errors));
+        $objects = WorkObject::allAlphabetical();
+        $tools = WorkTool::allAlphabetical();
+        $users = User::allAlphabetical();
+        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users, 'errors' => $errors));
     }
 
+     /*
+      * Ensin tarkistetaan onko käyttäjä asettanut työlle tekijöitä, ja sen mukaan luodaan attribuutin tallentava taulkko.
+      * Tämä osa on vain virheiden välttämiseksi, sillä jos kutsuu $params['tekijat'] ilman, että tekijöitä on asetettu,
+      * niin syntaksi ei toimi. Tässä vaiheessa ei periaatteessa vielä pidetä virheenä, jos tekijöitä ei ole.
+      * Tämän jälkeen tarkastetaan "tehty" kohta parametreista, ja muokataan oliota sen mukaan. Lopuksi ajetaan työn 
+      * validointimetodit ja tuloksen perusteella pyydetään work-mallia päivittämään tietokantaa tai antamaan virheilmoituksia.
+      */
     public static function update($id) {
         $params = $_POST;
-
-
 
         If (isset($params['tekijat'])) {
             $attributes = array(
@@ -134,31 +162,37 @@ class WorkController extends BaseController {
             );
         }
 
-        $tyo = new Work($attributes);
+        $work = new Work($attributes);
         if (isset($params['tehty'])) {
             $attributes['tehty'] = 1;
-            $tyo->tehty = true;
+            $work->tehty = true;
         } else {
             $attributes['tehty'] = 0;
-            $tyo->tehty = false;
+            $work->tehty = false;
         }
-        $errors = $tyo->errors();
+        $errors = $work->errors();
 
-        $tyo->id = $id;
+        $work->id = $id;
         if (count($errors) == 0) {
-            $tyo->update();
-            Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ muokattu!'));
+            $work->update();
+            Redirect::to('/tyo/' . $work->id, array('message' => 'Työ muokattu!'));
         } else {
             WorkController::editErrors($errors, $attributes);
         }
     }
 
+     /*
+      * Tarkastetaan onko käyttäjällä oikeutta poistaa työtä ja jos on,
+      * niin pyydetään work-mallia poistamaan työ tietokannasta. Muuten annetaan virheilmoitus.
+      * Näkymissä on kyllä poistettu nappi työn poistamiselle novice-käyttäjiltä, mutta ilman tarkastamista
+      * voisi novice-käyttäjä kirjoittaa tarvittavan osoitteen, joka poistaisi työn.
+      */
     public static function destroy($id) {
-        $isAdmin = User::find($_SESSION['tunnus']);
+        $isAdmin = User::find($_SESSION['username']);
 
         if ($isAdmin->admin) {
-            $tyo = new Work(array('id' => $id));
-            $tyo->destroy();
+            $work = new Work(array('id' => $id));
+            $work->destroy();
 
             Redirect::to('/tyot', array('message' => 'Työ on poistettu!'));
         } else {
