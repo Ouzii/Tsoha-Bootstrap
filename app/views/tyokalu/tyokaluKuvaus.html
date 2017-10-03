@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if user_logged_in %}
 {% if user_logged_in.admin %}
 
 {% if errors %}
@@ -57,12 +56,6 @@
   {{message}}
 </div>
   {% endif %}
-
-{% endif %}
-
-{% else %}
-
-<div style="color:green"><h1>Kirjaudu sisään tarkastellaksesi työkaluja!</h1></div>
 
 {% endif %}
 

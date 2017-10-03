@@ -9,7 +9,7 @@ class WorkToolController extends BaseController {
 
     public static function show($id) {
         $tyokalu = WorkTool::find($id);
-        View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $tyokalu[0]));
+        View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $tyokalu));
     }
 
     public static function showKuvaus($kuvaus) {
@@ -18,7 +18,7 @@ class WorkToolController extends BaseController {
         if ($tyokalu == null) {
             
         } else {
-            $id = $tyokalu[0]->id;
+            $id = $tyokalu->id;
             Redirect::to('/tyokalu/' . $id);
         }
     }
@@ -75,8 +75,8 @@ class WorkToolController extends BaseController {
         $tyokalu = WorkTool::find($id);
 
         $attributes = array(
-            'kuvaus' => $tyokalu[0]->kuvaus,
-            'tarkempi_kuvaus' => $tyokalu[0]->tarkempi_kuvaus,
+            'kuvaus' => $tyokalu->kuvaus,
+            'tarkempi_kuvaus' => $tyokalu->tarkempi_kuvaus,
             'id' => $id
         );
 
@@ -88,15 +88,20 @@ class WorkToolController extends BaseController {
     }
 
     public static function destroy($id) {
-        $tyokalu = WorkTool::find($id);
+        $isAdmin = User::find($_SESSION['tunnus']);
 
+        if ($isAdmin->admin) {
+            $tyokalu = WorkTool::find($id);
+            $errors = $tyokalu->validate_connections();
 
-        $errors = $tyokalu[0]->validate_connections();
-
-        if (count($errors) == 0) {
-            $tyokalu[0]->destroy();
-            Redirect::to('/tyokalut', array('message' => 'Työkalu poistettu!'));
+            if (count($errors) == 0) {
+                $tyokalu->destroy();
+                Redirect::to('/tyokalut', array('message' => 'Työkalu poistettu!'));
+            } else {
+                Redirect::to('/tyokalu/' . $id, array('errors' => $errors));
+            }
         } else {
+            $errors[] = 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työkalun!';
             Redirect::to('/tyokalu/' . $id, array('errors' => $errors));
         }
     }
@@ -108,7 +113,7 @@ class WorkToolController extends BaseController {
         if ($tyokalu == null) {
             Redirect::to('/tyokalut', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $id = $tyokalu[0]->id;
+            $id = $tyokalu->id;
             Redirect::to('/tyokalu/' . $id, array('message' => 'Löytyi!'));
         }
     }

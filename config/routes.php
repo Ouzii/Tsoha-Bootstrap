@@ -1,5 +1,8 @@
 <?php
 
+function check_logged_in() {
+    BaseController::check_logged_in();
+}
 $routes->get('/', function() {
     IndexController::index();
 });
@@ -20,91 +23,91 @@ $routes->post('/logging', function() {
     UserController::handle_login();
 });
 
-$routes->get('/tyonKohteet', function() {
+$routes->get('/tyonKohteet', 'check_logged_in', function() {
     WorkObjectController::index();
 });
 
-$routes->get('/tyonKohde/:id', function($id) {
+$routes->get('/tyonKohde/:id', 'check_logged_in', function($id) {
     WorkObjectController::show($id);
 });
 
-$routes->get('/tyonKohdeKuvaus/:kuvaus', function($kuvaus) {
+$routes->get('/tyonKohdeKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
     WorkObjectController::showKuvaus($kuvaus);
 });
 
-$routes->get('/tyokalut', function() {
+$routes->get('/tyokalut', 'check_logged_in', function() {
     WorkToolController::index();
 });
 
-$routes->get('/tyokalu/:id', function($id) {
+$routes->get('/tyokalu/:id', 'check_logged_in', function($id) {
     WorkToolController::show($id);
 });
 
-$routes->get('/tyokaluKuvaus/:kuvaus', function($kuvaus) {
+$routes->get('/tyokaluKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
     WorkToolController::showKuvaus($kuvaus);
 });
 
-$routes->get('/kayttaja/:tunnus', function($tunnus) {
+$routes->get('/kayttaja/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::show($tunnus);
 });
 
-$routes->get('/kayttajat', function() {
+$routes->get('/kayttajat', 'check_logged_in', function() {
     UserController::index();
 });
 
-$routes->get('/tyoMuokkaus/:id', function($id) {
+$routes->get('/tyoMuokkaus/:id', 'check_logged_in', function($id) {
     WorkController::edit($id);
 });
 
-$routes->post('/tyonMuokkaaminen/:id', function($id) {
+$routes->post('/tyonMuokkaaminen/:id', 'check_logged_in', function($id) {
     WorkController::update($id);
 });
 
-$routes->get('/tyokaluMuokkaus/:id', function($id) {
+$routes->get('/tyokaluMuokkaus/:id', 'check_logged_in', function($id) {
     WorkToolController::edit($id);
 });
 
-$routes->post('/tyokaluMuokkaaminen/:id', function($id) {
+$routes->post('/tyokaluMuokkaaminen/:id', 'check_logged_in', function($id) {
     WorkToolController::update($id);
 });
 
-$routes->get('/tyonKohdeMuokkaus/:id', function($id) {
+$routes->get('/tyonKohdeMuokkaus/:id', 'check_logged_in', function($id) {
     WorkObjectController::edit($id);
 });
 
-$routes->post('/tyonKohdeMuokkaaminen/:id', function($id) {
+$routes->post('/tyonKohdeMuokkaaminen/:id', 'check_logged_in', function($id) {
     WorkObjectController::update($id);
 });
 
-$routes->get('/kayttajaMuokkaus/:tunnus', function($tunnus) {
+$routes->get('/kayttajaMuokkaus/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::edit($tunnus);
 });
 
-$routes->post('/kayttajaMuokkaaminen/:tunnus', function($tunnus) {
+$routes->post('/kayttajaMuokkaaminen/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::update($tunnus);
 });
 
-$routes->post('/tyo', function() {
+$routes->post('/tyo', 'check_logged_in', function() {
     WorkController::store();
 });
 
-$routes->get('/uusiTyo', function() {
+$routes->get('/uusiTyo', 'check_logged_in', function() {
     WorkController::create();
 });
 
-$routes->post('/tyonKohde', function() {
+$routes->post('/tyonKohde', 'check_logged_in', function() {
     WorkObjectController::store();
 });
 
-$routes->get('/uusiTyonKohde', function() {
+$routes->get('/uusiTyonKohde', 'check_logged_in', function() {
     WorkObjectController::create();
 });
 
-$routes->post('/tyokalu', function() {
+$routes->post('/tyokalu', 'check_logged_in', function() {
     WorkToolController::store();
 });
 
-$routes->get('/uusiTyokalu', function() {
+$routes->get('/uusiTyokalu', 'check_logged_in', function() {
     WorkToolController::create();
 });
 
@@ -116,43 +119,43 @@ $routes->get('/rekisteroityminen', function() {
     UserController::create();
 });
 
-$routes->get('/tyot', function() {
+$routes->get('/tyot', 'check_logged_in', function() {
     WorkController::index();
 });
 
-$routes->get('/tyo/:id', function($id) {
+$routes->get('/tyo/:id', 'check_logged_in', function($id) {
     WorkController::show($id);
 });
 
-$routes->post('/etsiTyo', function() {
+$routes->post('/etsiTyo', 'check_logged_in', function() {
     WorkController::findWithKuvaus();
 });
 
-$routes->post('/etsiTyokalu', function() {
+$routes->post('/etsiTyokalu', 'check_logged_in', function() {
     WorkToolController::findWithKuvaus();
 });
 
-$routes->post('/etsiTyonKohde', function() {
+$routes->post('/etsiTyonKohde', 'check_logged_in', function() {
     WorkObjectController::findWithKuvaus();
 });
 
-$routes->post('/etsiKayttaja', function() {
+$routes->post('/etsiKayttaja', 'check_logged_in', function() {
     UserController::findWithKuvaus();
 });
 
-$routes->get('/tyoPoisto/:id', function($id) {
+$routes->get('/tyoPoisto/:id', 'check_logged_in', function($id) {
     WorkController::destroy($id);
 });
 
-$routes->get('/tyokaluPoisto/:id', function($id) {
+$routes->get('/tyokaluPoisto/:id', 'check_logged_in', function($id) {
     WorkToolController::destroy($id);
 });
 
-$routes->get('/tyonKohdePoisto/:id', function($id) {
+$routes->get('/tyonKohdePoisto/:id', 'check_logged_in', function($id) {
     WorkObjectController::destroy($id);
 });
 
-$routes->get('/kayttajaPoisto/:tunnus', function($tunnus) {
+$routes->get('/kayttajaPoisto/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::destroy($tunnus);
 });
 

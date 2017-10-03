@@ -60,7 +60,7 @@ Class WorkTool extends BaseModel {
         $row = $query->fetch();
 
         if ($row) {
-            $tyokalu[] = new WorkTool(array(
+            $tyokalu = new WorkTool(array(
                 'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
@@ -79,7 +79,7 @@ Class WorkTool extends BaseModel {
         $row = $query->fetch();
 
         if ($row) {
-            $tyokalu[] = new WorkTool(array(
+            $tyokalu = new WorkTool(array(
                 'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],

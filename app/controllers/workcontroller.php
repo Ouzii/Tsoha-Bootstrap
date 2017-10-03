@@ -53,7 +53,7 @@ class WorkController extends BaseController {
         $tyo = new Work($attributes);
 
         $errors = $tyo->errors();
-        
+
         if (count($errors) == 0) {
             $tyo->save();
             Redirect::to('/tyo/' . $tyo->id, array('message' => 'Työ luotu!'));
@@ -79,12 +79,12 @@ class WorkController extends BaseController {
 
         $tekijat = Work::getUsers($id);
         $tyonTekijat = array();
-        
+
         foreach ($tekijat as $tekija) {
             $tyonTekijat[] = $tekija->tunnus;
         }
-        
-        
+
+
         $attributes = array(
             'id' => $tyo[0]->id,
             'kohde' => $tyo[0]->kohde,
@@ -154,10 +154,16 @@ class WorkController extends BaseController {
     }
 
     public static function destroy($id) {
-        $tyo = new Work(array('id' => $id));
-        $tyo->destroy();
+        $isAdmin = User::find($_SESSION['tunnus']);
 
-        Redirect::to('/tyot', array('message' => 'Työ on poistettu!'));
+        if ($isAdmin->admin) {
+            $tyo = new Work(array('id' => $id));
+            $tyo->destroy();
+
+            Redirect::to('/tyot', array('message' => 'Työ on poistettu!'));
+        } else {
+            Redirect::to('/tyot', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn!'));
+        }
     }
 
 }

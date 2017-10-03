@@ -9,7 +9,7 @@ class WorkObjectController extends BaseController {
 
     public static function show($id) {
         $tyonKohde = WorkObject::find($id);
-        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde[0]));
+        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $tyonKohde));
     }
 
     public static function showKuvaus($kuvaus) {
@@ -19,7 +19,7 @@ class WorkObjectController extends BaseController {
         if ($tyonKohde == null) {
             Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $id = $tyonKohde[0]->id;
+            $id = $tyonKohde->id;
             Redirect::to('/tyonKohde/' . $id);
         }
     }
@@ -58,8 +58,8 @@ class WorkObjectController extends BaseController {
         $tyonKohde = WorkObject::find($id);
 
         $attributes = array(
-            'kuvaus' => $tyonKohde[0]->kuvaus,
-            'tarkempi_kuvaus' => $tyonKohde[0]->tarkempi_kuvaus,
+            'kuvaus' => $tyonKohde->kuvaus,
+            'tarkempi_kuvaus' => $tyonKohde->tarkempi_kuvaus,
             'id' => $id
         );
 
@@ -71,15 +71,23 @@ class WorkObjectController extends BaseController {
     }
 
     public static function destroy($id) {
-        $tyonKohde = WorkObject::find($id);
+
+        $isAdmin = User::find($_SESSION['tunnus']);
+
+        if ($isAdmin->admin) {
+            $tyonKohde = WorkObject::find($id);
 
 
-        $errors = $tyonKohde[0]->validate_connections();
+            $errors = $tyonKohde->validate_connections();
 
-        if (count($errors) == 0) {
-            $tyonKohde[0]->destroy();
-            Redirect::to('/tyonKohteet', array('message' => 'Työn kohde poistettu!'));
+            if (count($errors) == 0) {
+                $tyonKohde->destroy();
+                Redirect::to('/tyonKohteet', array('message' => 'Työn kohde poistettu!'));
+            } else {
+                Redirect::to('/tyonKohde/' . $id, array('errors' => $errors));
+            }
         } else {
+            $errors[] = 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn kohteen!';
             Redirect::to('/tyonKohde/' . $id, array('errors' => $errors));
         }
     }
@@ -109,7 +117,7 @@ class WorkObjectController extends BaseController {
         if ($tyonKohde == null) {
             Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $id = $tyonKohde[0]->id;
+            $id = $tyonKohde->id;
             Redirect::to('/tyonKohde/' . $id, array('message' => 'Löytyi!'));
         }
     }

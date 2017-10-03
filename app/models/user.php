@@ -53,7 +53,7 @@ class User extends BaseModel {
         $row = $query->fetch();
 
         if ($row) {
-            $kayttaja[] = new User(array(
+            $kayttaja = new User(array(
                 'tunnus' => $row['tunnus'],
                 'salasana' => $row['salasana'],
                 'ika' => $row['ika'],
@@ -68,24 +68,26 @@ class User extends BaseModel {
     }
 
     public static function getUsersWorks($tunnus) {
-        $query = DB::connection()->prepare('SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus ORDER BY tyo');
-        $query->execute(array('tunnus' => $tunnus));
+//        $query = DB::connection()->prepare('SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus ORDER BY tyo');
+//        $query->execute(array('tunnus' => $tunnus));
+//
+//        $rows = $query->fetchAll();
+//        $tyot = array();
+//
+//        foreach ($rows as $row) {
+            $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id IN (SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus) ORDER BY id');
+            $query->execute(array('tunnus' => $tunnus));
 
-        $rows = $query->fetchAll();
-        $tyot = array();
+            $tulos = $query->fetchAll();
 
-        foreach ($rows as $row) {
-            $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id = :id');
-            $query->execute(array('id' => $row['tyo']));
-
-            $tulos = $query->fetch();
-
+            $tyot = array();
+            foreach($tulos as $rivi) {
             $tyo = new Work(array(
-                'id' => $tulos['id'],
-                'kuvaus' => $tulos['kuvaus'],
-                'kohde' => $tulos['kohde'],
-                'tyokalu' => $tulos['tyokalu'],
-                'tehty' => $tulos['tehty']
+                'id' => $rivi['id'],
+                'kuvaus' => $rivi['kuvaus'],
+                'kohde' => $rivi['kohde'],
+                'tyokalu' => $rivi['tyokalu'],
+                'tehty' => $rivi['tehty']
             ));
             
             $tyot[] = $tyo;
@@ -202,7 +204,7 @@ class User extends BaseModel {
         $query->execute(array('tunnus' => $tunnus, 'salasana' => $salasana));
         $row = $query->fetch();
         if ($row) {
-            $kayttaja[] = new User(array(
+            $kayttaja = new User(array(
                 'tunnus' => $row['tunnus'],
                 'ika' => $row['ika'],
                 'salasana' => $row['salasana'],

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if user_logged_in %}
 <div style="color:green"><h1>Näkymä - käyttäjät</h1></div>
 <br>
 <form action="{{base_path}}/etsiKayttaja" method="post">
@@ -45,11 +44,5 @@
         {% endfor %}
     </tbody>
 </table>
-
-{% else %}
-
-<div style="color:green"><h1>Kirjaudu sisään tarkastellaksesi käyttäjiä!</h1></div>
-
-{% endif %}
 
 {% endblock %}

@@ -9,7 +9,7 @@ class UserController extends BaseController {
 
     public static function show($tunnus) {
         $kayttaja = User::find($tunnus);
-        View::make('kayttaja/kayttaja.html', array('kayttaja' => $kayttaja[0]));
+        View::make('kayttaja/kayttaja.html', array('kayttaja' => $kayttaja));
     }
 
     public static function create() {
@@ -106,10 +106,10 @@ class UserController extends BaseController {
         $kayttaja = User::find($tunnus);
 
         $attributes = array(
-            'kuvaus' => $kayttaja[0]->kuvaus,
-            'ika' => $kayttaja[0]->ika,
-            'admin' => $kayttaja[0]->admin,
-            'salasana' => $kayttaja[0]->salasana,
+            'kuvaus' => $kayttaja->kuvaus,
+            'ika' => $kayttaja->ika,
+            'admin' => $kayttaja->admin,
+            'salasana' => $kayttaja->salasana,
             'tunnus' => $tunnus
         );
 
@@ -124,10 +124,10 @@ class UserController extends BaseController {
         $kayttaja = User::find($tunnus);
 
 
-        $errors = $kayttaja[0]->validate_connections();
+        $errors = $kayttaja->validate_connections();
 
         if (count($errors) == 0) {
-            $kayttaja[0]->destroy();
+            $kayttaja->destroy();
             Redirect::to('/kayttajat', array('message' => 'Käyttäjä poistettu!'));
         } else {
             Redirect::to('/kayttaja/' . $tunnus, array('errors' => $errors));
@@ -146,7 +146,7 @@ class UserController extends BaseController {
         if (!$kayttaja) {
             View::make('etusivu/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'tunnus' => $params['tunnus']));
         } else {
-            $_SESSION['tunnus'] = $kayttaja[0]->tunnus;
+            $_SESSION['tunnus'] = $kayttaja->tunnus;
 
             Redirect::to('/', array('message' => 'Kirjautuminen onnistui!'));
         }

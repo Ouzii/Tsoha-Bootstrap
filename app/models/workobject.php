@@ -60,7 +60,7 @@ class WorkObject extends BaseModel {
         $row = $query->fetch();
 
         if ($row) {
-            $kohde[] = new WorkObject(array(
+            $kohde = new WorkObject(array(
                 'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
@@ -79,7 +79,7 @@ class WorkObject extends BaseModel {
         $row = $query->fetch();
 
         if ($row) {
-            $kohde[] = new WorkObject(array(
+            $kohde = new WorkObject(array(
                 'id' => $row['id'],
                 'kuvaus' => $row['kuvaus'],
                 'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
