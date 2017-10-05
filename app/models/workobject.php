@@ -26,26 +26,26 @@ class WorkObject extends BaseModel {
 //        $this->id = $row['id'];
 //    }
 
-     /*
-      * Haetaan kaikki työn kohteet ja palautetaan ne listana.
-      */
-    public static function all() {
-        $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde');
-        $query->execute();
-        $rows = $query->fetchAll();
-        $workObjects = array();
-
-        foreach ($rows as $row) {
-            $workObjects[] = new WorkObject(array(
-                'id' => $row['id'],
-                'kuvaus' => $row['kuvaus'],
-                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
-                'luotu' => $row['luotu'],
-            ));
-        }
-
-        return $workObjects;
-    }
+//     /*
+//      * Haetaan kaikki työn kohteet ja palautetaan ne listana.
+//      */
+//    public static function all() {
+//        $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde');
+//        $query->execute();
+//        $rows = $query->fetchAll();
+//        $workObjects = array();
+//
+//        foreach ($rows as $row) {
+//            $workObjects[] = new WorkObject(array(
+//                'id' => $row['id'],
+//                'kuvaus' => $row['kuvaus'],
+//                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
+//                'luotu' => $row['luotu'],
+//            ));
+//        }
+//
+//        return $workObjects;
+//    }
 
      /*
       * Haetaan kaikki työn kohteet aakkosjärjestyksessä ja palautetaan ne listana.

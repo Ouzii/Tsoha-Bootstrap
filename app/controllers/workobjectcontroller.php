@@ -8,7 +8,7 @@ class WorkObjectController extends BaseController {
       * Haetaan tietokannasta kaikki työn kohteet ja luodaan niistä näkymä.
       */
     public static function index() {
-        $workObjects = WorkObject::all();
+        $workObjects = WorkObject::allAlphabetical();
         View::make('tyonKohde/tyonKohteet.html', array('tyonKohteet' => $workObjects));
     }
 
@@ -102,7 +102,7 @@ class WorkObjectController extends BaseController {
       */
     public static function destroy($id) {
 
-        $isAdmin = User::find($_SESSION['tunnus']);
+        $isAdmin = User::find($_SESSION['username']);
 
         if ($isAdmin->admin) {
             $workObject = WorkObject::find($id);

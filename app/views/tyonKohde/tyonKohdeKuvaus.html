@@ -15,7 +15,10 @@
 
 <div style="color:green"><h1>{{tyonKohde.kuvaus}}</h1></div>
 <p>
-    <a href="{{base_path}}/tyonKohdePoisto/{{tyonKohde.id}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/tyonKohdeMuokkaus/{{tyonKohde.id}}" class="btn btn-default">Muokkaa</a>
+<form method="get" action="{{base_path}}/tyonKohdePoisto/{{tyonKohde.id}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa työn kohteen?">
+    <button type="submit" class="btn btn-danger">Poista</button>
+    <a href="{{base_path}}/tyonKohdeMuokkaus/{{tyonKohde.id}}" class="btn btn-default">Muokkaa</a>
+</form>
 </p>
 <ul>
     <li><strong>Luomispäivä:</strong> {{tyonKohde.luotu}}</li>

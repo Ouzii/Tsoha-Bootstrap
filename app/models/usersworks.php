@@ -51,7 +51,7 @@ class UsersWorks extends BaseModel {
      /*
       * Tallennetaan tieto työn ja jokaisen tekijän yhteydestä tietokantaa.
       */
-    public function saveUsers($id, $users) {
+    public static function saveUsers($id, $users) {
         foreach ($users as $user) {
             $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');
             $query->execute(array('id' => $id, 'tekija' => $user));

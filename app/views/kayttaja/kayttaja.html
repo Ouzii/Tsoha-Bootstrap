@@ -2,7 +2,7 @@
 {% block content %}
 
 
-{% if (user_logged_in.admin) or (user_logged_in.username == kayttaja.tunnus) %}
+{% if (user_logged_in.admin) or (user_logged_in.tunnus == kayttaja.tunnus) %}
 
 {% if errors %}
 <div class="alert alert-danger">
@@ -16,7 +16,10 @@
 
 <div style="color:green"><h1>{{kayttaja.tunnus}}</h1></div>
 <p>
-    <a href="{{base_path}}/kayttajaPoisto/{{kayttaja.tunnus}}" class="btn btn-danger">Poista</a> <a href="{{base_path}}/kayttajaMuokkaus/{{kayttaja.tunnus}}" class="btn btn-default">Muokkaa</a>
+<form method="get" action="{{base_path}}/kayttajaPoisto/{{kayttaja.tunnus}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa käyttäjän {{kayttaja.tunnus}}?">
+    <button type="submit" class="btn btn-danger">Poista</button>
+    <a href="{{base_path}}/kayttajaMuokkaus/{{kayttaja.tunnus}}" class="btn btn-default">Muokkaa</a>
+</form>
 </p>
 
 <ul>

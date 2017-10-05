@@ -26,26 +26,26 @@ Class WorkTool extends BaseModel {
 //        $this->id = $row['id'];
 //    }
 
-     /*
-      * Haetaan kaikki työkalut ja palautetaan ne listana.
-      */
-    public static function all() {
-        $query = DB::connection()->prepare('SELECT * FROM Tyokalu');
-        $query->execute();
-        $rows = $query->fetchAll();
-        $workTools = array();
-
-        foreach ($rows as $row) {
-            $workTools[] = new WorkTool(array(
-                'id' => $row['id'],
-                'kuvaus' => $row['kuvaus'],
-                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
-                'luotu' => $row['luotu'],
-            ));
-        }
-
-        return $workTools;
-    }
+//     /*
+//      * Haetaan kaikki työkalut ja palautetaan ne listana.
+//      */
+//    public static function all() {
+//        $query = DB::connection()->prepare('SELECT * FROM Tyokalu');
+//        $query->execute();
+//        $rows = $query->fetchAll();
+//        $workTools = array();
+//
+//        foreach ($rows as $row) {
+//            $workTools[] = new WorkTool(array(
+//                'id' => $row['id'],
+//                'kuvaus' => $row['kuvaus'],
+//                'tarkempi_kuvaus' => $row['tarkempi_kuvaus'],
+//                'luotu' => $row['luotu'],
+//            ));
+//        }
+//
+//        return $workTools;
+//    }
 
      /*
       * Haetaan kaikki työkalut aakkosjärjestyksessä ja palautetaan ne listana.

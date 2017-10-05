@@ -20,7 +20,7 @@ $routes->get('/logout', function() {
 });
 
 $routes->post('/logging', function() {
-    UserController::handle_login();
+    IndexController::handle_login();
 });
 
 $routes->get('/tyonKohteet', 'check_logged_in', function() {

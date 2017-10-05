@@ -8,7 +8,7 @@ class WorkToolController extends BaseController {
       * Haetaan kaikki työkalut ja luodaan niistä näkymä.
       */
     public static function index() {
-        $workTools = WorkTool::all();
+        $workTools = WorkTool::allAlphabetical();
         View::make('tyokalu/tyokalut.html', array('tyokalut' => $workTools));
     }
 
@@ -123,7 +123,7 @@ class WorkToolController extends BaseController {
       * Jos yhteyksiä ei ole, kutsutaan worktool-mallia poistamaan tiedot tietokannasta.
       */
     public static function destroy($id) {
-        $isAdmin = User::find($_SESSION['tunnus']);
+        $isAdmin = User::find($_SESSION['username']);
 
         if ($isAdmin->admin) {
             $workTool = WorkTool::find($id);
