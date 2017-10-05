@@ -68,6 +68,9 @@
 {% endfor %}
 <p><strong>Tarkempi kuvaus:</strong> {{tyo.tarkempi_kuvaus}}</p>
 
+{% if tyo.tehty == null %}
+<a href="{{base_path}}/tyoTehty/{{tyo.id}}" class="btn btn-success">Kuittaa tehdyksi</a>
+{% endif %}
 {% if message %}
 <div class="alert alert-success">
     {{message}}

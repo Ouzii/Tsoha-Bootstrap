@@ -199,5 +199,14 @@ class WorkController extends BaseController {
             Redirect::to('/tyot', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn!'));
         }
     }
+    
+    public static function markAsDone($id) {
+        $work = Work::find($id);
+        
+        $work->tehty = true;
+        $work->Done();
+        
+        Redirect::to('/tyo/' . $id, array('message' => 'Työ merkattu tehdyksi!'));
+    }
 
 }

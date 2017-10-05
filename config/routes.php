@@ -159,6 +159,10 @@ $routes->get('/kayttajaPoisto/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::destroy($tunnus);
 });
 
+$routes->get('/tyoTehty/:id', 'check_logged_in', function($id) {
+    WorkController::markAsDone($id);
+});
+
 
 
 

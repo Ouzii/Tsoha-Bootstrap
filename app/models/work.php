@@ -166,6 +166,12 @@ class Work extends BaseModel {
         $query = DB::connection()->prepare('DELETE FROM Tyo WHERE id = :id');
         $query->execute(array('id' => $this->id));
     }
+    
+    public function Done() {
+        $query = DB::connection()->prepare('UPDATE Tyo SET tehty = TRUE, suoritusaika = now() WHERE id = :id');
+        $query->execute(array('id' => $this->id));
+        
+    }
 
      /*
       * Tarkastetaan, että työn kuvaus on sallittu.
