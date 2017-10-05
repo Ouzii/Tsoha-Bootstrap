@@ -127,7 +127,8 @@ class Work extends BaseModel {
         $query->execute(array('kohde' => $objectId, 'tyokalu' => $toolId, 'kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus));
         $row = $query->fetch();
         $this->id = $row['id'];
-        $this->saveUsers();
+        $users = UsersWorks::getUsersForWork($this->id);
+        UsersWorks::saveUsers($this->id, $users);
     }
 
      /*
