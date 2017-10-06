@@ -35,6 +35,14 @@ $routes->get('/tyonKohdeKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
     WorkObjectController::showKuvaus($kuvaus);
 });
 
+$routes->get('/tyonKohdeKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
+    WorkObjectController::showKuvaus($kuvaus);
+});
+
+$routes->get('/tyokaluKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
+    WorkToolController::showKuvaus($kuvaus);
+});
+
 $routes->get('/tyokalut', 'check_logged_in', function() {
     WorkToolController::index();
 });
@@ -42,10 +50,6 @@ $routes->get('/tyokalut', 'check_logged_in', function() {
 $routes->get('/tyokalu/:id', 'check_logged_in', function($id) {
     WorkToolController::show($id);
 });
-
-//$routes->get('/tyokaluKuvaus/:kuvaus', 'check_logged_in', function($kuvaus) {
-//    WorkToolController::showKuvaus($kuvaus);
-//});
 
 $routes->get('/kayttaja/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::show($tunnus);

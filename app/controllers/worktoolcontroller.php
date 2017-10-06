@@ -23,6 +23,21 @@ class WorkToolController extends BaseController {
     }
 
     /**
+     * Etsitään haluttu työkalu kuvauksen perusteella ja luodaan siitä näkymä.
+     * @param String $description Haetun työkalun kuvaus.
+     */
+    public static function showKuvaus($description) {
+        $workObject = WorkTool::findWithDescription($description);
+
+        if ($workObject == null) {
+            Redirect::to('/tyokalut', array('message' => 'Ei hakutuloksia!'));
+        } else {
+            $id = $workObject->id;
+            Redirect::to('/tyokalu/' . $id);
+        }
+    }
+
+    /**
      * Luodaan näkymä uuden työkalun luomiselle.
      */
     public static function create() {
