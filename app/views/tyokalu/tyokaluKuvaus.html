@@ -16,7 +16,7 @@
 
 <div style="color:green"><h1>{{tyokalu.kuvaus}}</h1></div>
 <p>
-<form method="get" action="{{base_path}}/tyokaluPoisto/{{tyokalu.id}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa työkalun?">
+<form method="get" action="{{base_path}}/tyokaluPoisto/{{tyokalu.id}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa työkalun {{tyokalu.kuvaus}}?">
     <button type="submit" class="btn btn-danger">Poista</button>
     <a href="{{base_path}}/tyokaluMuokkaus/{{tyokalu.id}}" class="btn btn-default">Muokkaa</a>
 </form>
