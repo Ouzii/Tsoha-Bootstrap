@@ -208,7 +208,9 @@ class User extends BaseModel {
             $errors[] = 'Ikäsi täytyy olla numeroina!';
         }
 
-
+        if ($this->ika < 0 || $this->ika > 999) {
+            $errors[] = 'Valitettavasti sovelluksen ikähaitari on 0-999v.';
+        }
 
         return $errors;
     }
