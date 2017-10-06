@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Malli, joka mallintaa käyttäjää.
  */
 
@@ -13,7 +13,7 @@ class User extends BaseModel {
         $this->validators = array('validate_tunnus', 'validate_salasana', 'validate_kuvaus', 'validate_ika');
     }
 
-//    /*
+//    /**
 //     * Haetaan kaikki käyttäjät tietokannasta ja palautetaan ne listana.
 //     */
 //
@@ -36,7 +36,7 @@ class User extends BaseModel {
 //        return $users;
 //    }
 
-    /*
+    /**
      * Haetaan kaikki käyttäjät tietokannasta aakkosjärjestyksessä ja palautetaan ne listana.
      */
 
@@ -59,7 +59,7 @@ class User extends BaseModel {
         return $users;
     }
 
-    /*
+    /**
      * Etsitään haluttu käyttäjä tunnuksen perusteella ja palautetaan se oliona.
      */
 
@@ -83,7 +83,7 @@ class User extends BaseModel {
         return null;
     }
 
-    /*
+    /**
      * Tallennetaan olion tiedot tietokantaan.
      */
 
@@ -92,7 +92,7 @@ class User extends BaseModel {
         $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
     }
 
-    /*
+    /**
      * Päivitetään olion tiedot tietokantaan. Tarkistetaan erikseen admin-ominaisuus, 
      * sillä muuten syntaksi ei toimi ominaisuuden ollessa false.
      */
@@ -110,7 +110,7 @@ class User extends BaseModel {
         }
     }
 
-    /*
+    /**
      * Poistetaan olion tiedot tietokanasta.
      */
 
@@ -119,7 +119,7 @@ class User extends BaseModel {
         $query->execute(array('tunnus' => $this->tunnus));
     }
 
-    /*
+    /**
      * Tarkastetaan, että annettu tunnus on sallittu.
      */
 
@@ -137,7 +137,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Tarkastetaan, että annettua tunnusta ei ole ennestään olemassa.
      */
 
@@ -155,7 +155,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Tarkastetaan, että salasana on sallittu.
      */
 
@@ -173,7 +173,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*
+    /***
      * Tarkastetaan, että kuvaus on sallittu.
      */
 
@@ -187,7 +187,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*
+    /***
      * Tarkastetaan, että ikä on sallittu.
      */
 
@@ -213,7 +213,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*
+    /***
      * Tarkastetaan onko käyttäjällä liitoksia olemassaoleviin töihin. 
      * Jos on, palautetaan virheilmoituksena liitosten määrä.
      */
@@ -232,7 +232,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*
+    /***
      * Tarkastetaan, että tietokannasta löytyy käyttäjä, jonka tunnus ja salasana täsmäävät annettuihin.
      */
 

@@ -1,12 +1,12 @@
 <?php
-/*
+/**
  * Malli, joka mallintaa työtä.
  */
 class Work extends BaseModel {
 
     public $id, $kohde, $tyokalu, $kuvaus, $tarkempi_kuvaus, $tehty, $suoritusaika, $tekijat;
 
-     /*
+     /**
       * Heti konstruktorissa tarkistetaan, että onko työkalu ja -kohde tallennettuna id:n arvoina 
       * ja haetaan niiden kuvaukset.
       */
@@ -22,7 +22,7 @@ class Work extends BaseModel {
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus', 'validate_tekijat');
     }
 
-     /*
+     /**
       * Haetaan kaikki työt id:n mukaan järjestettynä ja palautetaan ne listana.
       */
     public static function all() {
@@ -45,7 +45,7 @@ class Work extends BaseModel {
         return $works;
     }
 
-     /*
+     /**
       * Etsitään haluttu työ tietokannasta ja palautetaan se oliona.
       */
     public static function find($id) {
@@ -69,7 +69,7 @@ class Work extends BaseModel {
         return null;
     }
 
-     /*
+     /**
       * Etsitään työhön liittyvälle työkalulle kuvaus, joka tallennetaan työkalu-muuttujaan.
       */
     public function getToolDescription() {
@@ -80,7 +80,7 @@ class Work extends BaseModel {
         $this->tyokalu = $row['kuvaus'];
     }
 
-     /*
+     /**
       * Etsitään työhön liittyvälle työkohteelle kuvaus, joka tallennetaan työn kohde -muuttujaan.
       */
     public function getObjectDescription() {
@@ -91,7 +91,7 @@ class Work extends BaseModel {
         $this->kohde = $row['kuvaus'];
     }
 
-     /*
+     /**
       * Etsitään haluttu työ kuvauksella ja palautetaan se oliona.
       */
     public static function findWithDescription($kuvaus) {
@@ -116,7 +116,7 @@ class Work extends BaseModel {
         return null;
     }
 
-     /*
+     /**
       * Tallennetaan olion tiedot tietokantaan. 
       * Ennen SQL-lauseen suoritusta, haetaan työllä olevien työkalun ja -kohteen id:t.
       */
@@ -131,7 +131,7 @@ class Work extends BaseModel {
         UsersWorks::saveUsers($this->id, $users);
     }
 
-     /*
+     /**
       * Päivitetään olion tiedot tietokantaan. 
       * Ennen SQL-lauseen suoritusta, haetaan työllä olevien työkalun ja -kohteen id:t. 
       * Työn tehty-attribuuttia muokataan erikseen, jotta tyhjä syöte ei tuottaisi virheitä. 
@@ -156,7 +156,7 @@ class Work extends BaseModel {
         UsersWorks::saveUsers($this->id, $this->tekijat);
     }
 
-     /*
+     /**
       * Poistetaan ensin työ KäyttäjänTyöt -tietokohteesta liitosvirheiden välttämiseksi. 
       * Sitten poistetaan olion tiedot tietokannasta.
       */
@@ -174,7 +174,7 @@ class Work extends BaseModel {
         
     }
 
-     /*
+     /**
       * Tarkastetaan, että työn kuvaus on sallittu.
       */
     public function validate_kuvaus() {
@@ -189,7 +189,7 @@ class Work extends BaseModel {
         return $errors;
     }
 
-     /*
+     /**
       * Tarkastetaan, että työn tarkempi kuvaus on sallittu.
       */
     public function validate_tarkempi_kuvaus() {
@@ -200,7 +200,7 @@ class Work extends BaseModel {
         return $errors;
     }
 
-     /*
+     /**
       * Tarkastetaan, että työllä varmasti on vähintään yksi tekijä.
       */
     public function validate_tekijat() {

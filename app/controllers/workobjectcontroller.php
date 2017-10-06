@@ -1,28 +1,31 @@
 <?php
-/*
+
+/**
  * Kontrolleri, joka hoitaa työn kohteisiin liittyvät toiminnallisuudet.
  */
 class WorkObjectController extends BaseController {
 
-     /*
-      * Haetaan tietokannasta kaikki työn kohteet ja luodaan niistä näkymä.
-      */
+    /**
+     * Haetaan tietokannasta kaikki työn kohteet ja luodaan niistä näkymä.
+     */
     public static function index() {
         $workObjects = WorkObject::allAlphabetical();
         View::make('tyonKohde/tyonKohteet.html', array('tyonKohteet' => $workObjects));
     }
 
-     /*
-      * Etsitään haluttu työn kohde ja luodaan siitä näkymä.
-      */
+    /**
+     * Etsitään haluttu työn kohde ja luodaan siitä näkymä.
+     * @param int $id Haetun työn kohteen id.
+     */
     public static function show($id) {
         $workObject = WorkObject::find($id);
         View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $workObject));
     }
 
-     /*
-      * Etsitään haluttu työn kohde kuvauksen perusteella ja luodaan siitä näkymä.
-      */
+    /**
+     * Etsitään haluttu työn kohde kuvauksen perusteella ja luodaan siitä näkymä.
+     * @param String $description Haetun työn kohteen kuvaus.
+     */
     public static function showKuvaus($description) {
         $workObject = WorkObject::findWithDescription($description);
 
@@ -34,24 +37,27 @@ class WorkObjectController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Luodaan näkymä työn kohteen luomiselle.
      */
     public static function create() {
         View::make('tyonKohde/uusiTyonKohde.html');
     }
 
-     /*
-      * Luodaan uusi työkohteen luomisen näkymä vanhoilla arvoilla ja virhetiedotteella.
-      */
+    /**
+     * Luodaan uusi työkohteen luomisen näkymä vanhoilla arvoilla ja virhetiedotteella.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $attributes Vanhat arvot listana.
+     */
     public static function createErrors($errors, $attributes) {
         View::make('tyonKohde/uusiTyonKohde.html', array('errors' => $errors, 'attributes' => $attributes));
     }
 
-     /*
-      * Tarkistetaan käyttäjän antamat tiedot sallituiksi
-      * ja kutsutaan workobject-mallia päivittämään tietokantaan uudet arvot.
-      */
+    /**
+     * Tarkistetaan käyttäjän antamat tiedot sallituiksi
+     * ja kutsutaan workobject-mallia päivittämään tietokantaan uudet arvot.
+     * @param int $id Päivitettänä kohteen id.
+     */
     public static function update($id) {
         $params = $_POST;
 
@@ -72,9 +78,10 @@ class WorkObjectController extends BaseController {
         }
     }
 
-     /*
-      * Haetaan haluttu työn kohde ja luodaan sille muokkausnäkymä.
-      */
+    /**
+     * Haetaan haluttu työn kohde ja luodaan sille muokkausnäkymä.
+     * @param int $id Päivitettävän kohteen id.
+     */
     public static function edit($id) {
 
         $workObject = WorkObject::find($id);
@@ -88,18 +95,21 @@ class WorkObjectController extends BaseController {
         View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes));
     }
 
-     /*
-      * Luodaan uusi työkohteen muokkausnäkymä vanhoilla arvoilla ja virhetiedotteella.
-      */
+    /**
+     * Luodaan uusi työkohteen muokkausnäkymä vanhoilla arvoilla ja virhetiedotteella.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $attributes Vanhat arvot listana.
+     */
     public static function editErrors($errors, $attributes) {
         View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
-     /*
-      * Tarkistetaan onko käyttäjällä oikeutta poistaa työn kohteita ja jos on,
-      * niin tarkastetaan työn kohteen yhteydet olemassaoleviin töihin. Jos yhteyksiä ei ole,
-      * niin pyydetään mallia poistamaan työn kohde tietokannasta.
-      */
+    /**
+     * Tarkistetaan onko käyttäjällä oikeutta poistaa työn kohteita ja jos on,
+     * niin tarkastetaan työn kohteen yhteydet olemassaoleviin töihin. Jos yhteyksiä ei ole,
+     * niin pyydetään mallia poistamaan työn kohde tietokannasta.
+     * @param int $id Poistettavan kohteen id.
+     */
     public static function destroy($id) {
 
         $isAdmin = User::find($_SESSION['username']);
@@ -120,10 +130,10 @@ class WorkObjectController extends BaseController {
         }
     }
 
-     /*
-      * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
-      * ja kutsutaan workobject-mallia tallentamaan tiedot tietokantaan.
-      */
+    /**
+     * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
+     * ja kutsutaan workobject-mallia tallentamaan tiedot tietokantaan.
+     */
     public static function store() {
         $params = $_POST;
 
@@ -142,9 +152,9 @@ class WorkObjectController extends BaseController {
         }
     }
 
-     /*
-      * Etsitään haluttu työn kohde kuvauksen perusteella.
-      */
+    /**
+     * Etsitään haluttu työn kohde kuvauksen perusteella.
+     */
     public static function findWithKuvaus() {
         $params = $_POST;
         $searchedDescription = $params['kuvaus'];

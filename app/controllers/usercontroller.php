@@ -1,33 +1,31 @@
 <?php
 
-/*
+/**
  * Kontrolleri, joka huolehtii käyttäjiin liittyvistä toiminnoista.
  */
-
 class UserController extends BaseController {
-    /*
+
+    /**
      * Hae kaikki käyttäjät ja luo näkymä niistä.
      */
-
     public static function index() {
         $users = User::allAlphabetical();
         View::make('kayttaja/kayttajat.html', array('kayttajat' => $users));
     }
 
-    /*
+    /**
      * Etsi käyttäjä annetulla tunnuksella ja luo käyttäjän kuvaussivu.
+     * @param String $username Haetun käyttäjän tunnus.
      */
-
     public static function show($username) {
         $user = User::find($username);
         View::make('kayttaja/kayttaja.html', array('kayttaja' => $user));
     }
 
-    /*
+    /**
      * Metodi, jossa tarkastetaan käyttäjän antamien tietojen oikeellisuus
      * ja kutsutaan user-mallia tallentamaan tietokantaan, jos virheitä ei ole.
      */
-
     public static function store() {
         $params = $_POST;
 
@@ -66,10 +64,9 @@ class UserController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Metodi, jolla etsitään haluttu käyttäjä tunnuksen perusteella.
      */
-
     public static function findWithTunnus() {
         $params = $_POST;
         $searchedUsername = $params['tunnus'];
@@ -82,18 +79,18 @@ class UserController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Metodi, jolla tarkastetaan käyttäjän antamat tiedot oikeiksi
      * ja kutsutaan user-mallia päivittämään tietokantaan uudet tiedot.
+     * @param String $username Päivitettävän käyttäjän tunnus.
      */
-
-    public static function update($tunnus) {
+    public static function update($username) {
         $params = $_POST;
 
         $attributes = array(
             'kuvaus' => $params['kuvaus'],
             'ika' => $params['ika'],
-            'tunnus' => $tunnus,
+            'tunnus' => $username,
             'salasana' => $params['salasana']
         );
 
@@ -111,16 +108,16 @@ class UserController extends BaseController {
 
         if (count($errors) == 0) {
             $user->update();
-            Redirect::to('/kayttaja/' . $tunnus, array('message' => 'Käyttäjää muokattu!'));
+            Redirect::to('/kayttaja/' . $username, array('message' => 'Käyttäjää muokattu!'));
         } else {
             UserController::editErrors($errors, $attributes);
         }
     }
 
-    /*
+    /**
      * Metodi, jossa haetaan haluttu käyttäjä ja luodaan sivu kyseisen käyttäjän tietojen muokkaamiseen.
+     * @param String $username Haetun käyttäjän tunnus.
      */
-
     public static function edit($username) {
 
         $user = User::find($username);
@@ -136,21 +133,22 @@ class UserController extends BaseController {
         View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes));
     }
 
-    /*
+    /**
      * Metodi, jota kutsutaan jos käyttäjän muokkaamisessa on havaittu virheitä. 
      * Tällöin palautetaan jo annetut arvot ja virheilmoitukset.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $attributes Vanhat arvot listana.
      */
-
     public static function editErrors($errors, $attributes) {
         View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
-    /*
+    /**
      * Metodi, jossa etsitään ensin haluttu käyttäjä ja tarkistetaan käyttäjän liitokset olemassaoleviin töihin. 
      * Jos käyttäjä ei liity töihin, niin kutsutaan user-mallia poistamaan käyttäjä tietokannasta. 
      * Muuten palataan käyttäjän tarkasteluun virheilmoituksen kera.
+     * @param String $username Poistettavan käyttäjän tunnus.
      */
-
     public static function destroy($username) {
         $isAdmin = User::find($_SESSION['username']);
 

@@ -1,13 +1,13 @@
 <?php
 
-/*
+/**
  * Malli käyttäjän ja työn liittävästä tietokohteesta. 
  * Mallia käytetään enemmänkin tauluja yhdistävien metodien sijaintina.
  */
 
 class UsersWorks extends BaseModel {
 
-     /*
+     /**
       * Haetaan haluttuun käyttäjään liittyvät työt ja palautetaan ne listana.
       */
     public static function getUsersWorks($tunnus) {
@@ -31,7 +31,7 @@ class UsersWorks extends BaseModel {
         return $works;
     }
 
-     /*
+     /**
       * Haetaan annettuun työhön liittyvät tekijät ja palautetaan ne listana.
       */
     public static function getUsersForWork($id) {
@@ -48,7 +48,7 @@ class UsersWorks extends BaseModel {
         return $users;
     }
 
-     /*
+     /**
       * Tallennetaan tieto työn ja jokaisen tekijän yhteydestä tietokantaa.
       */
     public static function saveUsers($id, $users) {

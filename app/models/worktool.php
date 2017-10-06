@@ -1,12 +1,12 @@
 <?php
-/*
+/**
  * Malli, joka mallintaa työkalua.
  */
 Class WorkTool extends BaseModel {
 
     public $id, $kuvaus, $tarkempi_kuvaus, $luotu;
 
-     /*
+     /**
       * Konstruktorissa muokataan luontipäivämäärän muotoa.
       */
     public function __construct($attributes) {
@@ -15,7 +15,7 @@ Class WorkTool extends BaseModel {
         $this->validators = array('validate_kuvaus', 'validate_tarkempi_kuvaus');
     }
 
-     /*
+     /**
       * Haetaan oliolle id kuvauksella.
       */
 //    public function getId() {
@@ -26,7 +26,7 @@ Class WorkTool extends BaseModel {
 //        $this->id = $row['id'];
 //    }
 
-//     /*
+//     /**
 //      * Haetaan kaikki työkalut ja palautetaan ne listana.
 //      */
 //    public static function all() {
@@ -47,7 +47,7 @@ Class WorkTool extends BaseModel {
 //        return $workTools;
 //    }
 
-     /*
+     /**
       * Haetaan kaikki työkalut aakkosjärjestyksessä ja palautetaan ne listana.
       */
     public static function allAlphabetical() {
@@ -68,7 +68,7 @@ Class WorkTool extends BaseModel {
         return $workTools;
     }
 
-     /*
+     /**
       * Haetaan haluttu työkalu ja palautetaan se oliona.
       */
     public static function find($id) {
@@ -90,7 +90,7 @@ Class WorkTool extends BaseModel {
         return null;
     }
 
-     /*
+     /**
       * Haetaan haluttu työkalu kuvauksella ja palautetaan se oliona.
       */
     public static function findWithDescription($kuvaus) {
@@ -112,7 +112,7 @@ Class WorkTool extends BaseModel {
         return null;
     }
 
-     /*
+     /**
       * Tallennetaan olion tiedot tietokantaan.
       */
     public function save() {
@@ -121,7 +121,7 @@ Class WorkTool extends BaseModel {
         $this->id = $query->fetch()['id'];
     }
     
-     /*
+     /**
       * Päivitetään olion tiedot tietokantaan.
       */
     public function update() {
@@ -129,7 +129,7 @@ Class WorkTool extends BaseModel {
         $query->execute(array('kuvaus' => $this->kuvaus, 'tarkempi_kuvaus' => $this->tarkempi_kuvaus, 'id' => $this->id));
     }
     
-     /*
+     /**
       * Poistetaan olion tiedot tietokannasta.
       */
     public function destroy() {
@@ -137,7 +137,7 @@ Class WorkTool extends BaseModel {
         $query->execute(array('id' => $this->id));
     }
 
-     /*
+     /**
       * Tarkastetaan, että työkalun kuvaus on sallittu.
       */
     public function validate_kuvaus() {
@@ -152,7 +152,7 @@ Class WorkTool extends BaseModel {
         return $errors;
     }
 
-     /*
+     /**
       * Tarkastetaan, että työkalun tarkempi kuvaus on sallittu.
       */
     public function validate_tarkempi_kuvaus() {
@@ -163,7 +163,7 @@ Class WorkTool extends BaseModel {
         return $errors;
     }
     
-     /*
+     /**
       * Tarkastetaan työkalun yhteyden olemassaoleviin töihin.
       */
     public function validate_connections() {

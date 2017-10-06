@@ -1,57 +1,47 @@
 <?php
-/*
+
+/**
  * Kontrolleri, joka hoitaa työkaluihin liittyvät toiminnallisuudet.
  */
 class WorkToolController extends BaseController {
 
-     /*
-      * Haetaan kaikki työkalut ja luodaan niistä näkymä.
-      */
+    /**
+     * Haetaan kaikki työkalut ja luodaan niistä näkymä.
+     */
     public static function index() {
         $workTools = WorkTool::allAlphabetical();
         View::make('tyokalu/tyokalut.html', array('tyokalut' => $workTools));
     }
 
-     /*
-      * Haetaan tietty työkalu ja luodaan siitä näkymä.
-      */
+    /**
+     * Haetaan tietty työkalu ja luodaan siitä näkymä.
+     * @param int $id Haetun työkalun id.
+     */
     public static function show($id) {
         $workTool = WorkTool::find($id);
         View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $workTool));
     }
 
-     /*
-      * Haetaan tietty työkalu kuvauksen perusteella ja luodaan siitä näkymä.
-      */
-//    public static function showKuvaus($kuvaus) {
-//        $tyokalu = WorkTool::findKuvaus($kuvaus);
-//
-//        if ($tyokalu == null) {
-//            
-//        } else {
-//            $id = $tyokalu->id;
-//            Redirect::to('/tyokalu/' . $id);
-//        }
-//    }
-
-     /*
-      * Luodaan näkymä uuden työkalun luomiselle.
-      */
+    /**
+     * Luodaan näkymä uuden työkalun luomiselle.
+     */
     public static function create() {
         View::make('tyokalu/uusiTyokalu.html');
     }
 
-     /*
-      * Luodaan uusi näkymä työkalun luomiselle vanhoilla arvoilla ja virhetiedotteella.
-      */
+    /**
+     * Luodaan uusi näkymä työkalun luomiselle vanhoilla arvoilla ja virhetiedotteella.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $attributes Vanhat arvot listana.
+     */
     public static function createErrors($errors, $attributes) {
         View::make('tyokalu/uusiTyokalu.html', array('errors' => $errors, 'attributes' => $attributes));
     }
 
-     /*
-      * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
-      * ja kutsutaan worktool-mallia tallentamaan tiedot tietokantaan.
-      */
+    /**
+     * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
+     * ja kutsutaan worktool-mallia tallentamaan tiedot tietokantaan.
+     */
     public static function store() {
         $params = $_POST;
 
@@ -70,10 +60,11 @@ class WorkToolController extends BaseController {
         }
     }
 
-     /*
-      * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
-      * ja kutsutaan worktool-mallia päivittämään tiedot tietokantaan.
-      */
+    /**
+     * Tarkastetaan käyttäjän antamat tiedot sallituiksi 
+     * ja kutsutaan worktool-mallia päivittämään tiedot tietokantaan.
+     * @param int $id Päivitettävän työn id.
+     */
     public static function update($id) {
         $params = $_POST;
 
@@ -94,9 +85,10 @@ class WorkToolController extends BaseController {
         }
     }
 
-     /*
-      * Etsitään haluttu työkalu ja luodaan sille muokkausnäkymä.
-      */
+    /**
+     * Etsitään haluttu työkalu ja luodaan sille muokkausnäkymä.
+     * @param int $id Päivitettävän työn id.
+     */
     public static function edit($id) {
 
         $workTool = WorkTool::find($id);
@@ -110,18 +102,21 @@ class WorkToolController extends BaseController {
         View::make('/tyokalu/tyokaluMuokkaus.html', array('attributes' => $attributes));
     }
 
-     /*
-      * Luodaan uusi muokkausnäkymä vanhoilla arvoilla ja virhetiedotteella.
-      */
+    /**
+     * Luodaan uusi muokkausnäkymä vanhoilla arvoilla ja virhetiedotteella.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $attributes Vanhat arvot listana.
+     */
     public static function editErrors($errors, $attributes) {
         View::make('tyokalu/tyokaluMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
-     /*
-      * Tarkastetaan käyttäjän oikeus työkalujen poistoon. Jos oikeus löytyy,
-      * niin etsitään työkalu ja tarkastetaan sen yhteydet olemassaoleviin töihin.
-      * Jos yhteyksiä ei ole, kutsutaan worktool-mallia poistamaan tiedot tietokannasta.
-      */
+    /**
+     * Tarkastetaan käyttäjän oikeus työkalujen poistoon. Jos oikeus löytyy,
+     * niin etsitään työkalu ja tarkastetaan sen yhteydet olemassaoleviin töihin.
+     * Jos yhteyksiä ei ole, kutsutaan worktool-mallia poistamaan tiedot tietokannasta.
+     * @param int $id Poistettavan työkalun id.
+     */
     public static function destroy($id) {
         $isAdmin = User::find($_SESSION['username']);
 
@@ -141,9 +136,9 @@ class WorkToolController extends BaseController {
         }
     }
 
-     /*
-      * Etsitään haluttu työkalu annetun kuvauksen perusteella.
-      */
+    /**
+     * Etsitään haluttu työkalu annetun kuvauksen perusteella.
+     */
     public static function findWithKuvaus() {
         $params = $_POST;
         $searchedDescription = $params['kuvaus'];

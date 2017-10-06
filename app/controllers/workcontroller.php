@@ -1,29 +1,31 @@
 <?php
-/*
+
+/**
  * Kontrolleri, joka hoitaa töihin liittyvät toiminnallisuudet.
  */
 class WorkController extends BaseController {
 
-     /*
-      * Hae kaikki työt tietokannasta ja luo niistä näkymä.
-      */
+    /**
+     * Hae kaikki työt tietokannasta ja luo niistä näkymä.
+     */
     public static function index() {
         $works = Work::all();
         View::make('tyo/tyot.html', array('tyot' => $works));
     }
 
-     /*
-      * Etsi haluttu työ ja siihen liittyvät tekijät tietokannasta ja luo näistä näkymä.
-      */
+    /**
+     * Etsi haluttu työ ja siihen liittyvät tekijät tietokannasta ja luo näistä näkymä.
+     * @param int $id Haetun työn id.
+     */
     public static function show($id) {
         $work = Work::find($id);
         $worksUsers = UsersWorks::getUsersForWork($id);
         View::make('tyo/tyoKuvaus.html', array('tyo' => $work, 'tekijat' => $worksUsers));
     }
 
-     /*
-      * Hae kaikki vaihtoehdot (aakkosjärjestyksessä) työn luomiselle ja tee näistä näkymä.
-      */
+    /**
+     * Hae kaikki vaihtoehdot (aakkosjärjestyksessä) työn luomiselle ja tee näistä näkymä.
+     */
     public static function create() {
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
@@ -31,10 +33,12 @@ class WorkController extends BaseController {
         View::make('tyo/uusiTyo.html', array('kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users));
     }
 
-     /*
-      * Metodi, jota kutsutaan kun käyttäjän antamissa tiedoissa on virheitä työn luomisessa.
-      * Luodaan uusi työn luomisnäkymä vanhoilla arvoilla ja virhetiedotteella.
-      */
+    /**
+     * Metodi, jota kutsutaan kun käyttäjän antamissa tiedoissa on virheitä työn luomisessa.
+     * Luodaan uusi työn luomisnäkymä vanhoilla arvoilla ja virhetiedotteella.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $attributes Vanhat arvot listana.
+     */
     public static function createErrors($errors, $attributes) {
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
@@ -42,10 +46,10 @@ class WorkController extends BaseController {
         View::make('tyo/uusiTyo.html', array('kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users, 'errors' => $errors, 'attributes' => $attributes));
     }
 
-     /*
-      * Tarkistetaan käyttäjän antamat tiedot uudelle työlle oikeiksi 
-      * ja kutsutaan work-mallia tallentamaan tiedot tietokantaan.
-      */
+    /**
+     * Tarkistetaan käyttäjän antamat tiedot uudelle työlle oikeiksi 
+     * ja kutsutaan work-mallia tallentamaan tiedot tietokantaan.
+     */
     public static function store() {
         $params = $_POST;
 
@@ -77,9 +81,9 @@ class WorkController extends BaseController {
         }
     }
 
-     /*
-      * Etsitään työtä annetulla kuvauksella.
-      */
+    /**
+     * Etsitään työtä annetulla kuvauksella.
+     */
     public static function findWithKuvaus() {
         $params = $_POST;
         $description = $params['kuvaus'];
@@ -92,10 +96,11 @@ class WorkController extends BaseController {
         }
     }
 
-     /*
-      * Haetaan haluttu työ ja sen tekijät, jonka jälkeen luodaan lista työn tiedoista.
-      * Lopulta haetaan kaikki vaihtoehdot työn muokkaamiseksi ja luodaan työn muokkaus -näkymä.
-      */
+    /**
+     * Haetaan haluttu työ ja sen tekijät, jonka jälkeen luodaan lista työn tiedoista.
+     * Lopulta haetaan kaikki vaihtoehdot työn muokkaamiseksi ja luodaan työn muokkaus -näkymä.
+     * @param int $id Halutun työn id.
+     */
     public static function edit($id) {
         $work = Work::find($id);
         $worksUsers = UsersWorks::getUsersForWork($id);
@@ -104,7 +109,7 @@ class WorkController extends BaseController {
         foreach ($worksUsers as $user) {
             $worksUsersUsernames[] = $user->tunnus;
         }
-        
+
         $attributes = array(
             'id' => $work->id,
             'kohde' => $work->kohde,
@@ -122,10 +127,12 @@ class WorkController extends BaseController {
         View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $worksUsers));
     }
 
-     /*
-      * Haetaan kaikki vaihtoehdot työn muokkaamiselle 
-      * ja luodaan uusi näkymä vanhoilla tiedoilla ja virhetiedotteella.
-      */
+    /**
+     * Haetaan kaikki vaihtoehdot työn muokkaamiselle 
+     * ja luodaan uusi näkymä vanhoilla tiedoilla ja virhetiedotteella.
+     * @param array $errors Virheilmoitukset listana.
+     * @param array $errors Vanhat arvot listana.
+     */
     public static function editErrors($errors, $attributes) {
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
@@ -133,13 +140,14 @@ class WorkController extends BaseController {
         View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users, 'errors' => $errors));
     }
 
-     /*
-      * Ensin tarkistetaan onko käyttäjä asettanut työlle tekijöitä, ja sen mukaan luodaan attribuutin tallentava taulkko.
-      * Tämä osa on vain virheiden välttämiseksi, sillä jos kutsuu $params['tekijat'] ilman, että tekijöitä on asetettu,
-      * niin syntaksi ei toimi. Tässä vaiheessa ei periaatteessa vielä pidetä virheenä, jos tekijöitä ei ole.
-      * Tämän jälkeen tarkastetaan "tehty" kohta parametreista, ja muokataan oliota sen mukaan. Lopuksi ajetaan työn 
-      * validointimetodit ja tuloksen perusteella pyydetään work-mallia päivittämään tietokantaa tai antamaan virheilmoituksia.
-      */
+    /**
+     * Ensin tarkistetaan onko käyttäjä asettanut työlle tekijöitä, ja sen mukaan luodaan attribuutin tallentava taulkko.
+     * Tämä osa on vain virheiden välttämiseksi, sillä jos kutsuu $params['tekijat'] ilman, että tekijöitä on asetettu,
+     * niin syntaksi ei toimi. Tässä vaiheessa ei periaatteessa vielä pidetä virheenä, jos tekijöitä ei ole.
+     * Tämän jälkeen tarkastetaan "tehty" kohta parametreista, ja muokataan oliota sen mukaan. Lopuksi ajetaan työn 
+     * validointimetodit ja tuloksen perusteella pyydetään work-mallia päivittämään tietokantaa tai antamaan virheilmoituksia.
+     * @param int $id Päivitettävän työn id.
+     */
     public static function update($id) {
         $params = $_POST;
 
@@ -181,12 +189,13 @@ class WorkController extends BaseController {
         }
     }
 
-     /*
-      * Tarkastetaan onko käyttäjällä oikeutta poistaa työtä ja jos on,
-      * niin pyydetään work-mallia poistamaan työ tietokannasta. Muuten annetaan virheilmoitus.
-      * Näkymissä on kyllä poistettu nappi työn poistamiselle novice-käyttäjiltä, mutta ilman tarkastamista
-      * voisi novice-käyttäjä kirjoittaa tarvittavan osoitteen, joka poistaisi työn.
-      */
+    /**
+     * Tarkastetaan onko käyttäjällä oikeutta poistaa työtä ja jos on,
+     * niin pyydetään work-mallia poistamaan työ tietokannasta. Muuten annetaan virheilmoitus.
+     * Näkymissä on kyllä poistettu nappi työn poistamiselle novice-käyttäjiltä, mutta ilman tarkastamista
+     * voisi novice-käyttäjä kirjoittaa tarvittavan osoitteen, joka poistaisi työn.
+     * @param int $id Poistettavan työn id.
+     */
     public static function destroy($id) {
         $isAdmin = User::find($_SESSION['username']);
 
@@ -199,16 +208,17 @@ class WorkController extends BaseController {
             Redirect::to('/tyot', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn!'));
         }
     }
-    
-    /*
+
+    /**
      * Kutsutaan work-mallia päivittämään annettu työ tehdyksi tietokantaan.
+     * @param int $id Tehdyn työn id.
      */
     public static function markAsDone($id) {
         $work = Work::find($id);
-        
+
         $work->tehty = true;
         $work->Done();
-        
+
         Redirect::to('/tyo/' . $id, array('message' => 'Työ merkattu tehdyksi!'));
     }
 
