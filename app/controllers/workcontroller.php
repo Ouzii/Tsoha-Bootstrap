@@ -200,6 +200,9 @@ class WorkController extends BaseController {
         }
     }
     
+    /*
+     * Kutsutaan work-mallia päivittämään annettu työ tehdyksi tietokantaan.
+     */
     public static function markAsDone($id) {
         $work = Work::find($id);
         
