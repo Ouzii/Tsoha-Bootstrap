@@ -4,7 +4,7 @@ Yleisiä linkkejä:
 
 * [Linkki sovellukseeni](https://laajaosk.users.cs.helsinki.fi/tyonjakaja)
 * [Linkki dokumentaatiooni](https://github.com/Ouzii/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
-* [Linkki phpDocsiin](https://github.com/Ouzii/Tsoha-Bootstrap/blob/master/doc/phpDocs/index.html)
+* [Linkki phpDocsiin](https://htmlpreview.github.io/?https://github.com/Ouzii/Tsoha-Bootstrap/blob/master/doc/phpDocs/index.html)
 
 
 
