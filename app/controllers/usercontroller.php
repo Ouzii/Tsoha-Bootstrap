@@ -174,5 +174,28 @@ class UserController extends BaseController {
             Redirect::to('/kayttajat', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi toisen käyttäjän!'));
         }
     }
+    
+    /**
+     * Metodi, jolla poistetaan käyttäjä liitoksista huolimatta, kunhan on todettu oikeudet poistamiseen.
+     * @param String $username Poistettavan käyttäjän tunnus.
+     */
+    public static function destroyWithErrors($username) {
+        $isAdmin = User::find($_SESSION['username']);
+
+        if ($isAdmin->admin || $_SESSION['username'] == $username) {
+
+            $user = User::find($username);
+            
+                $user->destroy();
+                if ($_SESSION['username'] == $user->tunnus) {
+                    $_SESSION['username'] = null;
+                    Redirect::to('/', array('message' => 'Käyttäjä ' . $user->tunnus . ' poistettu!'));
+                } else {
+                    Redirect::to('/kayttajat', array('message' => 'Käyttäjä ' . $user->tunnus . ' poistettu!'));
+                }
+        } else {
+            Redirect::to('/kayttajat', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi toisen käyttäjän!'));
+        }
+    }
 
 }

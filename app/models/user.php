@@ -3,7 +3,6 @@
 /**
  * Malli, joka mallintaa käyttäjää.
  */
-
 class User extends BaseModel {
 
     public $tunnus, $salasana, $ika, $kuvaus, $admin;
@@ -39,7 +38,6 @@ class User extends BaseModel {
     /**
      * Haetaan kaikki käyttäjät tietokannasta aakkosjärjestyksessä ja palautetaan ne listana.
      */
-
     public static function allAlphabetical() {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja ORDER BY tunnus');
         $query->execute();
@@ -62,7 +60,6 @@ class User extends BaseModel {
     /**
      * Etsitään haluttu käyttäjä tunnuksen perusteella ja palautetaan se oliona.
      */
-
     public static function find($username) {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus LIMIT 1');
         $query->execute(array('tunnus' => $username));
@@ -86,7 +83,6 @@ class User extends BaseModel {
     /**
      * Tallennetaan olion tiedot tietokantaan.
      */
-
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (tunnus, salasana, ika, kuvaus, admin) VALUES (:tunnus, :salasana, :ika, :kuvaus, :admin)');
         $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
@@ -96,7 +92,6 @@ class User extends BaseModel {
      * Päivitetään olion tiedot tietokantaan. Tarkistetaan erikseen admin-ominaisuus, 
      * sillä muuten syntaksi ei toimi ominaisuuden ollessa false.
      */
-
     public function update() {
         $query = DB::connection()->prepare('UPDATE Kayttaja SET kuvaus = :kuvaus, ika = :ika, salasana =:salasana WHERE tunnus = :tunnus');
         $query->execute(array('kuvaus' => $this->kuvaus, 'ika' => $this->ika, 'salasana' => $this->salasana, 'tunnus' => $this->tunnus));
@@ -113,8 +108,9 @@ class User extends BaseModel {
     /**
      * Poistetaan olion tiedot tietokanasta.
      */
-
     public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM KayttajanTyot WHERE tekija = :tunnus');
+        $query->execute(array('tunnus' => $this->tunnus));
         $query = DB::connection()->prepare('DELETE FROM Kayttaja WHERE tunnus = :tunnus');
         $query->execute(array('tunnus' => $this->tunnus));
     }
@@ -122,7 +118,6 @@ class User extends BaseModel {
     /**
      * Tarkastetaan, että annettu tunnus on sallittu.
      */
-
     public function validate_tunnus() {
         $errors = array();
 
@@ -140,7 +135,6 @@ class User extends BaseModel {
     /**
      * Tarkastetaan, että annettua tunnusta ei ole ennestään olemassa.
      */
-
     public function validate_unique_tunnus() {
         $errors = array();
         $existingUsers = User::allAlphabetical();
@@ -158,7 +152,6 @@ class User extends BaseModel {
     /**
      * Tarkastetaan, että salasana on sallittu.
      */
-
     public function validate_salasana() {
         $errors = array();
 
@@ -173,7 +166,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /***
+    /*     * *
      * Tarkastetaan, että kuvaus on sallittu.
      */
 
@@ -187,7 +180,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /***
+    /*     * *
      * Tarkastetaan, että ikä on sallittu.
      */
 
@@ -215,26 +208,26 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /***
+    /*     * *
      * Tarkastetaan onko käyttäjällä liitoksia olemassaoleviin töihin. 
      * Jos on, palautetaan virheilmoituksena liitosten määrä.
      */
 
     public function validate_connections() {
-        $query = DB::connection()->prepare('SELECT * FROM KayttajanTyot WHERE tekija = :tunnus');
+        $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id IN (SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus) AND tehty = FALSE');
         $query->execute(array('tunnus' => $this->tunnus));
         $rows = $query->fetchAll();
 
         $errors = array();
 
         if (count($rows) > 0) {
-            $errors[] = $this->tunnus . ' liittyy ' . count($rows) . ' työhön!';
+            $errors[] = $this->tunnus . ' liittyy ' . count($rows) . ' tekemättömään työhön!'; 
         }
 
         return $errors;
     }
 
-    /***
+    /*     * *
      * Tarkastetaan, että tietokannasta löytyy käyttäjä, jonka tunnus ja salasana täsmäävät annettuihin.
      */
 

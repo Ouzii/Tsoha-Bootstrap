@@ -11,6 +11,10 @@
         <li>{{error}}</li>
         {% endfor %}
     </ul>
+    <br>
+    <form method="get" action="{{base_path}}/kayttajaPoisto/{{kayttaja.tunnus}}/rekursiivi" class="destroy-form" data-confirm="Olet poistamassa käyttäjän {{kayttaja.tunnus}}, vaikka hänellä on tekemättömiä töitä. Jatketaanko?">
+        <button type="submit" class="btn btn-danger">Poista silti</button>
+    </form>
 </div>
 {% endif %}
 

@@ -162,6 +162,9 @@ $routes->get('/tyonKohdePoisto/:id', 'check_logged_in', function($id) {
 $routes->get('/kayttajaPoisto/:tunnus', 'check_logged_in', function($tunnus) {
     UserController::destroy($tunnus);
 });
+$routes->get('/kayttajaPoisto/:tunnus/rekursiivi', 'check_logged_in', function($tunnus) {
+    UserController::destroyWithErrors($tunnus);
+});
 
 $routes->get('/tyoTehty/:id', 'check_logged_in', function($id) {
     WorkController::markAsDone($id);
