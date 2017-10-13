@@ -11,24 +11,24 @@
 </div>
 {% endif %}
 
-<form method="POST" action="{{base_path}}/rekisteroidu">
+<form method="POST" action="{{base_path}}/registering">
     <div class="form-group">
-        <label for="tunnus">Tunnus</label>
-        <input type="Text" class="form-control" name="tunnus" placeholder="Anna tunnus" value="{{attributes.tunnus}}">
+        <label for="username">Tunnus</label>
+        <input type="Text" class="form-control" name="username" placeholder="Anna käyttäjätunnus" value="{{attributes.username}}">
     </div>
     <div class="form-group">
-        <label for="salasana">Salasana</label>
-        <input type="password" class="form-control" name="salasana" placeholder="Anna salasana" value="{{attributes.salasana}}">
+        <label for="password">Salasana</label>
+        <input type="password" class="form-control" name="password" placeholder="Anna salasana" value="{{attributes.password}}">
     </div>
     <div class="form-group">
-        <label for="ika">Ikä</label>
-        <input type="text" class="form-control" name="ika" placeholder="Anna ikäsi" value="{{attributes.ika}}">
+        <label for="age">Ikä</label>
+        <input type="text" class="form-control" name="age" placeholder="Anna ikäsi" value="{{attributes.age}}">
     </div>    
         
     <div class="form-group">
-        <label>Tarkempi kuvaus</label>
-        <input type="text" class="form-control" name="kuvaus" placeholder="Anna tarkempi kuvaus itsestäsi" value="{{attributes.kuvaus}}">
-    </div>
+        <label for="description">Tarkempi kuvaus</label>
+        <textarea rows="5" cols="10" class="form-control" name="description" placeholder="Anna tarkempi kuvaus itsestäsi">{{attributes.description}}</textarea>
+    </div>  
     
     <div class="form-group">
         <label for="admin">Tehdäänkö admin tili?</label>

@@ -40,13 +40,13 @@
                 <div class="collapse navbar-collapse" id="navigation">
                     <ul class="nav navbar-nav">
                         <!-- Navigaation linkit -->
-                        <li><a href="{{base_path}}/tyot">Työt</a></li>
-                        <li><a href="{{base_path}}/tyonKohteet">Työn kohteet</a></li>
-                        <li><a href="{{base_path}}/tyokalut">Työkalut</a></li>
-                        <li><a href="{{base_path}}/kayttajat">Käyttäjät</a></li>
+                        <li><a href="{{base_path}}/works">Työt</a></li>
+                        <li><a href="{{base_path}}/workObjects">Työn kohteet</a></li>
+                        <li><a href="{{base_path}}/workTools">Työkalut</a></li>
+                        <li><a href="{{base_path}}/users">Käyttäjät</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{base_path}}/kayttajaMuokkaus/{{user_logged_in.tunnus}}">Omat tiedot</a></li>                        
+                        <li><a href="{{base_path}}/user/{{user_logged_in.username}}">Omat tiedot</a></li>                        
                         <li><a href="{{base_path}}/logout">Kirjaudu ulos</a></li>
                     </ul>
                 </div>
@@ -69,7 +69,7 @@
                 <div class="collapse navbar-collapse" id="navigation">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{base_path}}/login">Kirjaudu sisään</a></li>
-                        <li><a href="{{base_path}}/rekisteroityminen">Rekisteröidy</a></li>
+                        <li><a href="{{base_path}}/register">Rekisteröidy</a></li>
                     </ul>
                 </div>
             </div>

@@ -5,14 +5,14 @@
 
 <div style="color:green"><h1>Näkymä - Työkalut</h1></div>
 <br>
-<form action="{{base_path}}/etsiTyokalu" method="post">
-    <input list="etsiTyokalu" name="kuvaus">
-    <datalist id="etsiTyokalu">
-        {% for t in tyokalut %}
-        <option value="{{t.kuvaus}}">
+<form action="{{base_path}}/findTool" method="post">
+    <input list="findTool" name="description">
+    <datalist id="findTool">
+        {% for tool in tools %}
+        <option value="{{tool.description}}">
             {% endfor %}
     </datalist>
-    <input type="submit" value="etsi">
+    <input type="submit" value="find">
 </form>
 
 {% if message != null %}
@@ -24,7 +24,7 @@
 
 <br>
 <p>
-    <a href="{{base_path}}/uusiTyokalu" class="btn btn-success">Lisää työkalu</a>
+    <a href="{{base_path}}/newWorkTool" class="btn btn-success">Lisää työkalu</a>
 </p>
 
 
@@ -37,10 +37,10 @@
     </thead>
 
     <tbody>
-        {% for t in tyokalut %}
+        {% for tool in tools %}
         <tr>
-            <td><a href="{{base_path}}/tyokalu/{{t.id}}">{{t.kuvaus}}</a></td>
-            <td>{{t.luotu}}</td>
+            <td><a href="{{base_path}}/workTool/{{tool.id}}">{{tool.description}}</a></td>
+            <td>{{tool.created}}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -50,14 +50,14 @@
 
 <div style="color:green"><h1>Näkymä - Työkalut</h1></div>
 <br>
-<form action="{{base_path}}/etsiTyokalu" method="post">
-    <input list="etsiTyokalu" name="kuvaus">
-    <datalist id="etsiTyokalu">
+<form action="{{base_path}}/findTool" method="post">
+    <input list="findTool" name="description">
+    <datalist id="findTool">
         {% for t in tyokalut %}
-        <option value="{{t.kuvaus}}">
+        <option value="{{tool.description}}">
             {% endfor %}
     </datalist>
-    <input type="submit" value="etsi">
+    <input type="submit" value="find">
 </form>
 
 {% if message != null %}
@@ -79,10 +79,10 @@
     </thead>
 
     <tbody>
-        {% for t in tyokalut %}
+        {% for tool in tools %}
         <tr>
-            <td><a href="{{base_path}}/tyokalu/{{t.id}}">{{t.kuvaus}}</a></td>
-            <td>{{t.luotu}}</td>
+            <td><a href="{{base_path}}/workTool/{{tool.id}}">{{tool.description}}</a></td>
+            <td>{{tool.created}}</td>
         </tr>
         {% endfor %}
     </tbody>

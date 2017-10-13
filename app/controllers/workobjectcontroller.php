@@ -10,7 +10,7 @@ class WorkObjectController extends BaseController {
      */
     public static function index() {
         $workObjects = WorkObject::allAlphabetical();
-        View::make('tyonKohde/tyonKohteet.html', array('tyonKohteet' => $workObjects));
+        View::make('workObject/workObjects.html', array('objects' => $workObjects));
     }
 
     /**
@@ -19,21 +19,21 @@ class WorkObjectController extends BaseController {
      */
     public static function show($id) {
         $workObject = WorkObject::find($id);
-        View::make('tyonKohde/tyonKohdeKuvaus.html', array('tyonKohde' => $workObject));
+        View::make('workObject/workObject.html', array('object' => $workObject));
     }
 
     /**
      * Etsitään haluttu työn kohde kuvauksen perusteella ja luodaan siitä näkymä.
      * @param String $description Haetun työn kohteen kuvaus.
      */
-    public static function showKuvaus($description) {
+    public static function showDescription($description) {
         $workObject = WorkObject::findWithDescription($description);
 
         if ($workObject == null) {
-            Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
+            Redirect::to('/workObjects', array('message' => 'Ei hakutuloksia!'));
         } else {
             $id = $workObject->id;
-            Redirect::to('/tyonKohde/' . $id);
+            Redirect::to('/workObject/' . $id);
         }
     }
 
@@ -41,7 +41,7 @@ class WorkObjectController extends BaseController {
      * Luodaan näkymä työn kohteen luomiselle.
      */
     public static function create() {
-        View::make('tyonKohde/uusiTyonKohde.html');
+        View::make('workObject/newWorkObject.html');
     }
 
     /**
@@ -50,7 +50,7 @@ class WorkObjectController extends BaseController {
      * @param array $attributes Vanhat arvot listana.
      */
     public static function createErrors($errors, $attributes) {
-        View::make('tyonKohde/uusiTyonKohde.html', array('errors' => $errors, 'attributes' => $attributes));
+        View::make('workObject/newWorkObject', array('errors' => $errors, 'attributes' => $attributes));
     }
 
     /**
@@ -62,8 +62,8 @@ class WorkObjectController extends BaseController {
         $params = $_POST;
 
         $attributes = array(
-            'kuvaus' => $params['kuvaus'],
-            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'description' => $params['description'],
+            'longer_description' => $params['longer_description'],
             'id' => $id
         );
 
@@ -72,7 +72,7 @@ class WorkObjectController extends BaseController {
 
         if (count($errors) == 0) {
             $workObject->update();
-            Redirect::to('/tyonKohde/' . $id, array('message' => 'Työn kohdetta muokattu!'));
+            Redirect::to('/workObject/' . $id, array('message' => 'Työn kohdetta muokattu!'));
         } else {
             WorkObjectController::editErrors($errors, $attributes);
         }
@@ -87,12 +87,12 @@ class WorkObjectController extends BaseController {
         $workObject = WorkObject::find($id);
 
         $attributes = array(
-            'kuvaus' => $workObject->kuvaus,
-            'tarkempi_kuvaus' => $workObject->tarkempi_kuvaus,
+            'description' => $workObject->description,
+            'longer_description' => $workObject->longer_description,
             'id' => $id
         );
 
-        View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes));
+        View::make('/workObject/workObjectEdit.html', array('attributes' => $attributes));
     }
 
     /**
@@ -101,7 +101,7 @@ class WorkObjectController extends BaseController {
      * @param array $attributes Vanhat arvot listana.
      */
     public static function editErrors($errors, $attributes) {
-        View::make('/tyonKohde/tyonKohdeMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
+        View::make('/workObject/workObjectEdit.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
     /**
@@ -120,13 +120,13 @@ class WorkObjectController extends BaseController {
 
             if (count($errors) == 0) {
                 $workObject->destroy();
-                Redirect::to('/tyonKohteet', array('message' => 'Työn kohde poistettu!'));
+                Redirect::to('/workObjects', array('message' => 'Työn kohde poistettu!'));
             } else {
-                Redirect::to('/tyonKohde/' . $id, array('errors' => $errors));
+                Redirect::to('/workObject/' . $id, array('errors' => $errors));
             }
         } else {
             $errors[] = 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn kohteen!';
-            Redirect::to('/tyonKohde/' . $id, array('errors' => $errors));
+            Redirect::to('/workObject/' . $id, array('errors' => $errors));
         }
     }
 
@@ -138,15 +138,15 @@ class WorkObjectController extends BaseController {
         $params = $_POST;
 
         $attributes = array(
-            'kuvaus' => $params['kuvaus'],
-            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'description' => $params['description'],
+            'longer_description' => $params['longer_description'],
         );
         $workObject = new WorkObject($attributes);
         $errors = $workObject->errors();
 
         if (count($errors) == 0) {
             $workObject->save();
-            Redirect::to('/tyonKohde/' . $workObject->id, array('message' => 'Työn kohde luotu!'));
+            Redirect::to('/workObject/' . $workObject->id, array('message' => 'Työn kohde luotu!'));
         } else {
             WorkObjectController::createErrors($errors, $attributes);
         }
@@ -155,15 +155,15 @@ class WorkObjectController extends BaseController {
     /**
      * Etsitään haluttu työn kohde kuvauksen perusteella.
      */
-    public static function findWithKuvaus() {
+    public static function findWithDescription() {
         $params = $_POST;
-        $searchedDescription = $params['kuvaus'];
+        $searchedDescription = $params['description'];
         $workObject = WorkObject::findWithDescription($searchedDescription);
         if ($workObject == null) {
-            Redirect::to('/tyonKohteet', array('message' => 'Ei hakutuloksia!'));
+            Redirect::to('/workObjects', array('message' => 'Ei hakutuloksia!'));
         } else {
             $id = $workObject->id;
-            Redirect::to('/tyonKohde/' . $id, array('message' => 'Löytyi!'));
+            Redirect::to('/workObject/' . $id, array('message' => 'Löytyi!'));
         }
     }
 

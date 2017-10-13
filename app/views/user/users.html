@@ -3,14 +3,14 @@
 
 <div style="color:green"><h1>Näkymä - käyttäjät</h1></div>
 <br>
-<form action="{{base_path}}/etsiKayttaja" method="post">
-    <input list="etsiKayttaja" name="tunnus">
-    <datalist id="etsiKayttaja">
-        {% for k in kayttajat %}
-        <option value="{{k.tunnus}}">
+<form action="{{base_path}}/findUser" method="post">
+    <input list="findUser" name="username">
+    <datalist id="findUser">
+        {% for user in users %}
+        <option value="{{user.username}}">
             {% endfor %}
     </datalist>
-    <input type="submit" value="etsi">
+    <input type="submit" value="find">
 </form>
 
 {% if message != null %}
@@ -31,11 +31,11 @@
     </thead>
 
     <tbody>
-        {% for k in kayttajat %}
+        {% for user in users %}
         <tr>
-            <td><a href="{{base_path}}/kayttaja/{{k.tunnus}}">{{k.tunnus}}</a></td>
-            <td>{{k.ika}}</td>
-            {% if k.admin %}
+            <td><a href="{{base_path}}/user/{{user.username}}">{{user.username}}</a></td>
+            <td>{{user.age}}</td>
+            {% if user.admin %}
             <td> <input type="checkbox" name="admin" value="ON" checked="checked" disabled="disabled" /></td>
             {% else %}
             <td> <input type="checkbox" name="admin" value="OFF" disabled="disabled" /></td>

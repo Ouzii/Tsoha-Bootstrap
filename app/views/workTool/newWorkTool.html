@@ -13,14 +13,14 @@
 </div>
 {% endif %}
 
-<form method="POST" action="{{base_path}}/tyokalu">
+<form method="POST" action="{{base_path}}/workTool">
     <div class="form-group">
-        <label for="kuvaus">Kuvaus</label>
-        <input type="Text" class="form-control" name="kuvaus" placeholder="Anna kuvaus" value="{{attributes.kuvaus}}">
+        <label for="description">Kuvaus</label>
+        <input type="Text" class="form-control" name="description" placeholder="Anna kuvaus" value="{{attributes.description}}">
     </div>
     <div class="form-group">
-        <label for="tarkempi_kuvaus">Tarkempi kuvaus</label>
-        <textarea rows="5" cols="10" class="form-control" name="tarkempi_kuvaus">{{attributes.tarkempi_kuvaus}}</textarea>
+        <label for="longer_description">Tarkempi kuvaus</label>
+        <textarea rows="5" cols="10" class="form-control" name="longer_description">{{attributes.longer_description}}</textarea>
     </div>    
     
     <button type="submit" class="btn btn-default">Luo</button>

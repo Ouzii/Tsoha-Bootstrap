@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if (user_logged_in.tunnus == attributes.tunnus) or (user_logged_in.admin) %}
+{% if (user_logged_in.username == attributes.username) or (user_logged_in.admin) %}
 
 {% if errors %}
 <div class="alert alert-danger">
@@ -13,38 +13,39 @@
 </div>
 {% endif %}
 
-<form method="post" action="{{base_path}}/kayttajaMuokkaaminen/{{attributes.tunnus}}">
+<form method="post" action="{{base_path}}/userEditing/{{attributes.username}}">
     <div class="form-group">
-        <label>{{attributes.tunnus}}</label>
+        <label>{{attributes.username}}</label>
     </div>
     <div class="form-group">
-        <label for="ika">Ikä</label>
-        <input type="text" class="form-control" name="ika" value="{{attributes.ika}}">
+        <label for="age">Ikä</label>
+        <input type="text" class="form-control" name="age" value="{{attributes.age}}">
     </div>    
     <div class="form-group">
-        <label for="kuvaus">Tarkempi kuvaus</label>
-        <input type="text" class="form-control" name="kuvaus" value="{{attributes.kuvaus}}">
+        <label for="password">Salasana</label>
+        <input type="text" class="form-control" name="password" value="{{attributes.password}}">
     </div>    
+
     <div class="form-group">
-        <label for="salasana">Salasana</label>
-        <input type="text" class="form-control" name="salasana" value="{{attributes.salasana}}">
-    </div>    
+        <label for="description">Käyttäjän kuvaus</label>
+        <textarea rows="5" cols="10" class="form-control" name="description">{{attributes.description}}</textarea>
+    </div>  
     {% if user_logged_in.admin %}
-    
+
     {% if attributes.admin %}
     <strong>Admin: </strong><input type="checkbox" name="admin" checked>
     {% else %}
     <strong>Admin: </strong><input type="checkbox" name="admin">
     {% endif %}
-    
+
     {% else %}
-    
+
     {% if attributes.admin %}
     <strong>Admin: </strong><input type="checkbox" name="admin" checked disabled>
     {% else %}
     <strong>Admin: </strong><input type="checkbox" name="admin" disabled>
     {% endif %}
-    
+
     {% endif %}
     <br>
     <br>

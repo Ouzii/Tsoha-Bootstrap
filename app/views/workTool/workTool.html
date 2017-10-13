@@ -13,18 +13,19 @@
 </div>
 {% endif %}
 
-<div style="color:green"><h1>{{tyonKohde.kuvaus}}</h1></div>
+
+<div style="color:green"><h1>{{tool.description}}</h1></div>
 <p>
-<form method="get" action="{{base_path}}/tyonKohdePoisto/{{tyonKohde.id}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa työn kohteen {{tyonKohde.kuvaus}}?">
+<form method="get" action="{{base_path}}/workToolDelete/{{tool.id}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa työkalun {{tool.description}}?">
     <button type="submit" class="btn btn-danger">Poista</button>
-    <a href="{{base_path}}/tyonKohdeMuokkaus/{{tyonKohde.id}}" class="btn btn-default">Muokkaa</a>
+    <a href="{{base_path}}/workToolEdit/{{tool.id}}" class="btn btn-default">Muokkaa</a>
 </form>
 </p>
-<ul>
-    <li><strong>Luomispäivä:</strong> {{tyonKohde.luotu}}</li>
-</ul>
+    <ul>
+        <li><strong>Luomispäivä:</strong> {{tool.created}}</li>
+    </ul>
 
-<p><strong>Tarkempi kuvaus:</strong> {{tyonKohde.tarkempi_kuvaus}}</p>
+<p><Strong>Tarkempi kuvaus:</strong> {{tool.longer_description}}</p>
 
  {% if message != null %}
 <div class="alert alert-success">
@@ -44,13 +45,14 @@
 </div>
 {% endif %}
 
-<div style="color:green"><h1>{{tyonKohde.kuvaus}}</h1></div>
 
-<ul>
-    <li><strong>Luomispäivä:</strong> {{tyonKohde.luotu}}</li>
-</ul>
+<div style="color:green"><h1>{{tool.description}}</h1></div>
 
-<p><strong>Tarkempi kuvaus:</strong> {{tyonKohde.tarkempi_kuvaus}}</p>
+    <ul>
+        <li><strong>Luomispäivä:</strong> {{tool.created}}</li>
+    </ul>
+
+<p><Strong>Tarkempi kuvaus:</strong> {{tool.longer_description}}</p>
 
  {% if message != null %}
 <div class="alert alert-success">

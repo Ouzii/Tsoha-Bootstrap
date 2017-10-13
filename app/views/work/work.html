@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user_logged_in.admin %}
+
+<div style="color:green"><h1>{{work.description}}</h1></div>
+
+<p>
+<form method="get" action="{{base_path}}/workDelete/{{work.id}}" class="destroy-form" data-confirm="Oletko varma, että haluat poistaa työn {{work.description}}?">
+    <button type="submit" class="btn btn-danger">Poista</button>
+    <a href="{{base_path}}/workEdit/{{work.id}}" class="btn btn-default">Muokkaa</a>
+</form>
+
+</p>
+
+<ul>
+    <li><strong>ID:</strong><font color='red'> {{work.id}}</font></li>
+    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/workObject/{{work.kohde}}"> {{work.kohde}}</a></li>
+    <li><strong>Työkalu:</strong> <a href="{{base_path}}/workTool/{{work.tool}}"> {{work.tool}}</a></li>
+
+    {% if work.done %}
+    <li><strong>Tehty: </strong><input type="checkbox" checked="" disabled="disabled"></li>
+    <li><strong>Suoritusaika: </strong>{{work.completion_time}}</li>
+    {% else %}
+    <li><strong>Tehty: </strong><input type="checkbox" disabled="disabled"></li>
+    {% endif %}
+
+
+</ul>
+<p><strong>Tekijät:</strong></p>
+{% for user in users %}
+<ul>
+    <li><a href="{{base_path}}/kayttaja/{{user.username}}">{{user.username}}</a></li>
+</ul>
+{% endfor %}
+<p><strong>Tarkempi kuvaus:</strong> {{work.longer_description}}</p>
+
+{% if work.done == null %}
+<a href="{{base_path}}/workDone/{{work.id}}" class="btn btn-success">Kuittaa tehdyksi</a>
+{% endif %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
+
+{% else %}
+
+<div style="color:green"><h1>{{work.description}}</h1></div>
+
+<ul>
+    <li><strong>ID:</strong><font color='red'> {{work.id}}</font></li>
+    <li><strong>Työn kohde:</strong> <a href="{{base_path}}/workObject/{{work.kohde}}"> {{work.kohde}}</a></li>
+    <li><strong>Työkalu:</strong> <a href="{{base_path}}/workTool/{{work.tool}}"> {{work.tool}}</a></li>
+
+    {% if work.done %}
+    <li><strong>Tehty: </strong><input type="checkbox" checked="" disabled="disabled"></li>
+    <li><strong>Suoritusaika: </strong>{{work.completion_time}}</li>
+    {% else %}
+    <li><strong>Tehty: </strong><input type="checkbox" disabled="disabled"></li>
+    {% endif %}
+
+
+</ul>
+<p><strong>Tekijät:</strong></p>
+{% for user in users %}
+<ul>
+    <li><a href="{{base_path}}/kayttaja/{{user.username}}">{{user.username}}</a></li>
+</ul>
+{% endfor %}
+<p><strong>Tarkempi kuvaus:</strong> {{work.longer_description}}</p>
+
+{% if work.done == null %}
+<a href="{{base_path}}/workDone/{{work.id}}" class="btn btn-success">Kuittaa tehdyksi</a>
+{% endif %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

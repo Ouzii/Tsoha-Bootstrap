@@ -10,7 +10,7 @@ class WorkController extends BaseController {
      */
     public static function index() {
         $works = Work::all();
-        View::make('tyo/tyot.html', array('tyot' => $works));
+        View::make('work/works.html', array('works' => $works));
     }
 
     /**
@@ -20,7 +20,7 @@ class WorkController extends BaseController {
     public static function show($id) {
         $work = Work::find($id);
         $worksUsers = UsersWorks::getUsersForWork($id);
-        View::make('tyo/tyoKuvaus.html', array('tyo' => $work, 'tekijat' => $worksUsers));
+        View::make('work/work.html', array('work' => $work, 'users' => $worksUsers));
     }
 
     /**
@@ -30,7 +30,7 @@ class WorkController extends BaseController {
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
         $users = User::allAlphabetical();
-        View::make('tyo/uusiTyo.html', array('kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users));
+        View::make('work/newWork.html', array('objects' => $objects, 'tools' => $tools, 'users' => $users));
     }
 
     /**
@@ -43,7 +43,7 @@ class WorkController extends BaseController {
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
         $users = User::allAlphabetical();
-        View::make('tyo/uusiTyo.html', array('kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users, 'errors' => $errors, 'attributes' => $attributes));
+        View::make('work/newWork.html', array('objects' => $objects, 'tools' => $tools, 'users' => $users, 'errors' => $errors, 'attributes' => $attributes));
     }
 
     /**
@@ -53,20 +53,20 @@ class WorkController extends BaseController {
     public static function store() {
         $params = $_POST;
 
-        If (isset($params['tekijat'])) {
+        If (isset($params['users'])) {
             $attributes = array(
-                'kohde' => $params['kohde'],
-                'tyokalu' => $params['tyokalu'],
-                'kuvaus' => $params['kuvaus'],
-                'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
-                'tekijat' => $params['tekijat']
+                'object' => $params['object'],
+                'tool' => $params['tool'],
+                'description' => $params['description'],
+                'longer_description' => $params['longer_description'],
+                'users' => $params['users']
             );
         } else {
             $attributes = array(
-                'kohde' => $params['kohde'],
-                'tyokalu' => $params['tyokalu'],
-                'kuvaus' => $params['kuvaus'],
-                'tarkempi_kuvaus' => $params['tarkempi_kuvaus']
+                'object' => $params['object'],
+                'tool' => $params['tool'],
+                'description' => $params['description'],
+                'longer_description' => $params['longer_description']
             );
         }
 
@@ -75,7 +75,7 @@ class WorkController extends BaseController {
 
         if (count($errors) == 0) {
             $work->save();
-            Redirect::to('/tyo/' . $work->id, array('message' => 'Työ luotu!'));
+            Redirect::to('/work/' . $work->id, array('message' => 'Työ luotu!'));
         } else {
             WorkController::createErrors($errors, $attributes);
         }
@@ -86,13 +86,13 @@ class WorkController extends BaseController {
      */
     public static function findWithKuvaus() {
         $params = $_POST;
-        $description = $params['kuvaus'];
+        $description = $params['description'];
         $work = Work::findWithDescription($description);
         if ($work == null) {
-            Redirect::to('/tyot', array('message' => 'Ei hakutuloksia!'));
+            Redirect::to('/works', array('message' => 'Ei hakutuloksia!'));
         } else {
             $id = $work->id;
-            Redirect::to('/tyo/' . $id, array('message' => 'Löytyi!'));
+            Redirect::to('/work/' . $id, array('message' => 'Löytyi!'));
         }
     }
 
@@ -107,24 +107,24 @@ class WorkController extends BaseController {
         $worksUsersUsernames = array();
 
         foreach ($worksUsers as $user) {
-            $worksUsersUsernames[] = $user->tunnus;
+            $worksUsersUsernames[] = $user->username;
         }
 
         $attributes = array(
             'id' => $work->id,
-            'kohde' => $work->kohde,
-            'tyokalu' => $work->tyokalu,
-            'kuvaus' => $work->kuvaus,
-            'tarkempi_kuvaus' => $work->tarkempi_kuvaus,
-            'tehty' => $work->tehty,
-            'suoritusaika' => $work->suoritusaika,
-            'tekijat' => $worksUsersUsernames
+            'object' => $work->object,
+            'tool' => $work->tool,
+            'description' => $work->description,
+            'longer_description' => $work->longer_description,
+            'done' => $work->done,
+            'completion_time' => $work->completion_time,
+            'users' => $worksUsersUsernames
         );
 
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
         $worksUsers = User::allAlphabetical();
-        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $worksUsers));
+        View::make('work/workEdit.html', array('attributes' => $attributes, 'objects' => $objects, 'tools' => $tools, 'users' => $worksUsers));
     }
 
     /**
@@ -137,53 +137,53 @@ class WorkController extends BaseController {
         $objects = WorkObject::allAlphabetical();
         $tools = WorkTool::allAlphabetical();
         $users = User::allAlphabetical();
-        View::make('tyo/tyoMuokkaus.html', array('attributes' => $attributes, 'kohteet' => $objects, 'tyokalut' => $tools, 'kayttajat' => $users, 'errors' => $errors));
+        View::make('work/workEdit.html', array('attributes' => $attributes, 'objects' => $objects, 'tools' => $tools, 'users' => $users, 'errors' => $errors));
     }
 
     /**
      * Ensin tarkistetaan onko käyttäjä asettanut työlle tekijöitä, ja sen mukaan luodaan attribuutin tallentava taulkko.
-     * Tämä osa on vain virheiden välttämiseksi, sillä jos kutsuu $params['tekijat'] ilman, että tekijöitä on asetettu,
+     * Tämä osa on vain virheiden välttämiseksi, sillä jos kutsuu $params['users'] ilman, että tekijöitä on asetettu,
      * niin syntaksi ei toimi. Tässä vaiheessa ei periaatteessa vielä pidetä virheenä, jos tekijöitä ei ole.
-     * Tämän jälkeen tarkastetaan "tehty" kohta parametreista, ja muokataan oliota sen mukaan. Lopuksi ajetaan työn 
+     * Tämän jälkeen tarkastetaan "done" kohta parametreista, ja muokataan oliota sen mukaan. Lopuksi ajetaan työn 
      * validointimetodit ja tuloksen perusteella pyydetään work-mallia päivittämään tietokantaa tai antamaan virheilmoituksia.
      * @param int $id Päivitettävän työn id.
      */
     public static function update($id) {
         $params = $_POST;
 
-        If (isset($params['tekijat'])) {
+        If (isset($params['users'])) {
             $attributes = array(
                 'id' => $id,
-                'kohde' => $params['kohde'],
-                'tyokalu' => $params['tyokalu'],
-                'kuvaus' => $params['kuvaus'],
-                'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
-                'tekijat' => $params['tekijat']
+                'object' => $params['object'],
+                'tool' => $params['tool'],
+                'description' => $params['description'],
+                'longer_description' => $params['longer_description'],
+                'users' => $params['users']
             );
         } else {
             $attributes = array(
                 'id' => $id,
-                'kohde' => $params['kohde'],
-                'tyokalu' => $params['tyokalu'],
-                'kuvaus' => $params['kuvaus'],
-                'tarkempi_kuvaus' => $params['tarkempi_kuvaus']
+                'object' => $params['object'],
+                'tool' => $params['tool'],
+                'description' => $params['description'],
+                'longer_description' => $params['longer_description']
             );
         }
 
         $work = new Work($attributes);
-        if (isset($params['tehty'])) {
-            $attributes['tehty'] = 1;
-            $work->tehty = true;
+        if (isset($params['done'])) {
+            $attributes['done'] = 1;
+            $work->done = true;
         } else {
-            $attributes['tehty'] = 0;
-            $work->tehty = false;
+            $attributes['done'] = 0;
+            $work->done = false;
         }
         $errors = $work->errors();
 
         $work->id = $id;
         if (count($errors) == 0) {
             $work->update();
-            Redirect::to('/tyo/' . $work->id, array('message' => 'Työ muokattu!'));
+            Redirect::to('/work/' . $work->id, array('message' => 'Työ muokattu!'));
         } else {
             WorkController::editErrors($errors, $attributes);
         }
@@ -203,9 +203,9 @@ class WorkController extends BaseController {
             $work = new Work(array('id' => $id));
             $work->destroy();
 
-            Redirect::to('/tyot', array('message' => 'Työ on poistettu!'));
+            Redirect::to('/works', array('message' => 'Työ on poistettu!'));
         } else {
-            Redirect::to('/tyot', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn!'));
+            Redirect::to('/works', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työn!'));
         }
     }
 
@@ -216,10 +216,10 @@ class WorkController extends BaseController {
     public static function markAsDone($id) {
         $work = Work::find($id);
 
-        $work->tehty = true;
+        $work->done = true;
         $work->Done();
 
-        Redirect::to('/tyo/' . $id, array('message' => 'Työ merkattu tehdyksi!'));
+        Redirect::to('/work/' . $id, array('message' => 'Työ merkattu tehdyksi!'));
     }
 
 }

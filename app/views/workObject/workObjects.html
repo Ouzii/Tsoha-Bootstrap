@@ -5,14 +5,14 @@
 
 <div style="color:green"><h1>Näkymä - Työn kohteet</h1></div>
 <br>
-<form action="{{base_path}}/etsiTyonKohde" method="post">
-    <input list="etsiTyonKohde" name="kuvaus">
-    <datalist id="etsiTyonKohde">
-        {% for t in tyonKohteet %}
-        <option value="{{t.kuvaus}}">
+<form action="{{base_path}}/findObject" method="post">
+    <input list="findWorkObject" name="description">
+    <datalist id="findWorkObject">
+        {% for object in objects %}
+        <option value="{{object.description}}">
             {% endfor %}
     </datalist>
-    <input type="submit" value="etsi">
+    <input type="submit" value="find">
 </form>
 
 {% if message != null %}
@@ -24,7 +24,7 @@
 
 <br>
 <p>
-    <a href="{{base_path}}/uusiTyonKohde" class="btn btn-success">Lisää työn kohde</a>
+    <a href="{{base_path}}/newWorkObject" class="btn btn-success">Lisää työn kohde</a>
 </p>
 
 <table class="table table-striped table-bordered">
@@ -36,10 +36,10 @@
     </thead>
 
     <tbody>
-        {% for t in tyonKohteet %}
+        {% for object in objects %}
         <tr>
-            <td><a href="{{base_path}}/tyonKohde/{{t.id}}">{{t.kuvaus}}</a></td>
-            <td>{{t.luotu}}</td>
+            <td><a href="{{base_path}}/workObject/{{object.id}}">{{object.description}}</a></td>
+            <td>{{object.created}}</td>
         </tr>
         
         {% endfor %}
@@ -50,14 +50,14 @@
 
 <div style="color:green"><h1>Näkymä - Työn kohteet</h1></div>
 <br>
-<form action="{{base_path}}/etsiTyonKohde" method="post">
-    <input list="etsiTyonKohde" name="kuvaus">
-    <datalist id="etsiTyonKohde">
-        {% for t in tyonKohteet %}
-        <option value="{{t.kuvaus}}">
+<form action="{{base_path}}/findWorkObject" method="post">
+    <input list="findWorkObject" name="description">
+    <datalist id="findWorkObject">
+        {% for object in objects %}
+        <option value="{{object.description}}">
             {% endfor %}
     </datalist>
-    <input type="submit" value="etsi">
+    <input type="submit" value="find">
 </form>
 
 {% if message != null %}
@@ -78,10 +78,10 @@
     </thead>
 
     <tbody>
-        {% for t in tyonKohteet %}
+        {% for object in objects %}
         <tr>
-            <td><a href="{{base_path}}/tyonKohde/{{t.id}}">{{t.kuvaus}}</a></td>
-            <td>{{t.luotu}}</td>
+            <td><a href="{{base_path}}/workObject/{{object.id}}">{{object.description}}</a></td>
+            <td>{{object.created}}</td>
         </tr>
         
         {% endfor %}
