@@ -125,8 +125,8 @@ class User extends BaseModel {
             $errors[] = 'Käyttäjätunnus on pakollinen!';
         }
 
-        if (strlen($this->username) > 20) {
-            $errors[] = 'Käyttäjätunnus voi olla enintään 20 merkkiä pitkä!';
+        if (strlen($this->username) > 20 || strlen($this->username) < 3) {
+            $errors[] = 'Käyttäjätunnuksen on oltava 3-20 merkkiä pitkä!';
         }
 
         return $errors;

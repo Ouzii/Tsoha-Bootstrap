@@ -29,16 +29,16 @@ class UserController extends BaseController {
     public static function store() {
         $params = $_POST;
 
-        if ($params['admin'] == 1) {
-
-            $attributes = array(
-                'username' => (String) $params['username'],
-                'password' => $params['password'],
-                'age' => $params['age'],
-                'description' => $params['description'],
-                'admin' => $params['admin']
-            );
-        } else {
+//        if ($params['admin'] == 1) {
+//
+//            $attributes = array(
+//                'username' => (String) $params['username'],
+//                'password' => $params['password'],
+//                'age' => $params['age'],
+//                'description' => $params['description'],
+//                'admin' => $params['admin']
+//            );
+//        } else {
 
             $attributes = array(
                 'username' => (String) $params['username'],
@@ -47,7 +47,7 @@ class UserController extends BaseController {
                 'description' => $params['description'],
                 'admin' => null
             );
-        }
+//        }
 
         $user = new User($attributes);
         $errors = $user->errors();
