@@ -16,38 +16,6 @@ Class WorkTool extends BaseModel {
     }
 
      /**
-      * Haetaan oliolle id kuvauksella.
-      */
-//    public function getId() {
-//        $query = DB::connection()->prepare('SELECT id FROM WorkTool WHERE description = :description');
-//        $query->execute(array('description' => $this->description));
-//
-//        $row = $query->fetch();
-//        $this->id = $row['id'];
-//    }
-
-//     /**
-//      * Haetaan kaikki työkalut ja palautetaan ne listana.
-//      */
-//    public static function all() {
-//        $query = DB::connection()->prepare('SELECT * FROM WorkTool');
-//        $query->execute();
-//        $rows = $query->fetchAll();
-//        $workTools = array();
-//
-//        foreach ($rows as $row) {
-//            $workTools[] = new WorkTool(array(
-//                'id' => $row['id'],
-//                'description' => $row['description'],
-//                'longer_description' => $row['longer_description'],
-//                'created' => $row['created'],
-//            ));
-//        }
-//
-//        return $workTools;
-//    }
-
-     /**
       * Haetaan kaikki työkalut aakkosjärjestyksessä ja palautetaan ne listana.
       */
     public static function allAlphabetical() {

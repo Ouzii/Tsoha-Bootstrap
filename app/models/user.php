@@ -12,29 +12,6 @@ class User extends BaseModel {
         $this->validators = array('validate_username', 'validate_password', 'validate_description', 'validate_age');
     }
 
-//    /**
-//     * Haetaan kaikki käyttäjät tietokannasta ja palautetaan ne listana.
-//     */
-//
-//    public static function all() {
-//        $query = DB::connection()->prepare('SELECT * FROM Kayttaja');
-//        $query->execute();
-//        $rows = $query->fetchAll();
-//        $users = array();
-//
-//        foreach ($rows as $row) {
-//            $users[] = new User(array(
-//                'tunnus' => $row['tunnus'],
-//                'salasana' => $row['salasana'],
-//                'ika' => $row['ika'],
-//                'kuvaus' => $row['kuvaus'],
-//                'admin' => $row['admin'],
-//            ));
-//        }
-//
-//        return $users;
-//    }
-
     /**
      * Haetaan kaikki käyttäjät tietokannasta aakkosjärjestyksessä ja palautetaan ne listana.
      */
@@ -166,7 +143,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*     * *
+    /**
      * Tarkastetaan, että kuvaus on sallittu.
      */
 
@@ -180,7 +157,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*     * *
+    /**
      * Tarkastetaan, että ikä on sallittu.
      */
 
@@ -208,7 +185,7 @@ class User extends BaseModel {
         return $errors;
     }
 
-    /*     * *
+    /**
      * Tarkastetaan onko käyttäjällä liitoksia olemassaoleviin töihin. 
      * Jos on, palautetaan virheilmoituksena liitosten määrä.
      */
@@ -221,13 +198,13 @@ class User extends BaseModel {
         $errors = array();
 
         if (count($rows) > 0) {
-            $errors[] = $this->username . ' liittyy ' . count($rows) . ' tekemättömään työhön!'; 
+            $errors[] = $this->username . ' liittyy ' . count($rows) . ' tekemättömään työhön!';
         }
 
         return $errors;
     }
 
-    /*     * *
+    /**
      * Tarkastetaan, että tietokannasta löytyy käyttäjä, jonka tunnus ja salasana täsmäävät annettuihin.
      */
 

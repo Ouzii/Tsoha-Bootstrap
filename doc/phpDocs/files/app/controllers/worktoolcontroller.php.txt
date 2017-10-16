@@ -10,7 +10,7 @@ class WorkToolController extends BaseController {
      */
     public static function index() {
         $workTools = WorkTool::allAlphabetical();
-        View::make('tyokalu/tyokalut.html', array('tyokalut' => $workTools));
+        View::make('workTool/workTools.html', array('tools' => $workTools));
     }
 
     /**
@@ -19,21 +19,21 @@ class WorkToolController extends BaseController {
      */
     public static function show($id) {
         $workTool = WorkTool::find($id);
-        View::make('tyokalu/tyokaluKuvaus.html', array('tyokalu' => $workTool));
+        View::make('workTool/workTool.html', array('tool' => $workTool));
     }
 
     /**
      * Etsitään haluttu työkalu kuvauksen perusteella ja luodaan siitä näkymä.
      * @param String $description Haetun työkalun kuvaus.
      */
-    public static function showKuvaus($description) {
+    public static function showDescription($description) {
         $workObject = WorkTool::findWithDescription($description);
 
         if ($workObject == null) {
-            Redirect::to('/tyokalut', array('message' => 'Ei hakutuloksia!'));
+            Redirect::to('/workTools', array('message' => 'Ei hakutuloksia!'));
         } else {
             $id = $workObject->id;
-            Redirect::to('/tyokalu/' . $id);
+            Redirect::to('/workTool/' . $id);
         }
     }
 
@@ -41,7 +41,7 @@ class WorkToolController extends BaseController {
      * Luodaan näkymä uuden työkalun luomiselle.
      */
     public static function create() {
-        View::make('tyokalu/uusiTyokalu.html');
+        View::make('workTool/newWorkTool.html');
     }
 
     /**
@@ -50,7 +50,7 @@ class WorkToolController extends BaseController {
      * @param array $attributes Vanhat arvot listana.
      */
     public static function createErrors($errors, $attributes) {
-        View::make('tyokalu/uusiTyokalu.html', array('errors' => $errors, 'attributes' => $attributes));
+        View::make('workTool/newWorkTool.html', array('errors' => $errors, 'attributes' => $attributes));
     }
 
     /**
@@ -61,15 +61,15 @@ class WorkToolController extends BaseController {
         $params = $_POST;
 
         $attributes = array(
-            'kuvaus' => $params['kuvaus'],
-            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'description' => $params['description'],
+            'longer_description' => $params['longer_description'],
         );
         $workTool = new WorkTool($attributes);
         $errors = $workTool->errors();
 
         if (count($errors) == 0) {
             $workTool->save();
-            Redirect::to('/tyokalu/' . $workTool->id, array('message' => 'Työkalu luotu!'));
+            Redirect::to('/workTool/' . $workTool->id, array('message' => 'Työkalu luotu!'));
         } else {
             WorkToolController::createErrors($errors, $attributes);
         }
@@ -84,8 +84,8 @@ class WorkToolController extends BaseController {
         $params = $_POST;
 
         $attributes = array(
-            'kuvaus' => $params['kuvaus'],
-            'tarkempi_kuvaus' => $params['tarkempi_kuvaus'],
+            'description' => $params['description'],
+            'longer_description' => $params['longer_description'],
             'id' => $id
         );
 
@@ -94,7 +94,7 @@ class WorkToolController extends BaseController {
 
         if (count($errors) == 0) {
             $workTool->update();
-            Redirect::to('/tyokalu/' . $id, array('message' => 'Työkalua muokattu!'));
+            Redirect::to('/workTool/' . $id, array('message' => 'Työkalua muokattu!'));
         } else {
             WorkToolController::editErrors($errors, $attributes);
         }
@@ -109,12 +109,12 @@ class WorkToolController extends BaseController {
         $workTool = WorkTool::find($id);
 
         $attributes = array(
-            'kuvaus' => $workTool->kuvaus,
-            'tarkempi_kuvaus' => $workTool->tarkempi_kuvaus,
+            'description' => $workTool->description,
+            'longer_description' => $workTool->longer_description,
             'id' => $id
         );
 
-        View::make('/tyokalu/tyokaluMuokkaus.html', array('attributes' => $attributes));
+        View::make('/workTool/workToolEdit.html', array('attributes' => $attributes));
     }
 
     /**
@@ -123,7 +123,7 @@ class WorkToolController extends BaseController {
      * @param array $attributes Vanhat arvot listana.
      */
     public static function editErrors($errors, $attributes) {
-        View::make('tyokalu/tyokaluMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
+        View::make('workTool/workToolEdit.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
     /**
@@ -141,28 +141,28 @@ class WorkToolController extends BaseController {
 
             if (count($errors) == 0) {
                 $workTool->destroy();
-                Redirect::to('/tyokalut', array('message' => 'Työkalu poistettu!'));
+                Redirect::to('/workTools', array('message' => 'Työkalu poistettu!'));
             } else {
-                Redirect::to('/tyokalu/' . $id, array('errors' => $errors));
+                Redirect::to('/workTool/' . $id, array('errors' => $errors));
             }
         } else {
             $errors[] = 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi työkalun!';
-            Redirect::to('/tyokalu/' . $id, array('errors' => $errors));
+            Redirect::to('/workTool/' . $id, array('errors' => $errors));
         }
     }
 
     /**
      * Etsitään haluttu työkalu annetun kuvauksen perusteella.
      */
-    public static function findWithKuvaus() {
+    public static function findWithDescription() {
         $params = $_POST;
-        $searchedDescription = $params['kuvaus'];
+        $searchedDescription = $params['description'];
         $workTool = WorkTool::findWithDescription($searchedDescription);
         if ($workTool == null) {
-            Redirect::to('/tyokalut', array('message' => 'Ei hakutuloksia!'));
+            Redirect::to('/workTools', array('message' => 'Ei hakutuloksia!'));
         } else {
             $id = $workTool->id;
-            Redirect::to('/tyokalu/' . $id, array('message' => 'Löytyi!'));
+            Redirect::to('/workTool/' . $id, array('message' => 'Löytyi!'));
         }
     }
 

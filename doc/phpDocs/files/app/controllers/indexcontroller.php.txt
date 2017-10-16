@@ -10,10 +10,10 @@ class IndexController extends BaseController {
      */
     public static function index() {
         if (isset($_SESSION['username'])) {
-            $usersWorks = UsersWorks::getUsersWorks(self::get_user_logged_in()->tunnus);
-            View::make('etusivu/etusivu.html', array('omatTyot' => $usersWorks));
+            $usersWorks = UsersWorks::getUsersWorks(self::get_user_logged_in()->username);
+            View::make('index/index.html', array('usersWorks' => $usersWorks));
         } else {
-            View::make('etusivu/etusivu.html');
+            View::make('index/index.html');
         }
     }
 
@@ -21,7 +21,7 @@ class IndexController extends BaseController {
      * Luo kirjautumissivu.
      */
     public static function login() {
-        View::make('etusivu/login.html');
+        View::make('index/login.html');
     }
 
     /**
@@ -36,7 +36,7 @@ class IndexController extends BaseController {
      * Luo rekisteröitymissivu.
      */
     public static function create() {
-        View::make('etusivu/rekisteroityminen.html');
+        View::make('index/register.html');
     }
 
     /**
@@ -45,7 +45,7 @@ class IndexController extends BaseController {
      * @param array $attributes Vanhat arvot listana.
      */
     public static function createErrors($errors, $attributes) {
-        View::make('etusivu/rekisteroityminen.html', array('errors' => $errors, 'attributes' => $attributes));
+        View::make('index/register.html', array('errors' => $errors, 'attributes' => $attributes));
     }
 
     /**
@@ -56,12 +56,12 @@ class IndexController extends BaseController {
     public static function handle_login() {
         $params = $_POST;
 
-        $user = User::authenticate($params['tunnus'], $params['salasana']);
+        $user = User::authenticate($params['username'], $params['password']);
 
         if (!$user) {
-            View::make('etusivu/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'tunnus' => $params['tunnus']));
+            View::make('index/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'username' => $params['username']));
         } else {
-            $_SESSION['username'] = $user->tunnus;
+            $_SESSION['username'] = $user->username;
 
             Redirect::to('/', array('message' => 'Kirjautuminen onnistui!'));
         }

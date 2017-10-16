@@ -16,38 +16,6 @@ class WorkObject extends BaseModel {
     }
 
      /**
-      * Haetaan oliolle oikea id kuvauksen perusteella.
-      */
-//    public function getId() {
-//        $query = DB::connection()->prepare('SELECT id FROM Tyon_kohde WHERE kuvaus = :kuvaus');
-//        $query->execute(array('kuvaus' => $this->kuvaus));
-//
-//        $row = $query->fetch();
-//        $this->id = $row['id'];
-//    }
-
-//     /**
-//      * Haetaan kaikki työn kohteet ja palautetaan ne listana.
-//      */
-//    public static function all() {
-//        $query = DB::connection()->prepare('SELECT * FROM Tyon_kohde');
-//        $query->execute();
-//        $rows = $query->fetchAll();
-//        $workObjects = array();
-//
-//        foreach ($rows as $row) {
-//            $workObjects[] = new WorkObject(array(
-//                'id' => $row['id'],
-//                'kuvaus' => $row['kuvaus'],
-//                'longer_description' => $row['longer_description'],
-//                'luotu' => $row['luotu'],
-//            ));
-//        }
-//
-//        return $workObjects;
-//    }
-
-     /**
       * Haetaan kaikki työn kohteet aakkosjärjestyksessä ja palautetaan ne listana.
       */
     public static function allAlphabetical() {

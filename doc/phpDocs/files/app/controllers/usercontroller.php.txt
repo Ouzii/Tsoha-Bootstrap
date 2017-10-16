@@ -10,16 +10,16 @@ class UserController extends BaseController {
      */
     public static function index() {
         $users = User::allAlphabetical();
-        View::make('kayttaja/kayttajat.html', array('kayttajat' => $users));
+        View::make('/user/users.html', array('users' => $users));
     }
 
     /**
-     * Etsi käyttäjä annetulla tunnuksella ja luo käyttäjän kuvaussivu.
-     * @param String $username Haetun käyttäjän tunnus.
+     * Etsi käyttäjä annetulla tunnuksella ja luo käyttäjän descriptionsivu.
+     * @param String $username Haetun käyttäjän username.
      */
     public static function show($username) {
         $user = User::find($username);
-        View::make('kayttaja/kayttaja.html', array('kayttaja' => $user));
+        View::make('/user/user.html', array('user' => $user));
     }
 
     /**
@@ -28,36 +28,24 @@ class UserController extends BaseController {
      */
     public static function store() {
         $params = $_POST;
-
-        if ($params['admin'] == 1) {
-
+        
             $attributes = array(
-                'tunnus' => (String) $params['tunnus'],
-                'salasana' => $params['salasana'],
-                'ika' => $params['ika'],
-                'kuvaus' => $params['kuvaus'],
-                'admin' => $params['admin']
-            );
-        } else {
-
-            $attributes = array(
-                'tunnus' => (String) $params['tunnus'],
-                'salasana' => $params['salasana'],
-                'ika' => $params['ika'],
-                'kuvaus' => $params['kuvaus'],
+                'username' => (String) $params['username'],
+                'password' => $params['password'],
+                'age' => $params['age'],
+                'description' => $params['description'],
                 'admin' => null
             );
-        }
 
         $user = new User($attributes);
         $errors = $user->errors();
-        $unique = $user->validate_unique_tunnus();
+        $unique = $user->validate_unique_username();
 
         $errors = array_merge($errors, $unique);
 
         if (count($errors) == 0) {
             $user->save();
-            $_SESSION['username'] = $user->tunnus;
+            $_SESSION['username'] = $user->username;
             Redirect::to('/', array('message' => 'Tunnus luotu!'));
         } else {
             IndexController::createErrors($errors, $attributes);
@@ -67,15 +55,15 @@ class UserController extends BaseController {
     /**
      * Metodi, jolla etsitään haluttu käyttäjä tunnuksen perusteella.
      */
-    public static function findWithTunnus() {
+    public static function findWithDescription() {
         $params = $_POST;
-        $searchedUsername = $params['tunnus'];
+        $searchedUsername = $params['username'];
         $user = User::find($searchedUsername);
         if ($user == null) {
-            Redirect::to('/kayttajat', array('message' => 'Ei hakutuloksia!'));
+            Redirect::to('/users', array('message' => 'Ei hakutuloksia!'));
         } else {
-            $username = $user->tunnus;
-            Redirect::to('/kayttaja/' . $username, array('message' => 'Löytyi!'));
+            $username = $user->username;
+            Redirect::to('/user/' . $username, array('message' => 'Löytyi!'));
         }
     }
 
@@ -88,10 +76,10 @@ class UserController extends BaseController {
         $params = $_POST;
 
         $attributes = array(
-            'kuvaus' => $params['kuvaus'],
-            'ika' => $params['ika'],
-            'tunnus' => $username,
-            'salasana' => $params['salasana']
+            'description' => $params['description'],
+            'age' => $params['age'],
+            'username' => $username,
+            'password' => $params['password']
         );
 
         $user = new User($attributes);
@@ -108,7 +96,7 @@ class UserController extends BaseController {
 
         if (count($errors) == 0) {
             $user->update();
-            Redirect::to('/kayttaja/' . $username, array('message' => 'Käyttäjää muokattu!'));
+            Redirect::to('/user/' . $username, array('message' => 'Käyttäjää muokattu!'));
         } else {
             UserController::editErrors($errors, $attributes);
         }
@@ -116,21 +104,21 @@ class UserController extends BaseController {
 
     /**
      * Metodi, jossa haetaan haluttu käyttäjä ja luodaan sivu kyseisen käyttäjän tietojen muokkaamiseen.
-     * @param String $username Haetun käyttäjän tunnus.
+     * @param String $username Haetun käyttäjän username.
      */
     public static function edit($username) {
 
         $user = User::find($username);
 
         $attributes = array(
-            'kuvaus' => $user->kuvaus,
-            'ika' => $user->ika,
+            'description' => $user->description,
+            'age' => $user->age,
             'admin' => $user->admin,
-            'salasana' => $user->salasana,
-            'tunnus' => $username
+            'password' => $user->password,
+            'username' => $username
         );
 
-        View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes));
+        View::make('/user/userEdit.html', array('attributes' => $attributes));
     }
 
     /**
@@ -140,14 +128,14 @@ class UserController extends BaseController {
      * @param array $attributes Vanhat arvot listana.
      */
     public static function editErrors($errors, $attributes) {
-        View::make('/kayttaja/kayttajaMuokkaus.html', array('attributes' => $attributes, 'errors' => $errors));
+        View::make('/user/userEdit.html', array('attributes' => $attributes, 'errors' => $errors));
     }
 
     /**
      * Metodi, jossa etsitään ensin haluttu käyttäjä ja tarkistetaan käyttäjän liitokset olemassaoleviin töihin. 
      * Jos käyttäjä ei liity töihin, niin kutsutaan user-mallia poistamaan käyttäjä tietokannasta. 
      * Muuten palataan käyttäjän tarkasteluun virheilmoituksen kera.
-     * @param String $username Poistettavan käyttäjän tunnus.
+     * @param String $username Poistettavan käyttäjän username.
      */
     public static function destroy($username) {
         $isAdmin = User::find($_SESSION['username']);
@@ -161,17 +149,40 @@ class UserController extends BaseController {
 
             if (count($errors) == 0) {
                 $user->destroy();
-                if ($_SESSION['username'] == $user->tunnus) {
+                if ($_SESSION['username'] == $user->username) {
                     $_SESSION['username'] = null;
-                    Redirect::to('/', array('message' => 'Käyttäjä ' . $user->tunnus . ' poistettu!'));
+                    Redirect::to('/', array('message' => 'Käyttäjä ' . $user->username . ' poistettu!'));
                 } else {
-                    Redirect::to('/kayttajat', array('message' => 'Käyttäjä ' . $user->tunnus . ' poistettu!'));
+                    Redirect::to('/users', array('message' => 'Käyttäjä ' . $user->username . ' poistettu!'));
                 }
             } else {
-                Redirect::to('/kayttaja/' . $username, array('errors' => $errors));
+                Redirect::to('/user/' . $username, array('errors' => $errors));
             }
         } else {
-            Redirect::to('/kayttajat', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi toisen käyttäjän!'));
+            Redirect::to('/users', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi toisen käyttäjän!'));
+        }
+    }
+    
+    /**
+     * Metodi, jolla poistetaan käyttäjä liitoksista huolimatta, kunhan on todettu oikeudet poistamiseen.
+     * @param String $username Poistettavan käyttäjän username.
+     */
+    public static function destroyWithErrors($username) {
+        $isAdmin = User::find($_SESSION['username']);
+
+        if ($isAdmin->admin || $_SESSION['username'] == $username) {
+
+            $user = User::find($username);
+            
+                $user->destroy();
+                if ($_SESSION['username'] == $user->username) {
+                    $_SESSION['username'] = null;
+                    Redirect::to('/', array('message' => 'Käyttäjä ' . $user->username . ' poistettu!'));
+                } else {
+                    Redirect::to('/users', array('message' => 'Käyttäjä ' . $user->username . ' poistettu!'));
+                }
+        } else {
+            Redirect::to('/users', array('message' => 'Sinun täytyy kirjautua admin-tunnuksilla poistaaksesi toisen käyttäjän!'));
         }
     }
 

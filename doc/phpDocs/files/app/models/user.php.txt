@@ -3,55 +3,30 @@
 /**
  * Malli, joka mallintaa käyttäjää.
  */
-
 class User extends BaseModel {
 
-    public $tunnus, $salasana, $ika, $kuvaus, $admin;
+    public $username, $password, $age, $description, $admin;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array('validate_tunnus', 'validate_salasana', 'validate_kuvaus', 'validate_ika');
+        $this->validators = array('validate_username', 'validate_password', 'validate_description', 'validate_age');
     }
-
-//    /**
-//     * Haetaan kaikki käyttäjät tietokannasta ja palautetaan ne listana.
-//     */
-//
-//    public static function all() {
-//        $query = DB::connection()->prepare('SELECT * FROM Kayttaja');
-//        $query->execute();
-//        $rows = $query->fetchAll();
-//        $users = array();
-//
-//        foreach ($rows as $row) {
-//            $users[] = new User(array(
-//                'tunnus' => $row['tunnus'],
-//                'salasana' => $row['salasana'],
-//                'ika' => $row['ika'],
-//                'kuvaus' => $row['kuvaus'],
-//                'admin' => $row['admin'],
-//            ));
-//        }
-//
-//        return $users;
-//    }
 
     /**
      * Haetaan kaikki käyttäjät tietokannasta aakkosjärjestyksessä ja palautetaan ne listana.
      */
-
     public static function allAlphabetical() {
-        $query = DB::connection()->prepare('SELECT * FROM Kayttaja ORDER BY tunnus');
+        $query = DB::connection()->prepare('SELECT * FROM Account ORDER BY username');
         $query->execute();
         $rows = $query->fetchAll();
         $users = array();
 
         foreach ($rows as $row) {
             $users[] = new User(array(
-                'tunnus' => $row['tunnus'],
-                'salasana' => $row['salasana'],
-                'ika' => $row['ika'],
-                'kuvaus' => $row['kuvaus'],
+                'username' => $row['username'],
+                'password' => $row['password'],
+                'age' => $row['age'],
+                'description' => $row['description'],
                 'admin' => $row['admin'],
             ));
         }
@@ -62,18 +37,17 @@ class User extends BaseModel {
     /**
      * Etsitään haluttu käyttäjä tunnuksen perusteella ja palautetaan se oliona.
      */
-
     public static function find($username) {
-        $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus LIMIT 1');
-        $query->execute(array('tunnus' => $username));
+        $query = DB::connection()->prepare('SELECT * FROM Account WHERE username = :username LIMIT 1');
+        $query->execute(array('username' => $username));
         $row = $query->fetch();
 
         if ($row) {
             $user = new User(array(
-                'tunnus' => $row['tunnus'],
-                'salasana' => $row['salasana'],
-                'ika' => $row['ika'],
-                'kuvaus' => $row['kuvaus'],
+                'username' => $row['username'],
+                'password' => $row['password'],
+                'age' => $row['age'],
+                'description' => $row['description'],
                 'admin' => $row['admin'],
             ));
 
@@ -86,52 +60,50 @@ class User extends BaseModel {
     /**
      * Tallennetaan olion tiedot tietokantaan.
      */
-
     public function save() {
-        $query = DB::connection()->prepare('INSERT INTO Kayttaja (tunnus, salasana, ika, kuvaus, admin) VALUES (:tunnus, :salasana, :ika, :kuvaus, :admin)');
-        $query->execute(array('tunnus' => $this->tunnus, 'salasana' => $this->salasana, 'ika' => $this->ika, 'kuvaus' => $this->kuvaus, 'admin' => $this->admin));
+        $query = DB::connection()->prepare('INSERT INTO Account (username, password, age, description, admin) VALUES (:username, :password, :age, :description, :admin)');
+        $query->execute(array('username' => $this->username, 'password' => $this->password, 'age' => $this->age, 'description' => $this->description, 'admin' => $this->admin));
     }
 
     /**
      * Päivitetään olion tiedot tietokantaan. Tarkistetaan erikseen admin-ominaisuus, 
      * sillä muuten syntaksi ei toimi ominaisuuden ollessa false.
      */
-
     public function update() {
-        $query = DB::connection()->prepare('UPDATE Kayttaja SET kuvaus = :kuvaus, ika = :ika, salasana =:salasana WHERE tunnus = :tunnus');
-        $query->execute(array('kuvaus' => $this->kuvaus, 'ika' => $this->ika, 'salasana' => $this->salasana, 'tunnus' => $this->tunnus));
+        $query = DB::connection()->prepare('UPDATE Account SET description = :description, age = :age, password =:password WHERE username = :username');
+        $query->execute(array('description' => $this->description, 'age' => $this->age, 'password' => $this->password, 'username' => $this->username));
 
         if ($this->admin == true) {
-            $query = DB::connection()->prepare('UPDATE Kayttaja SET admin = TRUE WHERE tunnus = :tunnus');
-            $query->execute(array('tunnus' => $this->tunnus));
+            $query = DB::connection()->prepare('UPDATE Account SET admin = TRUE WHERE username = :username');
+            $query->execute(array('username' => $this->username));
         } else {
-            $query = DB::connection()->prepare('UPDATE Kayttaja SET admin = FALSE WHERE tunnus = :tunnus');
-            $query->execute(array('tunnus' => $this->tunnus));
+            $query = DB::connection()->prepare('UPDATE Account SET admin = FALSE WHERE username = :username');
+            $query->execute(array('username' => $this->username));
         }
     }
 
     /**
      * Poistetaan olion tiedot tietokanasta.
      */
-
     public function destroy() {
-        $query = DB::connection()->prepare('DELETE FROM Kayttaja WHERE tunnus = :tunnus');
-        $query->execute(array('tunnus' => $this->tunnus));
+        $query = DB::connection()->prepare('DELETE FROM UsersWorks WHERE username = :username');
+        $query->execute(array('username' => $this->username));
+        $query = DB::connection()->prepare('DELETE FROM Account WHERE username = :username');
+        $query->execute(array('username' => $this->username));
     }
 
     /**
      * Tarkastetaan, että annettu tunnus on sallittu.
      */
-
-    public function validate_tunnus() {
+    public function validate_username() {
         $errors = array();
 
-        if ($this->tunnus == '' || $this->tunnus == null) {
+        if ($this->username == '' || $this->username == null) {
             $errors[] = 'Käyttäjätunnus on pakollinen!';
         }
 
-        if (strlen($this->tunnus) > 20) {
-            $errors[] = 'Käyttäjätunnus voi olla enintään 20 merkkiä pitkä!';
+        if (strlen($this->username) > 20 || strlen($this->username) < 3) {
+            $errors[] = 'Käyttäjätunnuksen on oltava 3-20 merkkiä pitkä!';
         }
 
         return $errors;
@@ -140,15 +112,14 @@ class User extends BaseModel {
     /**
      * Tarkastetaan, että annettua tunnusta ei ole ennestään olemassa.
      */
-
-    public function validate_unique_tunnus() {
+    public function validate_unique_username() {
         $errors = array();
         $existingUsers = User::allAlphabetical();
         $existingUsernames = array();
         foreach ($existingUsers as $existingUser) {
-            $existingUsernames[] = $existingUser->tunnus;
+            $existingUsernames[] = $existingUser->username;
         }
-        if (in_array($this->tunnus, $existingUsernames)) {
+        if (in_array($this->username, $existingUsernames)) {
             $errors[] = 'Käyttäjätunnus on jo olemassa!';
         }
 
@@ -158,94 +129,95 @@ class User extends BaseModel {
     /**
      * Tarkastetaan, että salasana on sallittu.
      */
-
-    public function validate_salasana() {
+    public function validate_password() {
         $errors = array();
 
-        if ($this->salasana == '' || $this->salasana == null) {
+        if ($this->password == '' || $this->password == null) {
             $errors[] = 'Salasana ei voi olla tyhjä!';
         }
 
-        if (strlen($this->salasana) > 20 || strlen($this->salasana) < 8) {
+        if (strlen($this->password) > 20 || strlen($this->password) < 8) {
             $errors[] = 'Salasanan on oltava 8-20 merkkiä pitkä!';
         }
 
         return $errors;
     }
 
-    /***
+    /**
      * Tarkastetaan, että kuvaus on sallittu.
      */
 
-    public function validate_kuvaus() {
+    public function validate_description() {
         $errors = array();
 
-        if (strlen($this->kuvaus) > 360) {
+        if (strlen($this->description) > 360) {
             $errors[] = 'Kuvaus voi olla enintään 360 merkkiä pitkä!';
         }
 
         return $errors;
     }
 
-    /***
+    /**
      * Tarkastetaan, että ikä on sallittu.
      */
 
-    public function validate_ika() {
+    public function validate_age() {
         $errors = array();
 
-        if ($this->ika == null || $this->ika == '') {
+        if ($this->age == null || $this->age == '') {
             $errors[] = 'Anna ikäsi!';
             return $errors;
         }
 
-        if (strpos($this->ika, '.') || strpos($this->ika, ',')) {
+        if (strpos($this->age, '.') || strpos($this->age, ',')) {
             $errors[] = 'Ikäsi täytyy olla kokonaisluku!';
             return $errors;
         }
 
-        if (is_numeric($this->ika) == FALSE) {
+        if (is_numeric($this->age) == FALSE) {
             $errors[] = 'Ikäsi täytyy olla numeroina!';
         }
 
-
+        if ($this->age < 0 || $this->age > 999) {
+            $errors[] = 'Valitettavasti sovelluksen ikähaitari on 0-999v.';
+        }
 
         return $errors;
     }
 
-    /***
+    /**
      * Tarkastetaan onko käyttäjällä liitoksia olemassaoleviin töihin. 
      * Jos on, palautetaan virheilmoituksena liitosten määrä.
      */
 
     public function validate_connections() {
-        $query = DB::connection()->prepare('SELECT * FROM KayttajanTyot WHERE tekija = :tunnus');
-        $query->execute(array('tunnus' => $this->tunnus));
+        $query = DB::connection()->prepare('SELECT * FROM Work WHERE id IN (SELECT work FROM UsersWorks WHERE username = :username) AND done = FALSE');
+        $query->execute(array('username' => $this->username));
         $rows = $query->fetchAll();
 
         $errors = array();
 
         if (count($rows) > 0) {
-            $errors[] = $this->tunnus . ' liittyy ' . count($rows) . ' työhön!';
+            $errors[] = $this->username . ' liittyy ' . count($rows) . ' tekemättömään työhön!';
         }
 
         return $errors;
     }
 
-    /***
+    /**
      * Tarkastetaan, että tietokannasta löytyy käyttäjä, jonka tunnus ja salasana täsmäävät annettuihin.
      */
 
-    public static function authenticate($tunnus, $salasana) {
-        $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE tunnus = :tunnus AND salasana = :salasana LIMIT 1');
-        $query->execute(array('tunnus' => $tunnus, 'salasana' => $salasana));
+    public static function authenticate($username, $password) {
+        $query = DB::connection()->prepare('SELECT * FROM Account WHERE username = :username AND password = :password LIMIT 1');
+        $query->execute(array('username' => $username, 'password' => $password));
         $row = $query->fetch();
         if ($row) {
             $user = new User(array(
-                'tunnus' => $row['tunnus'],
-                'ika' => $row['ika'],
-                'salasana' => $row['salasana'],
-                'kuvaus' => $row['kuvaus'],
+                'username' => $row['username'],
+                'age' => $row['age'],
+                'password' => $row['password'],
+                'description' => $row['description'],
                 'admin' => $row['admin']
             ));
             return $user;

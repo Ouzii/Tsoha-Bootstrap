@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">139</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">135</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-420237473"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-230829605"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-420237473" class="accordion-body collapse in">
+            <div id="namespace-230829605" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -211,15 +211,15 @@
                                                                     <a href="../classes/WorkTool.html#method_save" class="">save()</a><br />
                                                                     <a href="../classes/WorkTool.html#method_update" class="">update()</a><br />
                                                                     <a href="../classes/WorkTool.html#method_destroy" class="">destroy()</a><br />
-                                                                    <a href="../classes/WorkTool.html#method_validate_kuvaus" class="">validate_kuvaus()</a><br />
-                                                                    <a href="../classes/WorkTool.html#method_validate_tarkempi_kuvaus" class="">validate_tarkempi_kuvaus()</a><br />
+                                                                    <a href="../classes/WorkTool.html#method_validate_description" class="">validate_description()</a><br />
+                                                                    <a href="../classes/WorkTool.html#method_validate_longer_description" class="">validate_longer_description()</a><br />
                                                                     <a href="../classes/WorkTool.html#method_validate_connections" class="">validate_connections()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <a href="../classes/WorkTool.html#property_id" class="">$id</a><br />
-                                                                    <a href="../classes/WorkTool.html#property_kuvaus" class="">$kuvaus</a><br />
-                                                                    <a href="../classes/WorkTool.html#property_tarkempi_kuvaus" class="">$tarkempi_kuvaus</a><br />
-                                                                    <a href="../classes/WorkTool.html#property_luotu" class="">$luotu</a><br />
+                                                                    <a href="../classes/WorkTool.html#property_description" class="">$description</a><br />
+                                                                    <a href="../classes/WorkTool.html#property_longer_description" class="">$longer_description</a><br />
+                                                                    <a href="../classes/WorkTool.html#property_created" class="">$created</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No constants found</em>
@@ -311,10 +311,10 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_kuvaus" name="property_kuvaus" class="anchor"></a>
+            <a id="property_description" name="property_description" class="anchor"></a>
             <article class="property">
-                <h3 class="public ">$kuvaus</h3>
-                <pre class="signature">$kuvaus : </pre>
+                <h3 class="public ">$description</h3>
+                <pre class="signature">$description : </pre>
                 <p><em></em></p>
                 
 
@@ -335,10 +335,10 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_tarkempi_kuvaus" name="property_tarkempi_kuvaus" class="anchor"></a>
+            <a id="property_longer_description" name="property_longer_description" class="anchor"></a>
             <article class="property">
-                <h3 class="public ">$tarkempi_kuvaus</h3>
-                <pre class="signature">$tarkempi_kuvaus : </pre>
+                <h3 class="public ">$longer_description</h3>
+                <pre class="signature">$longer_description : </pre>
                 <p><em></em></p>
                 
 
@@ -359,10 +359,10 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_luotu" name="property_luotu" class="anchor"></a>
+            <a id="property_created" name="property_created" class="anchor"></a>
             <article class="property">
-                <h3 class="public ">$luotu</h3>
-                <pre class="signature">$luotu : </pre>
+                <h3 class="public ">$created</h3>
+                <pre class="signature">$created : </pre>
                 <p><em></em></p>
                 
 
@@ -590,7 +590,7 @@
             <article class="method">
                 <h3 class="public ">findWithDescription()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">findWithDescription(  <span class="argument">$kuvaus</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">findWithDescription(  <span class="argument">$description</span>) </pre>
                 <p><em>Haetaan haluttu työkalu kuvauksella ja palautetaan se oliona.</em></p>
                 
 
@@ -598,7 +598,7 @@
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td></td>
-                                <td>$kuvaus </td>
+                                <td>$description </td>
                                 <td></td>
                             </tr>
                                             </table>
@@ -699,11 +699,11 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_validate_kuvaus" name="method_validate_kuvaus" class="anchor"></a>
+            <a id="method_validate_description" name="method_validate_description" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">validate_kuvaus()</h3>
+                <h3 class="public ">validate_description()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">validate_kuvaus() </pre>
+                <pre class="signature" style="margin-right: 54px;">validate_description() </pre>
                 <p><em>Tarkastetaan, että työkalun kuvaus on sallittu.</em></p>
                 
 
@@ -725,11 +725,11 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_validate_tarkempi_kuvaus" name="method_validate_tarkempi_kuvaus" class="anchor"></a>
+            <a id="method_validate_longer_description" name="method_validate_longer_description" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">validate_tarkempi_kuvaus()</h3>
+                <h3 class="public ">validate_longer_description()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">validate_tarkempi_kuvaus() </pre>
+                <pre class="signature" style="margin-right: 54px;">validate_longer_description() </pre>
                 <p><em>Tarkastetaan, että työkalun tarkempi kuvaus on sallittu.</em></p>
                 
 
@@ -824,7 +824,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 6th, 2017 at 14:08.
+                    on October 16th, 2017 at 10:20.
                 </section>
             </section>
         </section>

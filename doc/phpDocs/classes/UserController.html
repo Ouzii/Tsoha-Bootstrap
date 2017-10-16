@@ -106,7 +106,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">139</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">135</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1247633749"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-324232949"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1247633749" class="accordion-body collapse in">
+            <div id="namespace-324232949" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -207,11 +207,12 @@
                                                                     <a href="../classes/UserController.html#method_index" class="">index()</a><br />
                                                                     <a href="../classes/UserController.html#method_show" class="">show()</a><br />
                                                                     <a href="../classes/UserController.html#method_store" class="">store()</a><br />
-                                                                    <a href="../classes/UserController.html#method_findWithTunnus" class="">findWithTunnus()</a><br />
+                                                                    <a href="../classes/UserController.html#method_findWithDescription" class="">findWithDescription()</a><br />
                                                                     <a href="../classes/UserController.html#method_update" class="">update()</a><br />
                                                                     <a href="../classes/UserController.html#method_edit" class="">edit()</a><br />
                                                                     <a href="../classes/UserController.html#method_editErrors" class="">editErrors()</a><br />
                                                                     <a href="../classes/UserController.html#method_destroy" class="">destroy()</a><br />
+                                                                    <a href="../classes/UserController.html#method_destroyWithErrors" class="">destroyWithErrors()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -371,7 +372,7 @@
                 <h3 class="public ">show()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">show(String  <span class="argument">$username</span>) </pre>
-                <p><em>Etsi käyttäjä annetulla tunnuksella ja luo käyttäjän kuvaussivu.</em></p>
+                <p><em>Etsi käyttäjä annetulla tunnuksella ja luo käyttäjän descriptionsivu.</em></p>
                 
 
                                     <h4>Parameters</h4>
@@ -379,7 +380,7 @@
                                                     <tr>
                                 <td>String</td>
                                 <td>$username </td>
-                                <td><p>Haetun käyttäjän tunnus.</p></td>
+                                <td><p>Haetun käyttäjän username.</p></td>
                             </tr>
                                             </table>
                 
@@ -429,11 +430,11 @@ ja kutsutaan user-mallia tallentamaan tietokantaan, jos virheitä ei ole.</em></
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_findWithTunnus" name="method_findWithTunnus" class="anchor"></a>
+            <a id="method_findWithDescription" name="method_findWithDescription" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">findWithTunnus()</h3>
+                <h3 class="public ">findWithDescription()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">findWithTunnus() </pre>
+                <pre class="signature" style="margin-right: 54px;">findWithDescription() </pre>
                 <p><em>Metodi, jolla etsitään haluttu käyttäjä tunnuksen perusteella.</em></p>
                 
 
@@ -505,7 +506,7 @@ ja kutsutaan user-mallia päivittämään tietokantaan uudet tiedot.</em></p>
                                                     <tr>
                                 <td>String</td>
                                 <td>$username </td>
-                                <td><p>Haetun käyttäjän tunnus.</p></td>
+                                <td><p>Haetun käyttäjän username.</p></td>
                             </tr>
                                             </table>
                 
@@ -581,7 +582,42 @@ Muuten palataan käyttäjän tarkasteluun virheilmoituksen kera.</p>
                                                     <tr>
                                 <td>String</td>
                                 <td>$username </td>
-                                <td><p>Poistettavan käyttäjän tunnus.</p></td>
+                                <td><p>Poistettavan käyttäjän username.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_destroyWithErrors" name="method_destroyWithErrors" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">destroyWithErrors()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">destroyWithErrors(String  <span class="argument">$username</span>) </pre>
+                <p><em>Metodi, jolla poistetaan käyttäjä liitoksista huolimatta, kunhan on todettu oikeudet poistamiseen.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$username </td>
+                                <td><p>Poistettavan käyttäjän username.</p></td>
                             </tr>
                                             </table>
                 
@@ -650,7 +686,7 @@ Muuten palataan käyttäjän tarkasteluun virheilmoituksen kera.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 6th, 2017 at 14:08.
+                    on October 16th, 2017 at 10:20.
                 </section>
             </section>
         </section>

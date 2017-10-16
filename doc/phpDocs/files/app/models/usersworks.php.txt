@@ -10,22 +10,22 @@ class UsersWorks extends BaseModel {
      /**
       * Haetaan haluttuun käyttäjään liittyvät työt ja palautetaan ne listana.
       */
-    public static function getUsersWorks($tunnus) {
-        $query = DB::connection()->prepare('SELECT * FROM Tyo WHERE id IN (SELECT tyo FROM KayttajanTyot WHERE tekija = :tunnus) ORDER BY id');
-        $query->execute(array('tunnus' => $tunnus));
+    public static function getUsersWorks($username) {
+        $query = DB::connection()->prepare('SELECT * FROM Work WHERE id IN (SELECT work FROM UsersWorks WHERE username = :username) ORDER BY id');
+        $query->execute(array('username' => $username));
         $rows = $query->fetchAll();
         $works = array();
 
         foreach ($rows as $row) {
-            $tyo = new Work(array(
+            $work = new Work(array(
                 'id' => $row['id'],
-                'kuvaus' => $row['kuvaus'],
-                'kohde' => $row['kohde'],
-                'tyokalu' => $row['tyokalu'],
-                'tehty' => $row['tehty']
+                'description' => $row['description'],
+                'object' => $row['object'],
+                'tool' => $row['tool'],
+                'done' => $row['done']
             ));
 
-            $works[] = $tyo;
+            $works[] = $work;
         }
 
         return $works;
@@ -35,14 +35,14 @@ class UsersWorks extends BaseModel {
       * Haetaan annettuun työhön liittyvät tekijät ja palautetaan ne listana.
       */
     public static function getUsersForWork($id) {
-        $query = DB::connection()->prepare('SELECT tekija FROM KayttajanTyot WHERE tyo = :id');
+        $query = DB::connection()->prepare('SELECT username FROM UsersWorks WHERE work = :id');
         $query->execute(array('id' => $id));
         $rows = $query->fetchAll();
         $users = array();
 
         foreach ($rows as $row) {
             $users[] = new User(array(
-                'tunnus' => $row['tekija'],
+                'username' => $row['username'],
             ));
         }
         return $users;
@@ -53,8 +53,8 @@ class UsersWorks extends BaseModel {
       */
     public static function saveUsers($id, $users) {
         foreach ($users as $user) {
-            $query = DB::connection()->prepare('INSERT INTO KayttajanTyot (tekija, tyo) VALUES (:tekija, :id)');
-            $query->execute(array('id' => $id, 'tekija' => $user));
+            $query = DB::connection()->prepare('INSERT INTO UsersWorks (username, work) VALUES (:username, :id)');
+            $query->execute(array('id' => $id, 'username' => $user));
         }
     }
 
