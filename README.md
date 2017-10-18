@@ -8,7 +8,7 @@ Yleisiä linkkejä:
 
 
 
-## Linkit eri sivujen suunnitelmille:
+## Linkit eri sivuille:
 * [Etusivu](https://laajaosk.users.cs.helsinki.fi/tyonjakaja)
 * [Kirjautuminen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/login)
 * [Rekisteröityminen](https://laajaosk.users.cs.helsinki.fi/tyonjakaja/register)
